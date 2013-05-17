@@ -63,8 +63,8 @@ void cPlayer::Draw()
 	//DrawRect(tex_id,xo,yo,xf,yf);
 	float x,y,z;
 	GetPosition(&x,&y,&z);
-	glPushMatrix();
-			glTranslatef(x,0,z);
+		glPushMatrix();
+			glTranslatef(x,y,z);
 			GLUquadricObj *q = gluNewQuadric();
 			//glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_FLOOR));
 			gluSphere(q, 1,16,16);

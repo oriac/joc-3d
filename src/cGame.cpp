@@ -35,7 +35,7 @@ bool cGame::Init()
 	res = Scene.LoadLevel(1);
 	if(!res) return false;
 
-	//player.SetPosition(0,1,0);
+	player.SetPosition(0,2,0);
 	return res;
 }
 
@@ -82,12 +82,21 @@ void cGame::ReadPosMouse(int x, int y)
 bool cGame::Process()
 {
 	bool res=true;
+
+
 	
 	//Process Input
+	rot-=(x2-x1);
+	x1 = x2;
+	if(rot>360) rot = 0;
+	else if(rot<0)rot = 360;
+	rotV-=(y2-y1);
+	y1 = y2;
+	if(rotV>90) rotV = 90;
+	else if(rotV<-90) rotV = -90;
+
 	if(keys[27])	res=false;	
 	
-	//Game Logic
-	//...
 	if(keys[50]){
 		camera = 2;
 	}
@@ -97,6 +106,7 @@ bool cGame::Process()
 	else if(keys[57]) {
 		camera = 0;
 	}
+	if(camera==1)player.SetRot(rot);
 	if(keys['q']) {
 		player.StrafeLeft();
 	}
@@ -110,18 +120,14 @@ bool cGame::Process()
 		player.MoveDown();
 	}
 	if(keys['a']){ 
-		player.AddRot(0.5);
+		if(camera!=1)player.AddRot(0.5);
 	}
 	if(keys['d']){
-		player.AddRot(-0.5);
+		if(camera!=1)player.AddRot(-0.5);
 	}
-	rot+=(x2-x1);
-	x1 = x2;
-	rotV-=(y2-y1);
-	y1 = y2;
-	if(rotV>180) rotV = 180;
-	else if(rotV<-180) rotV = -180;
 	return res;
+	//Game Logic
+	//...
 }
 
 //Output
@@ -136,7 +142,7 @@ void cGame::Render()
 		
 		float x,y,z;
 		player.GetPosition(&x,&y,&z);
-		glTranslatef(-x,0,-z);
+		glTranslatef(-x,-y,-z);
 		break;
 	case 2:
 		gluLookAt(64,32,-16,0,0,-16,0,1,0);

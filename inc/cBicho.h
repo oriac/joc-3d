@@ -27,15 +27,15 @@
 class cRect
 {
 public:
-	int left,top,
-		right,bottom;
+	int xmin,ymin,zmin,
+		xmax,ymax,zmax;
 };
 
 class cBicho
 {
 public:
 	cBicho(void);
-	cBicho(int x,int y,int w,int h);
+	cBicho(float x,float y,float z,float w,float h,float d);
 	~cBicho(void);
 
 	void SetPosition(float x, float y, float z);
@@ -71,10 +71,11 @@ public:
 
 	void SetSpeed(int i);
 	void AddRot(float x);
+	void SetRot(float x);
 	
 private:
 	float x,y,z;
-	int w,h;
+	int w,h,d;
 	int state;
 	float rot;
 

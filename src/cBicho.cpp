@@ -11,12 +11,14 @@ cBicho::cBicho(void)
 }
 cBicho::~cBicho(void){}
 
-cBicho::cBicho(int posx,int posy,int width,int height)
+cBicho::cBicho(float posx,float posy,float posz,float width,float height,float depth)
 {
 	x = posx;
 	y = posy;
+	z = posz;
 	w = width;
 	h = height;
+	d = depth;
 }
 void cBicho::SetPosition(float posx,float posy, float posz)
 {
@@ -52,12 +54,14 @@ void cBicho::GetWidthHeight(int *width,int *height)
 }
 bool cBicho::Collides(cRect *rc)
 {
-	return ((x>rc->left) && (x+w<rc->right) && (y>rc->bottom) && (y+h<rc->top));
+	//return ((x>rc->left) && (x+w<rc->right) && (y>rc->bottom) && (y+h<rc->top));
+	return false;
 }
 
 bool cBicho::Collides2(cRect *rc)
 {
-	return ((x<rc->right) && (rc->left<x+w) && (y<rc->top) && (rc->bottom<y+h));
+	//return ((x<rc->right) && (rc->left<x+w) && (y<rc->top) && (rc->bottom<y+h));
+	return false;
 }
 bool cBicho::CollidesWall(int* map, bool right) 
 {
@@ -197,10 +201,16 @@ bool cBicho::CollidesMapFloor(int *map) {
 
 void cBicho::GetArea(cRect *rc)
 {
-	rc->left   = x;
+	/*rc->left   = x;
 	rc->right  = x+w;
 	rc->bottom = y;
-	rc->top    = y+h;
+	rc->top    = y+h;*/
+	rc->xmin = x;
+	rc->ymin = y;
+	rc->zmin = z;
+	rc->xmax = x+w;
+	rc->ymax = y+h;
+	rc->zmax = z+d;
 }
 void cBicho::DrawRect(int tex_id,float xo,float yo,float xf,float yf)
 {
@@ -417,4 +427,8 @@ void cBicho::SetSpeed(int i) {
 void cBicho::AddRot(float x) {
 	rot+=x;
 	if(rot>360)rot=0;
+}
+
+void cBicho::SetRot(float x) {
+	rot = x;
 }
