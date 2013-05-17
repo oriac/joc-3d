@@ -35,7 +35,7 @@ bool cGame::Init()
 	res = Scene.LoadLevel(1);
 	if(!res) return false;
 
-
+	//player.SetPosition(0,1,0);
 	return res;
 }
 
@@ -98,31 +98,29 @@ bool cGame::Process()
 		camera = 0;
 	}
 	if(keys['q']) {
-		transX-=0.1*sin((rot+90)*0.017);
-		transZ-=0.1*cos((rot+90)*0.017);
+		player.StrafeLeft();
 	}
 	if(keys['e']) {
-		transX+=0.1*sin((rot+90)*0.017);
-		transZ+=0.1*cos((rot+90)*0.017);
+		player.StrafeRight();
 	}
 	if(keys['w']) {
-		transX-=0.1*sin(rot*0.017);
-		transZ-=0.1*cos(rot*0.017);
+		player.MoveUp();
 	}
 	if(keys['s']) {
-		transX+=0.1*sin(rot*0.017);
-		transZ+=0.1*cos(rot*0.017);
+		player.MoveDown();
 	}
 	if(keys['a']){ 
-		rot+=0.5;
-		if(rot>360)rot=0;
+		player.AddRot(0.5);
 	}
 	if(keys['d']){
-		rot-=0.5;
-		if(rot<0)rot=360;
+		player.AddRot(-0.5);
 	}
-	rot-=(x2-x1);
+	rot+=(x2-x1);
 	x1 = x2;
+	rotV-=(y2-y1);
+	y1 = y2;
+	if(rotV>180) rotV = 180;
+	else if(rotV<-180) rotV = -180;
 	return res;
 }
 
@@ -133,11 +131,15 @@ void cGame::Render()
 	glLoadIdentity();
 	switch(camera) {
 	case 1:
+		glRotatef((-rotV),1,0,0);
 		glRotatef((-rot),0,1,0);
-		glTranslatef(-transX,0,-transZ);
+		
+		float x,y,z;
+		player.GetPosition(&x,&y,&z);
+		glTranslatef(-x,0,-z);
 		break;
 	case 2:
-		gluLookAt(50,50,0,0,0,0,0,1,0);
+		gluLookAt(64,32,-16,0,0,-16,0,1,0);
 		break;
 	default:
 		glTranslatef(0.0f,-2.0f,-40.0f);
@@ -147,12 +149,7 @@ void cGame::Render()
 
 	//void gluSphere(GLUquadric *qobj,GLdouble radius,GLint slices,GLint stacks);
 	if(camera != 1) {
-		glPushMatrix();
-			glTranslatef(transX,0,transZ);
-			GLUquadricObj *q = gluNewQuadric();
-			gluSphere(q, 1,16,16);
-			gluDeleteQuadric(q);
-		glPopMatrix();
+		player.Draw();
 	}
 
 	Scene.Draw(&Data);

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "cTexture.h"
-#include "Globals.h"
+#include "../inc/cTexture.h"
+#include "../inc/Globals.h"
 
 #define FRAME_DELAY		8
 #define STEP_LENGTH		2
@@ -38,8 +38,8 @@ public:
 	cBicho(int x,int y,int w,int h);
 	~cBicho(void);
 
-	void SetPosition(int x,int y);
-	void GetPosition(int *x,int *y);
+	void SetPosition(float x, float y, float z);
+	void GetPosition(float *x,float *y,float *z);
 	void SetTile(int tx,int ty);
 	void GetTile(int *tx,int *ty);
 	void SetWidthHeight(int w,int h);
@@ -55,10 +55,10 @@ public:
 	void GetArea(cRect *rc);
 	void DrawRect(int tex_id,float xo,float yo,float xf,float yf);
 
-	void MoveUp(int *map);
-	void MoveDown(int *map);
-	void MoveRight(int *map);
-	void MoveLeft(int *map);
+	void MoveUp();
+	void MoveDown();
+	void StrafeRight();
+	void StrafeLeft();
 	void Shoot(int *map);
 	void Jump(int *map);
 	void Stop();
@@ -70,11 +70,13 @@ public:
 	int  GetFrame();
 
 	void SetSpeed(int i);
+	void AddRot(float x);
 	
 private:
-	int x,y;
+	float x,y,z;
 	int w,h;
 	int state;
+	float rot;
 
 	bool jumping;
 	int jump_alfa;

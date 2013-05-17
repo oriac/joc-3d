@@ -4,9 +4,9 @@
 cPlayer::cPlayer() {hp = 0;alive=false;points=0; explote = false;}
 cPlayer::~cPlayer(){}
 
-void cPlayer::Draw(int tex_id)
+void cPlayer::Draw()
 {	
-	float xo,yo,xf,yf;
+	/*float xo,yo,xf,yf;
 
 	switch(GetState())
 	{
@@ -59,8 +59,17 @@ void cPlayer::Draw(int tex_id)
 	}
 	xf = xo + 0.25f;
 	yf = yo - 0.25f;
-
-	DrawRect(tex_id,xo,yo,xf,yf);
+	*/
+	//DrawRect(tex_id,xo,yo,xf,yf);
+	float x,y,z;
+	GetPosition(&x,&y,&z);
+	glPushMatrix();
+			glTranslatef(x,0,z);
+			GLUquadricObj *q = gluNewQuadric();
+			//glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_FLOOR));
+			gluSphere(q, 1,16,16);
+			gluDeleteQuadric(q);
+		glPopMatrix();
 }
 
 int cPlayer::GetHp() {

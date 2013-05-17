@@ -2,6 +2,7 @@
 
 #include "../inc/cScene.h"
 #include "../inc/cData.h"
+#include "../inc/cPlayer.h"
 
 #define SCREEN_WIDTH	800
 #define SCREEN_HEIGHT	600
@@ -29,9 +30,10 @@ private:
 	unsigned char keys[256];
 	cScene Scene;
 	cData Data;
+	cPlayer player;
 	int camera;
 	float transX,transZ;
-	float rot;
+	float rot,rotV;
 	bool mouseState;
 	int x1,x2,y1,y2;
 };

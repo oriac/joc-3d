@@ -6,7 +6,7 @@ cBicho::cBicho(void)
 {
 	seq=0;
 	delay=0;
-
+	x = y = z = 0;
 	jumping = false;
 }
 cBicho::~cBicho(void){}
@@ -18,15 +18,17 @@ cBicho::cBicho(int posx,int posy,int width,int height)
 	w = width;
 	h = height;
 }
-void cBicho::SetPosition(int posx,int posy)
+void cBicho::SetPosition(float posx,float posy, float posz)
 {
 	x = posx;
 	y = posy;
+	z = posz;
 }
-void cBicho::GetPosition(int *posx,int *posy)
+void cBicho::GetPosition(float *posx,float *posy,float *posz)
 {
 	*posx = x;
 	*posy = y;
+	*posz = z;
 }
 void cBicho::SetTile(int tx,int ty)
 {
@@ -59,7 +61,7 @@ bool cBicho::Collides2(cRect *rc)
 }
 bool cBicho::CollidesWall(int* map, bool right) 
 {
-	int xaux;
+	/*int xaux;
 	
 	//Whats next tile?
 	if( (x % TILE_SIZE) == 0)
@@ -90,11 +92,11 @@ bool cBicho::CollidesWall(int* map, bool right)
 			x = xaux;
 		}
 	}
-	//Advance, no problem
+	//Advance, no problem*/
 	return false;
 }
 bool cBicho::CollidesTopBot(int *map, bool top) {
-	int yaux;
+	/*int yaux;
 	
 	//Whats next tile?
 	if( (y % TILE_SIZE) == 0)
@@ -125,13 +127,13 @@ bool cBicho::CollidesTopBot(int *map, bool top) {
 			y = yaux;
 		}
 	}
-	//Advance, no problem
+	//Advance, no problem*/
 	return false;
 }
 
 bool cBicho::CollidesMapWall(int *map,bool right)
 {
-	int tile_x,tile_y;
+	/*int tile_x,tile_y;
 	int j;
 	int width_tiles,height_tiles;
 
@@ -147,14 +149,14 @@ bool cBicho::CollidesMapWall(int *map,bool right)
 	{
 		if(map[ tile_x + ((tile_y+j)*SCENE_WIDTH) ] != 0)	return true;
 	}
-	
+	*/
 	return false;
 }
 
 
 
 bool cBicho::CollidesMapTop(int *map) {
-	int tile_x,tile_y;
+	/*int tile_x,tile_y;
 	int j;
 	int width_tiles,height_tiles;
 
@@ -169,13 +171,13 @@ bool cBicho::CollidesMapTop(int *map) {
 	{
 		if(map[ tile_x+j + ((tile_y)*SCENE_WIDTH) ] != 0)	return true;
 	}
-	
+	*/
 	return false;
 }
 
 
 bool cBicho::CollidesMapFloor(int *map) {
-	int tile_x,tile_y;
+	/*int tile_x,tile_y;
 	int j;
 	int width_tiles,height_tiles;
 
@@ -189,7 +191,7 @@ bool cBicho::CollidesMapFloor(int *map) {
 	{
 		if(map[ tile_x+j + ((tile_y)*SCENE_WIDTH) ] != 0)	return true;
 	}
-	
+	*/
 	return false;
 }
 
@@ -202,7 +204,7 @@ void cBicho::GetArea(cRect *rc)
 }
 void cBicho::DrawRect(int tex_id,float xo,float yo,float xf,float yf)
 {
-	int screen_x,screen_y;
+	/*int screen_x,screen_y;
 
 	screen_x = x + SCENE_Xo;
 	screen_y = y + SCENE_Yo + (BLOCK_SIZE - TILE_SIZE);
@@ -217,11 +219,11 @@ void cBicho::DrawRect(int tex_id,float xo,float yo,float xf,float yf)
 		glTexCoord2f(xo,yf);	glVertex2i(screen_x  ,screen_y+h);
 	glEnd();
 
-	glDisable(GL_TEXTURE_2D);
+	glDisable(GL_TEXTURE_2D);*/
 }
-void cBicho::MoveUp(int *map)
+void cBicho::MoveUp()
 {
-	int yaux;
+	/*int yaux;
 
 	//Whats next tile?
 	if( (y % TILE_SIZE) == 0)
@@ -246,12 +248,14 @@ void cBicho::MoveUp(int *map)
 			seq = 0;
 			delay = 0;
 		}
-	}
+	}*/
+		x-=0.1*sin(rot*0.017);
+		z-=0.1*cos(rot*0.017);
 }
 
-void cBicho::MoveDown(int *map)
+void cBicho::MoveDown()
 {
-	int yaux;
+	/*int yaux;
 	
 	//Whats next tile?
 	if( (y % TILE_SIZE) == 0)
@@ -275,13 +279,15 @@ void cBicho::MoveDown(int *map)
 			seq = 0;
 			delay = 0;
 		}
-	}
+	}*/
+		x+=0.1*sin(rot*0.017);
+		z+=0.1*cos(rot*0.017);
 }
 
 
-void cBicho::MoveLeft(int *map)
+void cBicho::StrafeLeft()
 {
-	int xaux;
+	/*int xaux;
 	
 	//Whats next tile?
 	if( (x % TILE_SIZE) == 0)
@@ -305,12 +311,14 @@ void cBicho::MoveLeft(int *map)
 			seq = 0;
 			delay = 0;
 		}
-	}
+	}*/
+	x-=0.1*sin((rot+90)*0.017);
+	z-=0.1*cos((rot+90)*0.017);
 }
 
-void cBicho::MoveRight(int *map)
+void cBicho::StrafeRight()
 {
-	int xaux;
+	/*int xaux;
 
 	//Whats next tile?
 	if( (x % TILE_SIZE) == 0)
@@ -335,7 +343,9 @@ void cBicho::MoveRight(int *map)
 			seq = 0;
 			delay = 0;
 		}
-	}
+	}*/
+	x+=0.1*sin((rot+90)*0.017);
+	z+=0.1*cos((rot+90)*0.017);
 }
 void cBicho::Shoot(int *map)
 {
@@ -402,4 +412,9 @@ void cBicho::SetState(int s)
 }
 void cBicho::SetSpeed(int i) {
 	speed = i;
+}
+
+void cBicho::AddRot(float x) {
+	rot+=x;
+	if(rot>360)rot=0;
 }

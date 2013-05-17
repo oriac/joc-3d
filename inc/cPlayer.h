@@ -1,6 +1,6 @@
 #pragma once
 
-#include "cBicho.h"
+#include "../inc/cBicho.h"
 #include <sstream>
 #include <string>
 
@@ -15,7 +15,7 @@ public:
 	cPlayer();
 	~cPlayer();
 
-	void Draw(int tex_id);
+	void Draw();
 	int GetHp();
 	void WinHp();
 	void LoseHp();
