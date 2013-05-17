@@ -3,6 +3,7 @@
 #include "../inc/cScene.h"
 #include "../inc/cData.h"
 #include "../inc/cPlayer.h"
+#include "../inc/cHud.h"
 
 #define SCREEN_WIDTH	800
 #define SCREEN_HEIGHT	600
@@ -31,6 +32,7 @@ private:
 	cScene Scene;
 	cData Data;
 	cPlayer player;
+	cHud Hud;
 	int camera;
 	float transX,transZ;
 	float rot,rotV;

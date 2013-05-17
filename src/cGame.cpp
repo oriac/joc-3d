@@ -31,11 +31,13 @@ bool cGame::Init()
 	if(!res) return false;
 	res = Data.LoadImage(IMG_ROOF,"resources/im/roof.png",GL_RGBA);
 	if(!res) return false;
+	res = Data.LoadImage(IMG_CROSSHAIR,"resources/im/crosshair.png",GL_RGBA);
+	if(!res) return false;
 	Scene.Init();
 	res = Scene.LoadLevel(1);
 	if(!res) return false;
 
-	player.SetPosition(0,2,0);
+	player.SetPosition(8,6,-8);
 	return res;
 }
 
@@ -106,7 +108,7 @@ bool cGame::Process()
 	else if(keys[57]) {
 		camera = 0;
 	}
-	if(camera==1)player.SetRot(rot);
+	if(camera == 1) player.SetRot(rot);
 	if(keys['q']) {
 		player.StrafeLeft();
 	}
@@ -120,10 +122,10 @@ bool cGame::Process()
 		player.MoveDown();
 	}
 	if(keys['a']){ 
-		if(camera!=1)player.AddRot(0.5);
+		if(camera != 1) player.AddRot(0.5);
 	}
 	if(keys['d']){
-		if(camera!=1)player.AddRot(-0.5);
+		if(camera != 1) player.AddRot(-0.5);
 	}
 	return res;
 	//Game Logic
@@ -135,6 +137,7 @@ void cGame::Render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
+	Hud.DrawCrossHair(Data.GetID(IMG_CROSSHAIR),SCREEN_WIDTH/2,SCREEN_HEIGHT/2);
 	switch(camera) {
 	case 1:
 		glRotatef((-rotV),1,0,0);
@@ -152,7 +155,7 @@ void cGame::Render()
 		glRotatef(20,1.0f,0.0f,0.0f);
 		break;
 	}
-
+	
 	//void gluSphere(GLUquadric *qobj,GLdouble radius,GLint slices,GLint stacks);
 	if(camera != 1) {
 		player.Draw();
@@ -160,5 +163,6 @@ void cGame::Render()
 
 	Scene.Draw(&Data);
 
+	
 	glutSwapBuffers();
 }

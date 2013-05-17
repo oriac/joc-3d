@@ -4,7 +4,7 @@
 #include "../inc/Globals.h"
 
 //Image array size
-#define NUM_IMG		5
+#define NUM_IMG		6
 
 //Image identifiers
 #define IMG_WALL1	0
@@ -12,6 +12,7 @@
 #define IMG_WALL3	2
 #define IMG_FLOOR	3
 #define IMG_ROOF	4
+#define IMG_CROSSHAIR	5
 
 class cData
 {
