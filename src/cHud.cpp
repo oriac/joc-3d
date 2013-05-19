@@ -28,14 +28,16 @@ void cHud::DrawHearts(int tex_id,int life, int d)
 
 void cHud::DrawCrossHair(int tex_id, int x, int y) {
 	glPushMatrix();
-	//glTranslatef(x-16, y-16, 0.);
+	glLoadIdentity();
+	//glTranslatef(x-16, y-16, 0.5);
+	glTranslatef(0, 0, 0.5);
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D,tex_id);
 	glBegin(GL_QUADS);
 		glTexCoord2f(0,1); glVertex2i(0,0);
-		glTexCoord2f(1,1); glVertex2i(1,0);
-		glTexCoord2f(1,0); glVertex2i(1,1);
-		glTexCoord2f(0,0); glVertex2i(0,1);
+		glTexCoord2f(1,1); glVertex2i(2,0);
+		glTexCoord2f(1,0); glVertex2i(2,2);
+		glTexCoord2f(0,0); glVertex2i(0,2);
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 	glPopMatrix();

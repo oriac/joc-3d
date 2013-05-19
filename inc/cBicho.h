@@ -42,8 +42,8 @@ public:
 	void GetPosition(float *x,float *y,float *z);
 	void SetTile(int tx,int ty);
 	void GetTile(int *tx,int *ty);
-	void SetWidthHeight(int w,int h);
-	void GetWidthHeight(int *w,int *h);
+	void SetVol(float width,float height,float depth);
+	void GetVol(float *width,float *height,float *depth);
 
 	bool Collides(cRect *rc);
 	bool Collides2(cRect *rc);
@@ -72,6 +72,8 @@ public:
 	void SetSpeed(int i);
 	void AddRot(float x);
 	void SetRot(float x);
+
+	void DrawBB();
 	
 private:
 	float x,y,z;

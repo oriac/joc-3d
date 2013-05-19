@@ -1,6 +1,10 @@
 #pragma once
 
 #include "../inc/cData.h"
+#include "../inc/cBox.h"
+#include <vector>
+
+using namespace std;
 
 #define SCENE_WIDTH		8	//#tiles
 #define SCENE_DEPTH		8
@@ -17,7 +21,7 @@ public:
 	virtual ~cScene(void);
 
 	void Init();
-	bool LoadLevel(int level);
+	bool LoadLevel(int level, vector<cBox> &caixes);
 	void Draw(cData *Data);
 	int *GetMap();
 

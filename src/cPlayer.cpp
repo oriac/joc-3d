@@ -111,3 +111,18 @@ void cPlayer::Dead() {
 	explote = true;
 	alive = false;
 }
+
+void cPlayer::Logic(vector<cBox> &caixes) {
+	cRect rect;
+	//GetArea(cRect *rc)
+	//GetArea(&rect);
+	caixes[caixes.size()-1].GetArea(&rect);
+	//if(!caixes[caixes.size()-1].Collides(&rect)) {
+	if(!Collides(&rect)) {
+		float x,y,z;
+		GetPosition(&x,&y,&z);
+		y -= 0.05;
+		SetPosition(x,y,z);
+	}
+}
+

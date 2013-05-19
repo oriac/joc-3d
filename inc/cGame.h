@@ -4,9 +4,13 @@
 #include "../inc/cData.h"
 #include "../inc/cPlayer.h"
 #include "../inc/cHud.h"
+#include "../inc/cBox.h"
+#include <vector>
 
 #define SCREEN_WIDTH	800
 #define SCREEN_HEIGHT	600
+
+using namespace std;
 
 class cGame
 {
@@ -33,6 +37,7 @@ private:
 	cData Data;
 	cPlayer player;
 	cHud Hud;
+	vector<cBox> caixes;
 	int camera;
 	float transX,transZ;
 	float rot,rotV;

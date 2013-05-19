@@ -1,8 +1,10 @@
 #pragma once
 
 #include "../inc/cBicho.h"
+#include "../inc/cBox.h"
 #include <sstream>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -25,6 +27,8 @@ public:
 	void Respawn();
 	bool IsExplote();
 	string GetPoints();
+	void Logic(vector<cBox> &caixes);
+
 private:
 	bool explote;
 	int hp;

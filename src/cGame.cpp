@@ -11,6 +11,7 @@ bool cGame::Init()
 
 	//Graphics initialization
 	glClearColor(0.0f,0.0f,0.0f,0.0f);
+	glEnable(GL_CULL_FACE);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(45.0,(float)SCREEN_WIDTH/(float)SCREEN_HEIGHT,0.1,100);
@@ -34,10 +35,11 @@ bool cGame::Init()
 	res = Data.LoadImage(IMG_CROSSHAIR,"resources/im/crosshair.png",GL_RGBA);
 	if(!res) return false;
 	Scene.Init();
-	res = Scene.LoadLevel(1);
+	res = Scene.LoadLevel(1,caixes);
 	if(!res) return false;
 
 	player.SetPosition(8,6,-8);
+	player.SetVol(2,2,2);
 	return res;
 }
 
@@ -127,25 +129,44 @@ bool cGame::Process()
 	if(keys['d']){
 		if(camera != 1) player.AddRot(-0.5);
 	}
-	return res;
+	if(keys['l']) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+	else if(keys['k']) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
+	player.Logic(caixes);
+	
 	//Game Logic
 	//...
+
+
+
+
+
+
+
+	return res;
 }
 
 //Output
 void cGame::Render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	glLoadIdentity();
-	Hud.DrawCrossHair(Data.GetID(IMG_CROSSHAIR),SCREEN_WIDTH/2,SCREEN_HEIGHT/2);
+	
 	switch(camera) {
 	case 1:
+		
 		glRotatef((-rotV),1,0,0);
 		glRotatef((-rot),0,1,0);
 		
 		float x,y,z;
 		player.GetPosition(&x,&y,&z);
+		Hud.DrawCrossHair(Data.GetID(IMG_CROSSHAIR),SCREEN_WIDTH/2,SCREEN_HEIGHT/2);
 		glTranslatef(-x,-y,-z);
+		
 		break;
 	case 2:
 		gluLookAt(64,32,-16,0,0,-16,0,1,0);
@@ -155,14 +176,22 @@ void cGame::Render()
 		glRotatef(20,1.0f,0.0f,0.0f);
 		break;
 	}
-	
+	glBegin(GL_LINES);
+	glColor3f(1,0,0); glVertex3f(0,0,0); glVertex3f(20,0,0); // X
+	glColor3f(0,1,0); glVertex3f(0,0,0); glVertex3f(0,20,0); // Y
+	glColor3f(0,0,1); glVertex3f(0,0,0); glVertex3f(0,0,20); // Z
+	glEnd();
+	glColor3f(1,1,1);
 	//void gluSphere(GLUquadric *qobj,GLdouble radius,GLint slices,GLint stacks);
 	if(camera != 1) {
 		player.Draw();
 	}
-
+	
 	Scene.Draw(&Data);
-
+	for(int i=0;i<caixes.size();++i) {
+		caixes[i].DrawBB();
+	}
+	player.DrawBB();
 	
 	glutSwapBuffers();
 }

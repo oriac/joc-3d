@@ -42,20 +42,25 @@ void cBicho::GetTile(int *tx,int *ty)
 	*tx = x / TILE_SIZE;
 	*ty = y / TILE_SIZE;
 }
-void cBicho::SetWidthHeight(int width,int height)
+void cBicho::SetVol(float width,float height,float depth)
 {
 	w = width;
 	h = height;
+	d = depth;
 }
-void cBicho::GetWidthHeight(int *width,int *height)
+void cBicho::GetVol(float *width,float *height,float *depth)
 {
 	*width = w;
 	*height = h;
+	*depth = d;
 }
 bool cBicho::Collides(cRect *rc)
 {
 	//return ((x>rc->left) && (x+w<rc->right) && (y>rc->bottom) && (y+h<rc->top));
-	return false;
+	//return ((x<rc->xmax) && (x+w>rc->xmin) && (y<rc->ymax) && (y+h>rc->ymin) && (z<rc->zmax) && (z+d>rc->zmin));
+	return ((x<rc->xmax) && (rc->xmin<x+w) && (y<rc->ymax) && (rc->ymin<y+h) && (z<rc->zmax) && (rc->zmin<z+d));
+		//&& (y>rc->ymin) && (y+h<rc->ymax) && (z>rc->zmin) && (z+d<rc->zmax));
+	//return false;
 }
 
 bool cBicho::Collides2(cRect *rc)
@@ -431,4 +436,30 @@ void cBicho::AddRot(float x) {
 
 void cBicho::SetRot(float x) {
 	rot = x;
+}
+
+void cBicho::DrawBB() {
+	float x,y,z,w,h,d;
+	GetPosition(&x,&y,&z);
+	GetVol(&w,&h,&d);
+	glBegin(GL_LINES);
+	glColor3f(1,1,0); glVertex3f(x,y,z); glVertex3f(x+w,y,z); // X
+	glColor3f(1,1,0); glVertex3f(x,y,z); glVertex3f(x,y+h,z); // Y
+	glColor3f(1,1,0); glVertex3f(x,y,z); glVertex3f(x,y,z+d); // Z
+	glColor3f(1,1,0); glVertex3f(x+w,y+h,z+d); glVertex3f(x,y+h,z+d); // X
+	glColor3f(1,1,0); glVertex3f(x+w,y+h,z+d); glVertex3f(x+w,y,z+d); // Y
+	glColor3f(1,1,0); glVertex3f(x+w,y+h,z+d); glVertex3f(x+w,y+h,z); // Z
+
+	glColor3f(1,1,0); glVertex3f(x+w,y,z+d); glVertex3f(x,y,z+d); // X
+	glColor3f(1,1,0); glVertex3f(x+w,y,z+d); glVertex3f(x+w,y,z); // Y
+	//glColor3f(1,1,0); glVertex3f(x+w,y,z+d); glVertex3f(x+w,y+h,z); // Z
+
+	glColor3f(1,1,0); glVertex3f(x,y+h,z); glVertex3f(x,y+h,z+d); // X
+	glColor3f(1,1,0); glVertex3f(x,y+h,z); glVertex3f(x+w,y+h,z); // Y
+	//glColor3f(1,1,0); glVertex3f(x+w,y+h,z+d); glVertex3f(x+w,y+h,z); // Z
+
+	glColor3f(1,1,0); glVertex3f(x,y,z+d); glVertex3f(x,y+h,z+d); // X
+	glColor3f(1,1,0); glVertex3f(x+w,y,z); glVertex3f(x+w,y+h,z); // Y
+	glEnd();
+
 }
