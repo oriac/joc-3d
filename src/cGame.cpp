@@ -195,7 +195,7 @@ void cGame::Render()
 		
 		//float x,y,z;
 		player.GetPosition(&x,&y,&z);
-		glTranslatef(-x,-y,-z);
+		glTranslatef(-x-1,-y-1,-z-1);
 		break;
 	default:
 		glTranslatef(0.0f,-2.0f,-40.0f);

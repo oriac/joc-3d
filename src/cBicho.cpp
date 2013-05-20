@@ -314,14 +314,14 @@ void cBicho::MoveUp(vector<cBicho> caixes, int *map)
 								}
 							}
 						}
-						if(Collides(&rect)) {
+						/*if(Collides(&rect)) {
 							x = xaux;
 							z-=0.1*cos(rot*PI/180);
 							if(Collides(&rect)) {
 								z = zaux;
 								//b = true;
 							}
-						}
+						}*/
 					}
 				}
 			}
@@ -505,6 +505,10 @@ void cBicho::AddRot(float x) {
 
 void cBicho::SetRot(float x) {
 	rot = x;
+}
+
+float cBicho::GetRot() {
+	return rot;
 }
 
 void cBicho::DrawBB() {

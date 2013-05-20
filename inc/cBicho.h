@@ -77,6 +77,7 @@ public:
 	void SetSpeed(int i);
 	void AddRot(float x);
 	void SetRot(float x);
+	float GetRot();
 
 	void DrawBB();
 	

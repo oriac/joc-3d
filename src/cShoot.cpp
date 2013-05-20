@@ -202,3 +202,80 @@ void cShoot::setRot(float rotv, float rot){
 	this->rot = rot;
 	rotV = rotv;
 }
+
+void cShoot::MoveUp(vector<cBicho> caixes, int *map)
+{
+	/*int yaux;
+
+	//Whats next tile?
+	if( (y % TILE_SIZE) == 0)
+	{
+		yaux = y;
+		y += STEP_LENGTH*speed;
+
+		if(CollidesMapTop(map))
+		{
+			y = yaux;
+			state = STATE_LOOKUP;
+		}
+	}
+	//Advance, no problem
+	else
+	{
+		y += STEP_LENGTH*speed;
+
+		if(state != STATE_WALKUP && state != STATE_DUPLEFT && state != STATE_DUPRIGHT)
+		{
+			state = STATE_WALKUP;
+			seq = 0;
+			delay = 0;
+		}
+	}*/
+		float xaux, zaux;
+		float x,y,z;
+		float rot;
+		rot = GetRot();
+		GetPosition(&x,&y,&z);
+		xaux=x;
+		zaux=z;
+		int tx,ty;
+		GetTile(&tx,&ty);
+		x-=0.1*sin(rot*PI/180);
+		z-=0.1*cos(rot*PI/180);
+		cRect rect;
+		bool b=false;
+		for(int i=-1;i<=1 && !b;++i) {
+			for(int j=-1;j<=1 && !b;++j) {
+				//if(!(i==0 && j==0)) {
+				if(map[(ty+i)*SCENE_DEPTH+ (tx+j)]!=0) {
+					caixes[(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
+					if(Collides(&rect)) {
+						z = zaux;
+						x = xaux;
+						rot = 2*rot + 180;
+						rot = fmod(rot,360);
+						b=true;
+						/*if(Collides(&rect)) {
+							x = xaux;
+							z-=0.1*cos(rot*PI/180);
+							if(Collides(&rect)) {
+								z = zaux;
+								//b = true;
+							}
+						}*/
+					}
+				}
+			}
+		}
+		SetPosition(x,y,z);
+		SetRot(rot);
+		/*for(unsigned int i=1;i<=4;++i) {
+			caixes[tx*SCENE_WIDTH+ty+i].GetArea(&rect);
+			if(Collides(&rect)) {
+				x = xaux;
+				z = zaux;
+			}
+		}*/
+
+
+}

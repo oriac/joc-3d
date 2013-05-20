@@ -74,7 +74,7 @@ bool cScene::LoadLevel(int level, vector<cBicho> &caixes)
 
 	float w  = (float)SCENE_WIDTH*TILE_SIZE;
 	float d  = (float)SCENE_DEPTH*TILE_SIZE;
-	cBicho caja(0.0,0,-32.0,w,1,d);
+	cBicho caja(0.0,0,-40.0,w,1,d);
 	caixes.push_back(caja);
 
 

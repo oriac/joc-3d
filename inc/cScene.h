@@ -7,8 +7,8 @@
 
 using namespace std;
 
-#define SCENE_WIDTH		8	//#tiles
-#define SCENE_DEPTH		8
+#define SCENE_WIDTH		10	//#tiles
+#define SCENE_DEPTH		10
 
 #define TILE_SIZE		4	//space units
 

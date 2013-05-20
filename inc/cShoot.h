@@ -21,6 +21,7 @@ public:
 	void CanShoot(int *map,cBicho &Player);
 	void MoveShoot();
 	void setRot(float rotv, float rot);
+	void MoveUp(vector<cBicho> caixes, int *map);
 private:
 	bool active;
 	float rotV;
