@@ -8,7 +8,7 @@ void cScene::Init()
 {
 	MakeCubeDL((float)TILE_SIZE,(float)TILE_SIZE,(float)TILE_SIZE,1.0f,1.0f,1.0f);
 }
-bool cScene::LoadLevel(int level, vector<cBox> &caixes)
+bool cScene::LoadLevel(int level, vector<cBicho> &caixes)
 {
 	FILE *fd;
 	char file[16],tile;
@@ -33,7 +33,7 @@ bool cScene::LoadLevel(int level, vector<cBox> &caixes)
 			else
 			{
 				//Tiles = 1,2,3,...
-				cBox caja((float)(i*SCENE_DEPTH),0.0,(float)(j*SCENE_WIDTH),4.0,4.0,4.0);
+				cBicho caja((float)(j*SCENE_WIDTH/2),0.0,(float)((i+1)*-SCENE_DEPTH/2),4.0,4.0,4.0);
 				caixes.push_back(caja);
 				map[(i*SCENE_WIDTH)+j] = tile-48;
 			}
@@ -42,7 +42,7 @@ bool cScene::LoadLevel(int level, vector<cBox> &caixes)
 	}
 	float w  = (float)SCENE_WIDTH*TILE_SIZE;
 	float d  = (float)SCENE_DEPTH*TILE_SIZE;
-	cBox caja(0.0,0,-32.0,w,1,d);
+	cBicho caja(0.0,0,-32.0,w,1,d);
 	caixes.push_back(caja);
 
 	fclose(fd);

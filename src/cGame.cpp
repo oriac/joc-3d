@@ -87,7 +87,7 @@ bool cGame::Process()
 {
 	bool res=true;
 		if(shoot.IsActive()) {
-		shoot.MoveUp();
+		shoot.MoveUp(caixes);
 	}
 
 	
@@ -123,7 +123,7 @@ bool cGame::Process()
 		player.StrafeRight();
 	}
 	if(keys['w']) {
-		player.MoveUp();
+		player.MoveUp(caixes);
 	}
 	if(keys['s']) {
 		player.MoveDown();
@@ -218,7 +218,7 @@ void cGame::Render()
 		shoot.Draw();
 	}
 	Scene.Draw(&Data);
-	for(int i=0;i<caixes.size();++i) {
+	for(unsigned int i=0;i<caixes.size();++i) {
 		caixes[i].DrawBB();
 	}
 	player.DrawBB();

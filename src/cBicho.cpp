@@ -236,7 +236,7 @@ void cBicho::DrawRect(int tex_id,float xo,float yo,float xf,float yf)
 
 	glDisable(GL_TEXTURE_2D);*/
 }
-void cBicho::MoveUp()
+void cBicho::MoveUp(vector<cBicho> caixes)
 {
 	/*int yaux;
 
@@ -264,8 +264,30 @@ void cBicho::MoveUp()
 			delay = 0;
 		}
 	}*/
+		float xaux, zaux;
+		xaux=x;
+		zaux=z;
 		x-=0.1*sin(rot*PI/180);
 		z-=0.1*cos(rot*PI/180);
+		cRect rect;
+		bool b=false;
+		for(unsigned int i=0;i<caixes.size()-1&& !b;++i) {
+			caixes[i].GetArea(&rect);
+			if(Collides(&rect)) {
+				//x = xaux;
+				z = zaux;
+				//b = true;
+				if(Collides(&rect)) {
+					x = xaux;
+					z-=0.1*cos(rot*PI/180);
+					if(Collides(&rect)) {
+						z = zaux;
+						b = true;
+					}
+				}
+			}
+		}
+
 }
 
 void cBicho::MoveDown()

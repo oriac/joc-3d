@@ -1,7 +1,11 @@
 #pragma once
 
 #include "../inc/cTexture.h"
+//#include "../inc/cBox.h"
 #include "../inc/Globals.h"
+#include <vector>
+
+using namespace std;
 
 #define FRAME_DELAY		8
 #define STEP_LENGTH		2
@@ -55,7 +59,7 @@ public:
 	void GetArea(cRect *rc);
 	void DrawRect(int tex_id,float xo,float yo,float xf,float yf);
 
-	void MoveUp();
+	void MoveUp(vector<cBicho> caixes);
 	void MoveDown();
 	void StrafeRight();
 	void StrafeLeft();

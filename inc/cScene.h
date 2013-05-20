@@ -1,7 +1,8 @@
 #pragma once
 
 #include "../inc/cData.h"
-#include "../inc/cBox.h"
+#include "../inc/cBicho.h"
+//#include "../inc/cBox.h"
 #include <vector>
 
 using namespace std;
@@ -21,7 +22,7 @@ public:
 	virtual ~cScene(void);
 
 	void Init();
-	bool LoadLevel(int level, vector<cBox> &caixes);
+	bool LoadLevel(int level, vector<cBicho> &caixes);
 	void Draw(cData *Data);
 	int *GetMap();
 

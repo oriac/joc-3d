@@ -4,7 +4,7 @@
 #include "../inc/cData.h"
 #include "../inc/cPlayer.h"
 #include "../inc/cHud.h"
-#include "../inc/cBox.h"
+//#include "../inc/cBox.h"
 #include "../inc/cShoot.h"
 #include <vector>
 
@@ -39,7 +39,7 @@ private:
 	cPlayer player;
 	cShoot shoot;
 	cHud Hud;
-	vector<cBox> caixes;
+	vector<cBicho> caixes;
 	int camera;
 	float transX,transZ;
 	float rot,rotV;

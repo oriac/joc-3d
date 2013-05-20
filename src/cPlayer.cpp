@@ -64,7 +64,7 @@ void cPlayer::Draw()
 	float x,y,z;
 	GetPosition(&x,&y,&z);
 		glPushMatrix();
-			glTranslatef(x,y,z);
+			glTranslatef(x+1,y,z+1);
 			GLUquadricObj *q = gluNewQuadric();
 			//glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_FLOOR));
 			gluSphere(q, 1,16,16);
@@ -112,7 +112,7 @@ void cPlayer::Dead() {
 	alive = false;
 }
 
-void cPlayer::Logic(vector<cBox> &caixes) {
+void cPlayer::Logic(vector<cBicho> &caixes) {
 	cRect rect;
 	//GetArea(cRect *rc)
 	//GetArea(&rect);
