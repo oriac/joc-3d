@@ -11,12 +11,14 @@ void cScene::Init()
 }
 bool cScene::LoadLevel(int level, vector<cBicho> &caixes)
 {
-	FILE *fd;
-	char file[16],tile;
+	FILE *fd,*fd2;
+	char file[16],file2[16],tile;
 	int i,j;
 
-	if(level<10) sprintf(file,"%s0%d%s",(char *)FILENAME,level,(char *)FILENAME_EXT);
-	else		 sprintf(file,"%s%d%s",(char *)FILENAME,level,(char *)FILENAME_EXT);
+	if(level<10) { 
+		sprintf(file,"%s0%d%s",(char *)FILENAME,level,(char *)FILENAME_EXT);
+		sprintf(file2,"%s%d%s",(char *)FILENAME,level+10,(char *)FILENAME_EXT);
+	}
 
 	fd=fopen(file,"r");
 	if(fd==NULL) return false;
@@ -45,12 +47,36 @@ bool cScene::LoadLevel(int level, vector<cBicho> &caixes)
 		}
 		fscanf(fd,"%c",&tile); //pass enter
 	}
+	fclose(fd);
+	fd2=fopen(file2,"r");
+	if(fd2==NULL) return false;
+	for(i=SCENE_DEPTH-1;i>=0;i--)
+	{
+		for(j=0;j<SCENE_WIDTH;j++)
+		{
+			fscanf(fd2,"%c",&tile);
+			if(tile==' ')
+			{
+				//Tiles must be != 0 !!!
+				map2[(i*SCENE_WIDTH)+j]=0;
+			}
+			else
+			{
+				//Tiles = 1,2,3,...
+				cBicho caja((float)(j*SCENE_WIDTH/2),(float)SCENE_WIDTH/2,(float)((i+1)*-SCENE_DEPTH/2),4.0,4.0,4.0);
+				caixes.push_back(caja);
+				map2[(i*SCENE_WIDTH)+j] = tile-48;
+			}
+		}
+		fscanf(fd2,"%c",&tile); //pass enter
+	}
+	fclose(fd2);
+
 	float w  = (float)SCENE_WIDTH*TILE_SIZE;
 	float d  = (float)SCENE_DEPTH*TILE_SIZE;
 	cBicho caja(0.0,0,-32.0,w,1,d);
 	caixes.push_back(caja);
 
-	fclose(fd);
 
 	return true;
 }
@@ -72,6 +98,25 @@ void cScene::Draw(cData *Data)
 			glPushMatrix();
 				glTranslatef(x,0,-z);
 				switch(map[(i*SCENE_WIDTH)+j])
+				{
+					case 0:	break;
+					case 1: glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_WALL1));
+							glCallList(dl_cube);
+							break;
+					case 2: glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_WALL2));
+							glCallList(dl_cube);
+							break;
+					case 3: glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_WALL3));
+							glCallList(dl_cube);
+							break;
+					case 4: glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_WALL3));
+							glCallList(dl_ramp);
+							break;
+				}
+			glPopMatrix();
+			glPushMatrix();
+				glTranslatef(x,(float)TILE_SIZE,-z);
+				switch(map2[(i*SCENE_WIDTH)+j])
 				{
 					case 0:	break;
 					case 1: glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_WALL1));

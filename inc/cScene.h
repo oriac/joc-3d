@@ -33,4 +33,5 @@ private:
 	int dl_ramp;
 
 	int map[SCENE_WIDTH * SCENE_DEPTH];		//scene
+	int map2[SCENE_WIDTH * SCENE_DEPTH];		//scene
 };
