@@ -36,6 +36,7 @@ bool cGame::Init()
 	//if(!res) return false;
 	Scene.Init();
 	res = Scene.LoadLevel(1,caixes);
+	map = Scene.GetMap();
 	if(!res) return false;
 
 	player.SetPosition(8,6,-8);
@@ -87,7 +88,7 @@ bool cGame::Process()
 {
 	bool res=true;
 		if(shoot.IsActive()) {
-		shoot.MoveUp(caixes);
+		shoot.MoveUp(caixes,map);
 	}
 
 	
@@ -123,7 +124,7 @@ bool cGame::Process()
 		player.StrafeRight();
 	}
 	if(keys['w']) {
-		player.MoveUp(caixes);
+		player.MoveUp(caixes,map);
 	}
 	if(keys['s']) {
 		player.MoveDown();

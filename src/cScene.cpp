@@ -21,7 +21,8 @@ bool cScene::LoadLevel(int level, vector<cBicho> &caixes)
 	fd=fopen(file,"r");
 	if(fd==NULL) return false;
 
-	for(i=SCENE_DEPTH-1;i>=0;i--)
+	//for(i=SCENE_DEPTH-1;i>=0;i--)
+	for(i=0;i<=SCENE_DEPTH-1;i++)
 	{
 		for(j=0;j<SCENE_WIDTH;j++)
 		{
@@ -29,12 +30,15 @@ bool cScene::LoadLevel(int level, vector<cBicho> &caixes)
 			if(tile==' ')
 			{
 				//Tiles must be != 0 !!!
+				cBicho caja;
+				caixes.push_back(caja);
+				//
 				map[(i*SCENE_WIDTH)+j]=0;
 			}
 			else
 			{
 				//Tiles = 1,2,3,...
-				cBicho caja((float)(j*SCENE_WIDTH/2),0.0,(float)((i+1)*-SCENE_DEPTH/2),4.0,4.0,4.0);
+				cBicho caja((float)(j*TILE_SIZE),0.0,(float)((i+1)*-TILE_SIZE),4.0,4.0,4.0);
 				caixes.push_back(caja);
 				map[(i*SCENE_WIDTH)+j] = tile-48;
 			}
@@ -191,4 +195,8 @@ void cScene::MakeRampDL(float w,float h,float d,float tw,float th,float td)
 
 		glEnd();
 	glEndList();
+}
+
+int* cScene::GetMap() {
+	return map;
 }

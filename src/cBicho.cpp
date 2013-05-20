@@ -39,8 +39,8 @@ void cBicho::SetTile(int tx,int ty)
 }
 void cBicho::GetTile(int *tx,int *ty)
 {
-	*tx = x / TILE_SIZE;
-	*ty = y / TILE_SIZE;
+	*tx = floor(x / TILE_SIZE);
+	*ty = abs(floor(z / TILE_SIZE));
 }
 void cBicho::SetVol(float width,float height,float depth)
 {
@@ -236,7 +236,7 @@ void cBicho::DrawRect(int tex_id,float xo,float yo,float xf,float yf)
 
 	glDisable(GL_TEXTURE_2D);*/
 }
-void cBicho::MoveUp(vector<cBicho> caixes)
+void cBicho::MoveUp(vector<cBicho> caixes, int *map)
 {
 	/*int yaux;
 
@@ -267,10 +267,12 @@ void cBicho::MoveUp(vector<cBicho> caixes)
 		float xaux, zaux;
 		xaux=x;
 		zaux=z;
+		int tx,ty;
+		GetTile(&tx,&ty);
 		x-=0.1*sin(rot*PI/180);
 		z-=0.1*cos(rot*PI/180);
 		cRect rect;
-		bool b=false;
+		/*bool b=false;
 		for(unsigned int i=0;i<caixes.size()-1&& !b;++i) {
 			caixes[i].GetArea(&rect);
 			if(Collides(&rect)) {
@@ -286,7 +288,28 @@ void cBicho::MoveUp(vector<cBicho> caixes)
 					}
 				}
 			}
+		}*/
+		
+		for(int i=-1;i<=1;++i) {
+			for(int j=-1;j<=1;++j) {
+				//if(!(i==0 && j==0)) {
+				if(map[(ty+i)*SCENE_DEPTH+ (tx+j)]!=0) {
+					caixes[(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
+					if(Collides(&rect)) {
+						x = xaux;
+						z = zaux;
+					}
+				}
+			}
 		}
+		/*for(unsigned int i=1;i<=4;++i) {
+			caixes[tx*SCENE_WIDTH+ty+i].GetArea(&rect);
+			if(Collides(&rect)) {
+				x = xaux;
+				z = zaux;
+			}
+		}*/
+
 
 }
 
