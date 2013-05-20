@@ -40,7 +40,7 @@ void cBicho::SetTile(int tx,int ty)
 void cBicho::GetTile(int *tx,int *ty)
 {
 	*tx = floor(x / TILE_SIZE);
-	*ty = abs(floor(z / TILE_SIZE));
+	*ty = floor(abs(z / TILE_SIZE));
 }
 void cBicho::SetVol(float width,float height,float depth)
 {
@@ -296,8 +296,32 @@ void cBicho::MoveUp(vector<cBicho> caixes, int *map)
 				if(map[(ty+i)*SCENE_DEPTH+ (tx+j)]!=0) {
 					caixes[(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
 					if(Collides(&rect)) {
-						x = xaux;
 						z = zaux;
+						for(int i=-1;i<=1;++i) {
+							for(int j=-1;j<=1;++j) {
+								caixes[(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
+								if(Collides(&rect)) {
+									x = xaux;
+									z-=0.1*cos(rot*PI/180);
+									for(int i=-1;i<=1;++i) {
+										for(int j=-1;j<=1;++j) {
+											caixes[(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
+											if(Collides(&rect)) {
+												z = zaux;
+											}
+										}
+									}
+								}
+							}
+						}
+						if(Collides(&rect)) {
+							x = xaux;
+							z-=0.1*cos(rot*PI/180);
+							if(Collides(&rect)) {
+								z = zaux;
+								//b = true;
+							}
+						}
 					}
 				}
 			}
