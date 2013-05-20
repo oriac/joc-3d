@@ -19,7 +19,11 @@ public:
 	void ShootStep(int shootState,int *map);
 	void ShootCollides(int shootState, int *map);
 	void CanShoot(int *map,cBicho &Player);
+	void MoveShoot();
+	void setRot(float rotv, float rot);
 private:
 	bool active;
+	float rotV;
+	float rot;
 };
 

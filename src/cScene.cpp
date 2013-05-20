@@ -7,6 +7,7 @@ cScene::~cScene(void){}
 void cScene::Init()
 {
 	MakeCubeDL((float)TILE_SIZE,(float)TILE_SIZE,(float)TILE_SIZE,1.0f,1.0f,1.0f);
+	MakeRampDL((float)TILE_SIZE,(float)TILE_SIZE,(float)TILE_SIZE,1.0f,1.0f,1.0f);
 }
 bool cScene::LoadLevel(int level, vector<cBicho> &caixes)
 {
@@ -78,6 +79,9 @@ void cScene::Draw(cData *Data)
 					case 3: glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_WALL3));
 							glCallList(dl_cube);
 							break;
+					case 4: glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_WALL3));
+							glCallList(dl_ramp);
+							break;
 				}
 			glPopMatrix();
 			x += TILE_SIZE;
@@ -145,6 +149,46 @@ void cScene::MakeCubeDL(float w,float h,float d,float tw,float th,float td)
 			glTexCoord2f(0.0f, 0.0f); glVertex3f(0, h,  0);
 			glTexCoord2f(  tw, 0.0f); glVertex3f(w, h,  0);
 			glTexCoord2f(  tw,   td); glVertex3f(w, h, -d);
+		glEnd();
+	glEndList();
+}
+
+void cScene::MakeRampDL(float w,float h,float d,float tw,float th,float td)
+{
+	dl_ramp = glGenLists(2);
+	glNewList(dl_ramp,GL_COMPILE);
+		glBegin(GL_QUADS);
+			// Front Face
+			/*glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0,  0);
+			glTexCoord2f(  tw, 0.0f); glVertex3f(w, 0,  0);
+			glTexCoord2f(  tw,   th); glVertex3f(w, h,  0);
+			glTexCoord2f(0.0f,   th); glVertex3f(0, h,  0);*/
+			// Back Face
+			glTexCoord2f(  tw, 0.0f); glVertex3f(0, 0, -d);
+			glTexCoord2f(  tw,   th); glVertex3f(0, h, -d);
+			glTexCoord2f(0.0f,   th); glVertex3f(w, h, -d);
+			glTexCoord2f(0.0f, 0.0f); glVertex3f(w, 0, -d);
+			// Right face
+			glTexCoord2f(  td, 0.0f); glVertex3f(w, 0, -d);
+			glTexCoord2f(  td,   th); glVertex3f(w, h, -d);
+			glTexCoord2f(0.0f,   th); glVertex3f(w, 0,  0);
+			glTexCoord2f(0.0f, 0.0f); glVertex3f(w, 0,  0);
+			// Left Face
+			glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0, -d);
+			glTexCoord2f(  td, 0.0f); glVertex3f(0, 0,  0);
+			glTexCoord2f(  td,   th); glVertex3f(0, 0,  0);
+			glTexCoord2f(0.0f,   th); glVertex3f(0, h, -d);
+			// Bottom Face
+			/*glTexCoord2f(  tw,   td); glVertex3f(0, 0, -d);
+			glTexCoord2f(0.0f,   td); glVertex3f(w, 0, -d);
+			glTexCoord2f(0.0f, 0.0f); glVertex3f(w, 0,  0);
+			glTexCoord2f(  tw, 0.0f); glVertex3f(0, 0,  0);*/
+			// Top Face
+			glTexCoord2f(0.0f,   td); glVertex3f(0, h, -d);
+			glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0,  0);
+			glTexCoord2f(  tw, 0.0f); glVertex3f(w, 0,  0);
+			glTexCoord2f(  tw,   td); glVertex3f(w, h, -d);
+
 		glEnd();
 	glEndList();
 }

@@ -28,7 +28,9 @@ public:
 
 private:
 	void MakeCubeDL(float w,float h,float d,float tw,float th,float td);
+	void MakeRampDL(float w,float h,float d,float tw,float th,float td);
 	int dl_cube;
+	int dl_ramp;
 
 	int map[SCENE_WIDTH * SCENE_DEPTH];		//scene
 };

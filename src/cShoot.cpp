@@ -157,3 +157,48 @@ void cShoot::CanShoot(int *map, cBicho &Player) {
 	}
 
 }
+
+void cShoot::MoveShoot()
+{
+	/*int yaux;
+
+	//Whats next tile?
+	if( (y % TILE_SIZE) == 0)
+	{
+		yaux = y;
+		y += STEP_LENGTH*speed;
+
+		if(CollidesMapTop(map))
+		{
+			y = yaux;
+			state = STATE_LOOKUP;
+		}
+	}
+	//Advance, no problem
+	else
+	{
+		y += STEP_LENGTH*speed;
+
+		if(state != STATE_WALKUP && state != STATE_DUPLEFT && state != STATE_DUPRIGHT)
+		{
+			state = STATE_WALKUP;
+			seq = 0;
+			delay = 0;
+		}
+	}*/
+		float x,y,z;
+		this->GetPosition(&x,&y,&z);
+		 x-=0.1*sin(rot*PI/180);
+		 z-=0.1*cos(rot*PI/180);
+		// z+=(-sin(PI/180*rot)*cos(PI/180*rotV)*0.1);
+		 //x+=(-sin(PI/180*rot)*sin(PI/180*rotV)*0.1);
+		y+=0.1*sin(rotV*PI/180.0);
+		 this->SetPosition(x,y,z);
+		/*x-=0.1*sin(rot*PI/180);
+		z-=0.1*cos(rot*PI/180);*/
+}
+
+void cShoot::setRot(float rotv, float rot){
+	this->rot = rot;
+	rotV = rotv;
+}
