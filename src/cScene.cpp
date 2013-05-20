@@ -50,7 +50,7 @@ bool cScene::LoadLevel(int level, vector<cBicho> &caixes)
 	fclose(fd);
 	fd2=fopen(file2,"r");
 	if(fd2==NULL) return false;
-	for(i=SCENE_DEPTH-1;i>=0;i--)
+	for(i=0;i<=SCENE_DEPTH-1;i++)
 	{
 		for(j=0;j<SCENE_WIDTH;j++)
 		{
@@ -63,7 +63,7 @@ bool cScene::LoadLevel(int level, vector<cBicho> &caixes)
 			else
 			{
 				//Tiles = 1,2,3,...
-				cBicho caja((float)(j*SCENE_WIDTH/2),(float)SCENE_WIDTH/2,(float)((i+1)*-SCENE_DEPTH/2),4.0,4.0,4.0);
+				cBicho caja((float)(j*TILE_SIZE),(float)TILE_SIZE,(float)((i+1)*-TILE_SIZE),4.0,4.0,4.0);
 				caixes.push_back(caja);
 				map2[(i*SCENE_WIDTH)+j] = tile-48;
 			}
