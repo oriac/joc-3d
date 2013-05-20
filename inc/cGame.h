@@ -5,6 +5,7 @@
 #include "../inc/cPlayer.h"
 #include "../inc/cHud.h"
 #include "../inc/cBox.h"
+#include "../inc/cShoot.h"
 #include <vector>
 
 #define SCREEN_WIDTH	800
@@ -36,6 +37,7 @@ private:
 	cScene Scene;
 	cData Data;
 	cPlayer player;
+	cShoot shoot;
 	cHud Hud;
 	vector<cBox> caixes;
 	int camera;

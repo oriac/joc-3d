@@ -264,8 +264,8 @@ void cBicho::MoveUp()
 			delay = 0;
 		}
 	}*/
-		x-=0.1*sin(rot*0.017);
-		z-=0.1*cos(rot*0.017);
+		x-=0.1*sin(rot*PI/180);
+		z-=0.1*cos(rot*PI/180);
 }
 
 void cBicho::MoveDown()
@@ -295,8 +295,8 @@ void cBicho::MoveDown()
 			delay = 0;
 		}
 	}*/
-		x+=0.1*sin(rot*0.017);
-		z+=0.1*cos(rot*0.017);
+		x+=0.1*sin(rot*PI/180);
+		z+=0.1*cos(rot*PI/180);
 }
 
 

@@ -32,8 +32,8 @@ bool cGame::Init()
 	if(!res) return false;
 	res = Data.LoadImage(IMG_ROOF,"resources/im/roof.png",GL_RGBA);
 	if(!res) return false;
-	res = Data.LoadImage(IMG_CROSSHAIR,"resources/im/crosshair.png",GL_RGBA);
-	if(!res) return false;
+	//res = Data.LoadImage(IMG_CROSSHAIR,"resources/im/crosshair.png",GL_RGBA);
+	//if(!res) return false;
 	Scene.Init();
 	res = Scene.LoadLevel(1,caixes);
 	if(!res) return false;
@@ -86,7 +86,9 @@ void cGame::ReadPosMouse(int x, int y)
 bool cGame::Process()
 {
 	bool res=true;
-
+		if(shoot.IsActive()) {
+		shoot.MoveUp();
+	}
 
 	
 	//Process Input
@@ -110,7 +112,10 @@ bool cGame::Process()
 	else if(keys[57]) {
 		camera = 0;
 	}
-	if(camera == 1) player.SetRot(rot);
+	else if(keys[51]) {
+		camera = 3;
+	}
+	if(camera == 1 || camera == 3) player.SetRot(rot);
 	if(keys['q']) {
 		player.StrafeLeft();
 	}
@@ -124,10 +129,20 @@ bool cGame::Process()
 		player.MoveDown();
 	}
 	if(keys['a']){ 
-		if(camera != 1) player.AddRot(0.5);
+		if (camera == 3) player.SetRot(rot);
+		else if(camera != 1) player.AddRot(0.5);
 	}
 	if(keys['d']){
-		if(camera != 1) player.AddRot(-0.5);
+		if (camera == 3) player.SetRot(rot);
+		else if(camera != 1) player.AddRot(-0.5);
+	}
+	if(keys['r']) {
+		float x,y,z;
+		player.GetPosition(&x,&y,&z);
+		shoot.SetPosition(x,y,z);
+		//shoot.SetPosition();
+		shoot.SetRot(rot);
+		shoot.SetActive(true);
 	}
 	if(keys['l']) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -153,6 +168,7 @@ bool cGame::Process()
 void cGame::Render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	float x,y,z;
 
 	glLoadIdentity();
 	
@@ -162,7 +178,7 @@ void cGame::Render()
 		glRotatef((-rotV),1,0,0);
 		glRotatef((-rot),0,1,0);
 		
-		float x,y,z;
+
 		player.GetPosition(&x,&y,&z);
 		Hud.DrawCrossHair(Data.GetID(IMG_CROSSHAIR),SCREEN_WIDTH/2,SCREEN_HEIGHT/2);
 		glTranslatef(-x,-y,-z);
@@ -170,6 +186,15 @@ void cGame::Render()
 		break;
 	case 2:
 		gluLookAt(64,32,-16,0,0,-16,0,1,0);
+		break;
+	case 3:
+		glTranslatef(0,-(2),-10);
+		glRotatef((-rotV),1,0,0);
+		glRotatef((-rot),0,1,0);
+		
+		//float x,y,z;
+		player.GetPosition(&x,&y,&z);
+		glTranslatef(-x,-y,-z);
 		break;
 	default:
 		glTranslatef(0.0f,-2.0f,-40.0f);
@@ -186,7 +211,12 @@ void cGame::Render()
 	if(camera != 1) {
 		player.Draw();
 	}
-	
+	if (shoot.IsActive()) {
+		shoot.GetPosition(&x,&y,&z);
+		y+=0.1*sin(rotV*PI/180.0);
+		shoot.SetPosition(x,y,z);
+		shoot.Draw();
+	}
 	Scene.Draw(&Data);
 	for(int i=0;i<caixes.size();++i) {
 		caixes[i].DrawBB();
