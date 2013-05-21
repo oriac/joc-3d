@@ -83,7 +83,7 @@ public:
 	
 private:
 	float x,y,z;
-	int w,h,d;
+	double w,h,d;
 	int state;
 	float rot;
 

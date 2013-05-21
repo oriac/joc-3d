@@ -41,6 +41,7 @@ bool cGame::Init()
 
 	player.SetPosition(8,6,-8);
 	player.SetVol(2,2,2);
+	shoot.SetVol(0.4,0.4,0.4);
 	return res;
 }
 
@@ -212,15 +213,18 @@ void cGame::Render()
 	if(camera != 1) {
 		player.Draw();
 	}
-	if (shoot.IsActive()) {
-		shoot.GetPosition(&x,&y,&z);
-		y+=0.1*sin(rotV*PI/180.0);
-		shoot.SetPosition(x,y,z);
-		shoot.Draw();
-	}
+	
 	Scene.Draw(&Data);
 	for(unsigned int i=0;i<caixes.size();++i) {
 		caixes[i].DrawBB();
+	}
+	
+	if (shoot.IsActive()) {
+		shoot.GetPosition(&x,&y,&z);
+		y+=0.1*sin(rotV*PI/180.0);
+		//shoot.SetPosition(x,y,z);
+		shoot.Draw();
+		shoot.DrawBB();
 	}
 	player.DrawBB();
 	

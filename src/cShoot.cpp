@@ -242,8 +242,11 @@ void cShoot::MoveUp(vector<cBicho> caixes, int *map)
 		GetTile(&tx,&ty);
 		x-=0.1*sin(rot*PI/180);
 		z-=0.1*cos(rot*PI/180);
+		SetPosition(x,y,z);
 		cRect rect;
 		bool b=false;
+		bool desliza_z=true;
+		bool desliza_x=true;
 		for(int i=-1;i<=1 && !b;++i) {
 			for(int j=-1;j<=1 && !b;++j) {
 				//if(!(i==0 && j==0)) {
@@ -251,23 +254,84 @@ void cShoot::MoveUp(vector<cBicho> caixes, int *map)
 					caixes[(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
 					if(Collides(&rect)) {
 						z = zaux;
-						x = xaux;
-						rot = 2*rot + 180;
-						rot = fmod(rot,360);
-						b=true;
-						/*if(Collides(&rect)) {
-							x = xaux;
-							z-=0.1*cos(rot*PI/180);
-							if(Collides(&rect)) {
-								z = zaux;
-								//b = true;
+						SetPosition(x,y,z);
+						b = true;
+						for(int i=-1;i<=1;++i) {
+							for(int j=-1;j<=1;++j) {
+								caixes[(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
+								if(Collides(&rect)) {
+									x = xaux;
+									desliza_x = false;
+									z-=0.1*cos(rot*PI/180);
+									SetPosition(x,y,z);
+									for(int i=-1;i<=1;++i) {
+										for(int j=-1;j<=1;++j) {
+											caixes[(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
+											if(Collides(&rect)) {
+												z = zaux;
+												desliza_z = false;
+											}
+										}
+									}
+								}
 							}
-						}*/
+						}
 					}
 				}
 			}
 		}
+		if(b) {
+			if(desliza_x) {
+				if(rot >=0 && rot < 90) {
+					double rotaux = 90.0 - (rot);
+					rot += 2*rotaux;
+					//rot = 360-(rot);
+					//rot = fmod(rot,360);
+
+				}
+				else if(rot >=90 && rot < 180) {
+					double rotaux = (rot-90);
+					//double rotaux2 = 90-rotaux;
+					rot -= 2*rotaux;
+				}
+				else if(rot >=180 && rot < 270) {
+					double rotaux =  90 - (rot - 180);
+					//double rotaux2 = 90-rotaux;
+					rot += 2*rotaux;
+				}
+				else if(rot >=270 && rot < 360) {
+					double rotaux = (rot-270);
+					//double rotaux2 = 90-rotaux;
+					rot -= 2*rotaux;
+				}
+			}
+			else if(desliza_z) {
+				if(rot >=0 && rot < 90) {
+					double rotaux = 90.0 - (rot);
+					rot += 180 + 2*rotaux;
+					//rot = 360-(rot);
+					//rot = fmod(rot,360);
+
+				}
+				else if(rot >=90 && rot < 180) {
+					double rotaux = 90.0 - (rot-90);
+					//double rotaux2 = 90-rotaux;
+					rot += 2*rotaux;
+				}
+				else if(rot >=180 && rot < 270) {
+					double rotaux =  (rot - 180);
+					//double rotaux2 = 90-rotaux;
+					rot -= 2*rotaux;
+				}
+				else if(rot >=270 && rot < 360) {
+					double rotaux = 90.0 - (rot-90);
+					//double rotaux2 = 90-rotaux;
+					rot += 2*rotaux;
+				}
+			}
+		}
 		SetPosition(x,y,z);
+		rot = fmod(rot,360);
 		SetRot(rot);
 		/*for(unsigned int i=1;i<=4;++i) {
 			caixes[tx*SCENE_WIDTH+ty+i].GetArea(&rect);
