@@ -194,9 +194,9 @@ void cShoot::MoveShoot()
 		this->GetPosition(&x,&y,&z);
 		 x-=0.1*sin(rot*PI/180);
 		 z-=0.1*cos(rot*PI/180);
-		// z+=(-sin(PI/180*rot)*cos(PI/180*rotV)*0.1);
+		 //z+=(-sin(PI/180*rot)*cos(PI/180*rotV)*0.1);
 		 //x+=(-sin(PI/180*rot)*sin(PI/180*rotV)*0.1);
-		y+=0.1*sin(rotV*PI/180.0);
+		 y+=0.1*sin(rotV*PI/180.0);
 		 this->SetPosition(x,y,z);
 		/*x-=0.1*sin(rot*PI/180);
 		z-=0.1*cos(rot*PI/180);*/
@@ -209,7 +209,7 @@ void cShoot::setRot(float rotv, float rot){
 
 void cShoot::Logic(vector<cBicho> &caixes) {
 	cRect rect;
-	iner -= 0.001;
+	iner -= 0.0001;
 	if (iner < 0) iner = 0.0;
 	//GetArea(cRect *rc)
 	//GetArea(&rect);
@@ -223,7 +223,7 @@ void cShoot::Logic(vector<cBicho> &caixes) {
 	}
 }
 
-void cShoot::MoveUp(vector<cBicho> caixes, int *map)
+void cShoot::MoveUp(vector<cBicho> &caixes, int *map)
 {
 	/*int yaux;
 
@@ -251,17 +251,22 @@ void cShoot::MoveUp(vector<cBicho> caixes, int *map)
 			delay = 0;
 		}
 	}*/
-		float xaux, zaux;
+		double xaux, zaux, yaux;
 		float x,y,z;
-		float rot;
-		rot = GetRot();
+		//float rot;
+		//rot = GetRot();
 		GetPosition(&x,&y,&z);
 		xaux=x;
 		zaux=z;
+		yaux=y;
 		int tx,ty;
 		GetTile(&tx,&ty);
-		x-=iner*sin(rot*PI/180);
-		z-=iner*cos(rot*PI/180);
+		//x-=iner*sin(rot*PI/180);
+		//z-=iner*cos(rot*PI/180);
+		x+=-cos(PI/180*rotV)*sin(PI/180*rot)*iner;
+		z+=-cos(PI/180*rotV)*cos(PI/180*rot)*iner;
+		y+=sin(PI/180*rotV)*iner;
+		if(y<1)y=1;
 		SetPosition(x,y,z);
 		cRect rect;
 		bool b=false;
@@ -274,6 +279,7 @@ void cShoot::MoveUp(vector<cBicho> caixes, int *map)
 					caixes[(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
 					if(Collides(&rect)) {
 						z = zaux;
+						//y = yaux;
 						SetPosition(x,y,z);
 						b = true;
 						for(int i=-1;i<=1;++i) {
@@ -281,14 +287,17 @@ void cShoot::MoveUp(vector<cBicho> caixes, int *map)
 								caixes[(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
 								if(Collides(&rect)) {
 									x = xaux;
+									//y = yaux;
 									desliza_x = false;
-									z-=0.1*cos(rot*PI/180);
+									//z-=0.1*cos(rot*PI/180);
+									z+=-sin(PI/180*rotV)*cos(PI/180*rot)*iner;
 									SetPosition(x,y,z);
 									for(int i=-1;i<=1;++i) {
 										for(int j=-1;j<=1;++j) {
 											caixes[(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
 											if(Collides(&rect)) {
 												z = zaux;
+												//y = yaux;
 												desliza_z = false;
 											}
 										}

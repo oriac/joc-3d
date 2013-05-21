@@ -8,7 +8,8 @@ cGame::~cGame(void){}
 bool cGame::Init()
 {
 	bool res=true;
-
+	time_init=glutGet(GLUT_ELAPSED_TIME);
+	fps = fps_dibuix = 0;
 	//Graphics initialization
 	glClearColor(0.0f,0.0f,0.0f,0.0f);
 	glEnable(GL_CULL_FACE);
@@ -32,8 +33,10 @@ bool cGame::Init()
 	if(!res) return false;
 	res = Data.LoadImage(IMG_ROOF,"resources/im/roof.png",GL_RGBA);
 	if(!res) return false;
-	//res = Data.LoadImage(IMG_CROSSHAIR,"resources/im/crosshair.png",GL_RGBA);
-	//if(!res) return false;
+	res = Data.LoadImage(IMG_CROSSHAIR,"resources/im/crosshair.png",GL_RGBA);
+	if(!res) return false;
+	res = Data.LoadImage(IMG_FONT,"resources/im/font.png",GL_RGBA);
+	if(!res) return false;
 	Scene.Init();
 	res = Scene.LoadLevel(1,caixes);
 	map = Scene.GetMap();
@@ -145,7 +148,7 @@ bool cGame::Process()
 		shoot.SetPosition(x,y+4,z);
 		shoot.SetIner(0.2);
 		//shoot.SetPosition();
-		shoot.SetRot(rot);
+		shoot.setRot(rotV,rot);
 		shoot.SetActive(true);
 	}
 	if(keys['l']) {
@@ -158,8 +161,13 @@ bool cGame::Process()
 	
 	//Game Logic
 	//...
-
-
+	time_end = glutGet(GLUT_ELAPSED_TIME);
+	if(time_end -time_init > 1000) {
+		fps_dibuix=fps;
+		fps=0;
+		time_init=glutGet(GLUT_ELAPSED_TIME);
+	}
+	fps++;
 
 
 
@@ -184,7 +192,6 @@ void cGame::Render()
 		
 
 		player.GetPosition(&x,&y,&z);
-		Hud.DrawCrossHair(Data.GetID(IMG_CROSSHAIR),SCREEN_WIDTH/2,SCREEN_HEIGHT/2);
 		glTranslatef(-x,-y,-z);
 		
 		break;
@@ -222,13 +229,24 @@ void cGame::Render()
 	}
 	
 	if (shoot.IsActive()) {
-		shoot.GetPosition(&x,&y,&z);
-		y+=0.1*sin(rotV*PI/180.0);
+		//shoot.GetPosition(&x,&y,&z);
+		//y+=0.1*sin(rotV*PI/180.0);
 		//shoot.SetPosition(x,y,z);
 		shoot.Draw();
 		shoot.DrawBB();
 	}
 	player.DrawBB();
-	
+	glColor3f(1,1,1);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrtho(0,SCREEN_WIDTH,0,SCREEN_HEIGHT,0.1,100);
+	glMatrixMode(GL_MODELVIEW);
+	Hud.DrawCrossHair(Data.GetID(IMG_CROSSHAIR),SCREEN_WIDTH/2,SCREEN_HEIGHT/2);
+	glLoadIdentity();
+	Hud.Drawfps(Data.GetID(IMG_FONT), fps_dibuix, SCREEN_WIDTH, SCREEN_HEIGHT);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(45.0,(float)SCREEN_WIDTH/(float)SCREEN_HEIGHT,0.1,100);
+	glMatrixMode(GL_MODELVIEW);
 	glutSwapBuffers();
 }

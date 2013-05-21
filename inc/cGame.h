@@ -46,4 +46,6 @@ private:
 	bool mouseState;
 	int x1,x2,y1,y2;
 	int *map;
+	int time_init,time_end,fps;
+	int fps_dibuix;
 };
