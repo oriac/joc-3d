@@ -36,6 +36,10 @@ void cShoot::SetActive(bool b) {
 	active = b;
 }
 
+void cShoot::SetIner(double x) {
+	iner = x;
+}
+
 void cShoot::SetInitPos(int playerState,int x, int y) {
 	/*if(playerState == STATE_WALKLEFT||playerState == STATE_LOOKLEFT||playerState == STATE_SHOOT_LEFT)
 				SetPosition(x-(TILE_SIZE*2)+(x%4),y);
@@ -203,6 +207,22 @@ void cShoot::setRot(float rotv, float rot){
 	rotV = rotv;
 }
 
+void cShoot::Logic(vector<cBicho> &caixes) {
+	cRect rect;
+	iner -= 0.001;
+	if (iner < 0) iner = 0.0;
+	//GetArea(cRect *rc)
+	//GetArea(&rect);
+	caixes[caixes.size()-1].GetArea(&rect);
+	//if(!caixes[caixes.size()-1].Collides(&rect)) {
+	if(!Collides(&rect)) {
+		float x,y,z;
+		GetPosition(&x,&y,&z);
+		y -= 0.05;
+		SetPosition(x,y,z);
+	}
+}
+
 void cShoot::MoveUp(vector<cBicho> caixes, int *map)
 {
 	/*int yaux;
@@ -240,8 +260,8 @@ void cShoot::MoveUp(vector<cBicho> caixes, int *map)
 		zaux=z;
 		int tx,ty;
 		GetTile(&tx,&ty);
-		x-=0.1*sin(rot*PI/180);
-		z-=0.1*cos(rot*PI/180);
+		x-=iner*sin(rot*PI/180);
+		z-=iner*cos(rot*PI/180);
 		SetPosition(x,y,z);
 		cRect rect;
 		bool b=false;

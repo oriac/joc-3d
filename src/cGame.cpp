@@ -89,6 +89,7 @@ bool cGame::Process()
 {
 	bool res=true;
 		if(shoot.IsActive()) {
+		shoot.Logic(caixes);
 		shoot.MoveUp(caixes,map);
 	}
 
@@ -141,7 +142,8 @@ bool cGame::Process()
 	if(keys['r']) {
 		float x,y,z;
 		player.GetPosition(&x,&y,&z);
-		shoot.SetPosition(x,y,z);
+		shoot.SetPosition(x,y+4,z);
+		shoot.SetIner(0.2);
 		//shoot.SetPosition();
 		shoot.SetRot(rot);
 		shoot.SetActive(true);
