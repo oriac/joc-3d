@@ -9,7 +9,7 @@ void cScene::Init()
 	MakeCubeDL((float)TILE_SIZE,(float)TILE_SIZE,(float)TILE_SIZE,1.0f,1.0f,1.0f);
 	MakeRampDL((float)TILE_SIZE,(float)TILE_SIZE,(float)TILE_SIZE,1.0f,1.0f,1.0f);
 }
-bool cScene::LoadLevel(int level, vector<cBicho> *caixes)
+bool cScene::LoadLevel(int level, vector<cBicho> *caixes, cBicho &terra)
 {
 	FILE *fd,*fd2;
 	char file[16],file2[16],tile;
@@ -33,7 +33,7 @@ bool cScene::LoadLevel(int level, vector<cBicho> *caixes)
 			{
 				//Tiles must be != 0 !!!
 				cBicho caja;
-				caixes.push_back(caja);
+				caixes[0].push_back(caja);
 				//
 				map[(i*SCENE_WIDTH)+j]=0;
 			}
@@ -41,7 +41,7 @@ bool cScene::LoadLevel(int level, vector<cBicho> *caixes)
 			{
 				//Tiles = 1,2,3,...
 				cBicho caja((float)(j*TILE_SIZE),0.0,(float)((i+1)*-TILE_SIZE),4.0,4.0,4.0);
-				caixes.push_back(caja);
+				caixes[0].push_back(caja);
 				map[(i*SCENE_WIDTH)+j] = tile-48;
 			}
 		}
@@ -59,13 +59,15 @@ bool cScene::LoadLevel(int level, vector<cBicho> *caixes)
 			if(tile==' ')
 			{
 				//Tiles must be != 0 !!!
+				cBicho caja;
+				caixes[1].push_back(caja);
 				map2[(i*SCENE_WIDTH)+j]=0;
 			}
 			else
 			{
 				//Tiles = 1,2,3,...
 				cBicho caja((float)(j*TILE_SIZE),(float)TILE_SIZE,(float)((i+1)*-TILE_SIZE),4.0,4.0,4.0);
-				caixes.push_back(caja);
+				caixes[1].push_back(caja);
 				map2[(i*SCENE_WIDTH)+j] = tile-48;
 			}
 		}
@@ -76,8 +78,9 @@ bool cScene::LoadLevel(int level, vector<cBicho> *caixes)
 	float w  = (float)SCENE_WIDTH*TILE_SIZE;
 	float d  = (float)SCENE_DEPTH*TILE_SIZE;
 	cBicho caja(0.0,0,-40.0,w,1,d);
-	caixes.push_back(caja);
-
+	terra = caja;
+	//terra(0.0,0,-40.0,w,1,d);
+	//terra.S
 
 	return true;
 }
