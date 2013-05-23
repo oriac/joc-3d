@@ -39,7 +39,7 @@ private:
 	cPlayer player;
 	cShoot shoot;
 	cHud Hud;
-	vector<cBicho> caixes;
+	vector<cBicho> caixes[3];
 	int camera;
 	float transX,transZ;
 	float rot,rotV;

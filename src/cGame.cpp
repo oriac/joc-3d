@@ -145,7 +145,7 @@ bool cGame::Process()
 	if(keys['r']) {
 		float x,y,z;
 		player.GetPosition(&x,&y,&z);
-		shoot.SetPosition(x,y+4,z);
+		shoot.SetPosition(x,y+0.5,z);
 		shoot.SetIner(0.2);
 		//shoot.SetPosition();
 		shoot.setRot(rotV,rot);

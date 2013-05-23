@@ -9,7 +9,7 @@ void cScene::Init()
 	MakeCubeDL((float)TILE_SIZE,(float)TILE_SIZE,(float)TILE_SIZE,1.0f,1.0f,1.0f);
 	MakeRampDL((float)TILE_SIZE,(float)TILE_SIZE,(float)TILE_SIZE,1.0f,1.0f,1.0f);
 }
-bool cScene::LoadLevel(int level, vector<cBicho> &caixes)
+bool cScene::LoadLevel(int level, vector<cBicho> *caixes)
 {
 	FILE *fd,*fd2;
 	char file[16],file2[16],tile;
@@ -23,7 +23,7 @@ bool cScene::LoadLevel(int level, vector<cBicho> &caixes)
 	fd=fopen(file,"r");
 	if(fd==NULL) return false;
 
-	//for(i=SCENE_DEPTH-1;i>=0;i--)
+	//level0
 	for(i=0;i<=SCENE_DEPTH-1;i++)
 	{
 		for(j=0;j<SCENE_WIDTH;j++)
@@ -48,6 +48,7 @@ bool cScene::LoadLevel(int level, vector<cBicho> &caixes)
 		fscanf(fd,"%c",&tile); //pass enter
 	}
 	fclose(fd);
+	//level1
 	fd2=fopen(file2,"r");
 	if(fd2==NULL) return false;
 	for(i=0;i<=SCENE_DEPTH-1;i++)

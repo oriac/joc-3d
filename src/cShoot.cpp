@@ -209,7 +209,7 @@ void cShoot::setRot(float rotv, float rot){
 
 void cShoot::Logic(vector<cBicho> &caixes) {
 	cRect rect;
-	iner -= 0.0001;
+	iner -= 0.0005;
 	if (iner < 0) iner = 0.0;
 	//GetArea(cRect *rc)
 	//GetArea(&rect);
@@ -218,7 +218,7 @@ void cShoot::Logic(vector<cBicho> &caixes) {
 	if(!Collides(&rect)) {
 		float x,y,z;
 		GetPosition(&x,&y,&z);
-		y -= 0.05;
+		y -= 0.01;
 		SetPosition(x,y,z);
 	}
 }
