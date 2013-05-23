@@ -6,6 +6,7 @@
 #include "../inc/cHud.h"
 //#include "../inc/cBox.h"
 #include "../inc/cShoot.h"
+#include "../inc/cEnemy.h"
 #include <vector>
 
 #define SCREEN_WIDTH	800
@@ -38,6 +39,7 @@ private:
 	cData Data;
 	cPlayer player;
 	cShoot shoot;
+	cEnemy enemy;
 	cHud Hud;
 	vector<cBicho> caixes[3];
 	int bullseyes[3];

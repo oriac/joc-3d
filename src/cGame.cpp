@@ -49,6 +49,9 @@ bool cGame::Init()
 	player.SetPosition(8,6,-8);
 	player.SetVol(2,2,2);
 	shoot.SetVol(0.4,0.4,0.4);
+	enemy.SetPosition(4*2,0,4*-2);
+	enemy.SetVol(4,4,4);
+	enemy.Active();
 	return res;
 }
 
@@ -98,6 +101,12 @@ bool cGame::Process()
 		if(shoot.IsActive()) {
 		shoot.Logic(terra);
 		shoot.MoveUp(caixes,map);
+		cRect rect;
+		shoot.GetArea(&rect);
+		if(enemy.Collides(&rect) && enemy.IsAlive()) {
+			shoot.SetActive(false);
+			enemy.kill();
+		}
 	}
 
 	
@@ -238,7 +247,7 @@ void cGame::Render()
 	if(camera != 1) {
 		player.Draw();
 	}
-	
+	if(enemy.IsAlive()) enemy.Draw(0,&Data);
 	Scene.Draw(&Data);
 	for(unsigned int k=0;k<3;++k) {
 		for(unsigned int i=0;i<caixes[k].size();++i) {
@@ -252,6 +261,7 @@ void cGame::Render()
 		shoot.Draw();
 		shoot.DrawBB();
 	}
+	if (enemy.IsAlive()) enemy.DrawBB();
 	player.DrawBB();
 	glColor3f(1,1,1);
 	glMatrixMode(GL_PROJECTION);
