@@ -47,7 +47,7 @@ private:
 	float rot,rotV;
 	bool mouseState;
 	int x1,x2,y1,y2;
-	int *map;
+	vector< vector<int> > map;
 	int time_init,time_end,fps;
 	int fps_dibuix;
 };

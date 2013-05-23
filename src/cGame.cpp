@@ -2,7 +2,9 @@
 #include "../inc/Globals.h"
 
 
-cGame::cGame(void) {}
+cGame::cGame(void) {
+	//vector< vector<int> > map(3,vector<int> (SCENE_WIDTH * SCENE_DEPTH));
+}
 cGame::~cGame(void){}
 
 bool cGame::Init()
@@ -41,7 +43,7 @@ bool cGame::Init()
 	if(!res) return false;
 	Scene.Init();
 	res = Scene.LoadLevel(1,caixes,terra,bullseyes);
-	map = Scene.GetMap();
+	Scene.GetMap(map);
 	if(!res) return false;
 
 	player.SetPosition(8,6,-8);
@@ -128,16 +130,16 @@ bool cGame::Process()
 	}
 	if(camera == 1 || camera == 3) player.SetRot(rot);
 	if(keys['q']) {
-		player.StrafeLeft();
+		player.StrafeLeft(caixes, map);
 	}
 	if(keys['e']) {
-		player.StrafeRight();
+		player.StrafeRight(caixes, map);
 	}
 	if(keys['w']) {
 		player.MoveUp(caixes,map);
 	}
 	if(keys['s']) {
-		player.MoveDown();
+		player.MoveDown(caixes, map);
 	}
 	if(keys['a']){ 
 		if (camera == 3) player.SetRot(rot);

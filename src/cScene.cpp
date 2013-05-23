@@ -1,23 +1,31 @@
 #include "../inc/cScene.h"
 #include "../inc/Globals.h"
 
-cScene::cScene(void) {}
+cScene::cScene(void) {
+	//map = new vector<vector<int>> (3,vector<int> (SCENE_WIDTH * SCENE_DEPTH));
+	//vector< vector<int> > map(3,vector<int> (SCENE_WIDTH * SCENE_DEPTH));
+	//map.reserve(3*SCENE_WIDTH * SCENE_DEPTH);
+	map.resize(3);
+	for(int i=0;i<3;i++) map[i].resize(SCENE_WIDTH * SCENE_DEPTH);
+}
 cScene::~cScene(void){}
 
 void cScene::Init()
 {
+	//vector< vector<int> > map(3,vector<int> (SCENE_WIDTH * SCENE_DEPTH));
 	MakeCubeDL((float)TILE_SIZE,(float)TILE_SIZE,(float)TILE_SIZE,1.0f,1.0f,1.0f);
 	MakeRampDL((float)TILE_SIZE,(float)TILE_SIZE,(float)TILE_SIZE,1.0f,1.0f,1.0f);
 }
 bool cScene::LoadLevel(int level, vector<cBicho> *caixes, cBicho &terra, int *bullseyes)
 {
-	FILE *fd,*fd2;
-	char file[16],file2[16],tile;
+	FILE *fd,*fd2,*fd3;
+	char file[16],file2[16],file3[16],tile;
 	int i,j;
 
 	if(level<10) { 
 		sprintf(file,"%s0%d%s",(char *)FILENAME,level,(char *)FILENAME_EXT);
 		sprintf(file2,"%s%d%s",(char *)FILENAME,level+10,(char *)FILENAME_EXT);
+		sprintf(file3,"%s%d%s",(char *)FILENAME,level+20,(char *)FILENAME_EXT);
 	}
 
 	fd=fopen(file,"r");
@@ -35,12 +43,12 @@ bool cScene::LoadLevel(int level, vector<cBicho> *caixes, cBicho &terra, int *bu
 				cBicho caja;
 				caixes[0].push_back(caja);
 				//
-				map[(i*SCENE_WIDTH)+j]=0;
+				map[0][(i*SCENE_WIDTH)+j]=0;
 			}
 			else if(tile == 6) {
 				cBicho caja((float)(j*TILE_SIZE),0.0,(float)((i+1)*-TILE_SIZE),4.0,4.0,4.0);
 				caixes[1].push_back(caja);
-				map[(i*SCENE_WIDTH)+j] = tile-48;
+				map[0][(i*SCENE_WIDTH)+j] = tile-48;
 				bullseyes[0] = j;
 				bullseyes[1] = 0;
 				bullseyes[2] = i+1;
@@ -50,7 +58,7 @@ bool cScene::LoadLevel(int level, vector<cBicho> *caixes, cBicho &terra, int *bu
 				//Tiles = 1,2,3,...
 				cBicho caja((float)(j*TILE_SIZE),0.0,(float)((i+1)*-TILE_SIZE),4.0,4.0,4.0);
 				caixes[0].push_back(caja);
-				map[(i*SCENE_WIDTH)+j] = tile-48;
+				map[0][(i*SCENE_WIDTH)+j] = tile-48;
 			}
 		}
 		fscanf(fd,"%c",&tile); //pass enter
@@ -69,24 +77,55 @@ bool cScene::LoadLevel(int level, vector<cBicho> *caixes, cBicho &terra, int *bu
 				//Tiles must be != 0 !!!
 				cBicho caja;
 				caixes[1].push_back(caja);
-				map2[(i*SCENE_WIDTH)+j]=0;
+				map[1][(i*SCENE_WIDTH)+j]=0;
 			}
 			else if(tile == 6) {
 				cBicho caja((float)(j*TILE_SIZE),(float)TILE_SIZE,(float)((i+1)*-TILE_SIZE),4.0,4.0,4.0);
 				caixes[1].push_back(caja);
-				map2[(i*SCENE_WIDTH)+j] = tile-48;
+				map[1][(i*SCENE_WIDTH)+j] = tile-48;
 			}
 			else
 			{
 				//Tiles = 1,2,3,...
 				cBicho caja((float)(j*TILE_SIZE),(float)TILE_SIZE,(float)((i+1)*-TILE_SIZE),4.0,4.0,4.0);
 				caixes[1].push_back(caja);
-				map2[(i*SCENE_WIDTH)+j] = tile-48;
+				map[1][(i*SCENE_WIDTH)+j] = tile-48;
 			}
 		}
 		fscanf(fd2,"%c",&tile); //pass enter
 	}
 	fclose(fd2);
+	//level2
+	fd3=fopen(file3,"r");
+	if(fd3==NULL) return false;
+	for(i=0;i<=SCENE_DEPTH-1;i++)
+	{
+		for(j=0;j<SCENE_WIDTH;j++)
+		{
+			fscanf(fd3,"%c",&tile);
+			if(tile==' ')
+			{
+				//Tiles must be != 0 !!!
+				cBicho caja;
+				caixes[2].push_back(caja);
+				map[2][(i*SCENE_WIDTH)+j]=0;
+			}
+			else if(tile == 6) {
+				cBicho caja((float)(j*TILE_SIZE),(float)TILE_SIZE*2,(float)((i+1)*-TILE_SIZE),4.0,4.0,4.0);
+				caixes[2].push_back(caja);
+				map[2][(i*SCENE_WIDTH)+j] = tile-48;
+			}
+			else
+			{
+				//Tiles = 1,2,3,...
+				cBicho caja((float)(j*TILE_SIZE),(float)TILE_SIZE*2,(float)((i+1)*-TILE_SIZE),4.0,4.0,4.0);
+				caixes[2].push_back(caja);
+				map[2][(i*SCENE_WIDTH)+j] = tile-48;
+			}
+		}
+		fscanf(fd3,"%c",&tile); //pass enter
+	}
+	fclose(fd3);
 
 	float w  = (float)SCENE_WIDTH*TILE_SIZE;
 	float d  = (float)SCENE_DEPTH*TILE_SIZE;
@@ -114,7 +153,7 @@ void cScene::Draw(cData *Data)
 		{
 			glPushMatrix();
 				glTranslatef(x,0,-z);
-				switch(map[(i*SCENE_WIDTH)+j])
+				switch(map[0][(i*SCENE_WIDTH)+j])
 				{
 					case 0:	break;
 					case 1: glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_WALL1));
@@ -136,7 +175,7 @@ void cScene::Draw(cData *Data)
 			glPopMatrix();
 			glPushMatrix();
 				glTranslatef(x,(float)TILE_SIZE,-z);
-				switch(map2[(i*SCENE_WIDTH)+j])
+				switch(map[1][(i*SCENE_WIDTH)+j])
 				{
 					case 0:	break;
 					case 1: glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_WALL1));
@@ -262,6 +301,6 @@ void cScene::MakeRampDL(float w,float h,float d,float tw,float th,float td)
 	glEndList();
 }
 
-int* cScene::GetMap() {
-	return map;
+void cScene::GetMap(vector<vector<int>> &mapout) {
+	mapout = map;
 }

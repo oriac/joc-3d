@@ -223,7 +223,7 @@ void cShoot::Logic(cBicho &suelo) {
 	}
 }
 
-void cShoot::MoveUp(vector<cBicho> *caixes, int *map)
+void cShoot::MoveUp(vector<cBicho> *caixes, vector< vector<int> > map)
 {
 	/*int yaux;
 
@@ -265,11 +265,10 @@ void cShoot::MoveUp(vector<cBicho> *caixes, int *map)
 		//z-=iner*cos(rot*PI/180);
 		x+=-cos(PI/180*rotV)*sin(PI/180*rot)*iner;
 		z+=-cos(PI/180*rotV)*cos(PI/180*rot)*iner;
-		//y+=sin(PI/180*rotV)*iner;
 		if(y<1)y=1;
 		int suelo;
 		suelo = ((int)floor(y))/4;
-		//suelo--;
+		y+=sin(PI/180*rotV)*iner;
 		SetPosition(x,y,z);
 		cRect rect;
 		bool b=false;
@@ -278,32 +277,33 @@ void cShoot::MoveUp(vector<cBicho> *caixes, int *map)
 		bool desliza_y=true;
 		//if(suelo>1)suelo=1;
 		//caixes[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
-		//if(map[(ty)*SCENE_DEPTH+ (tx)]!=0) {
-		caixes[suelo][(ty)*SCENE_DEPTH+ (tx)].GetArea(&rect);
-		if(!Collides(&rect)) {
-			y+=sin(PI/180*rotV)*iner;
-			suelo = ((int)floor(y))/4;
+		if(map[suelo][(ty)*SCENE_DEPTH+ (tx)]!=0 || map[suelo+1][(ty)*SCENE_DEPTH+ (tx)]!=0) {
 			caixes[suelo][(ty)*SCENE_DEPTH+ (tx)].GetArea(&rect);
-			if(Collides(&rect)) {
-				if(rotV >=0 && rotV < 90) {
-					//double rotaux = 90.0 - (rot);
-					rotV -= 2*rotV;
-					//rot = 360-(rot);
-					//rot = fmod(rot,360);
+			if(!Collides(&rect)) {
+				y+=sin(PI/180*rotV)*iner;
+				suelo = ((int)floor(y))/4;
+				caixes[suelo][(ty)*SCENE_DEPTH+ (tx)].GetArea(&rect);
+				if(Collides(&rect)) {
+					if(rotV >=0 && rotV < 90) {
+						//double rotaux = 90.0 - (rot);
+						rotV -= 2*rotV;
+						//rot = 360-(rot);
+						//rot = fmod(rot,360);
 
-				}
-				else if(rotV >=-90 && rotV < 0) {
-					//double rotaux = (rot-90);
-					//double rotaux2 = 90-rotaux;
-					rotV -= 2*rotV;
+					}
+					else if(rotV >=-90 && rotV < 0) {
+						//double rotaux = (rot-90);
+						//double rotaux2 = 90-rotaux;
+						rotV -= 2*rotV;
+					}
 				}
 			}
 		}
-		//}
+		suelo = ((int)floor(y))/4;
 		for(int i=-1;i<=1 && !b;++i) {
 			for(int j=-1;j<=1 && !b;++j) {
 				//if(!(i==0 && j==0)) {
-				if(map[(ty+i)*SCENE_DEPTH+ (tx+j)]!=0) {
+				if(map[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)]!=0) {
 					caixes[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
 					if(Collides(&rect)) {
 						z = zaux;

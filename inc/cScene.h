@@ -24,7 +24,7 @@ public:
 	void Init();
 	bool LoadLevel(int level, vector<cBicho> *caixes, cBicho &terra,  int *bullseyes);
 	void Draw(cData *Data);
-	int *GetMap();
+	void GetMap(vector<vector<int>> &map);
 
 private:
 	void MakeCubeDL(float w,float h,float d,float tw,float th,float td);
@@ -32,6 +32,6 @@ private:
 	int dl_cube;
 	int dl_ramp;
 
-	int map[SCENE_WIDTH * SCENE_DEPTH];		//scene
-	int map2[SCENE_WIDTH * SCENE_DEPTH];		//scene
+	vector< vector<int> > map;		//scene
+	//int map2[SCENE_WIDTH * SCENE_DEPTH];		//scene
 };

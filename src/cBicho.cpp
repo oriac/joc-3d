@@ -236,67 +236,24 @@ void cBicho::DrawRect(int tex_id,float xo,float yo,float xf,float yf)
 
 	glDisable(GL_TEXTURE_2D);*/
 }
-void cBicho::MoveUp(vector<cBicho> *caixes, int *map)
+void cBicho::MoveUp(vector<cBicho> *caixes, vector<vector<int>> map)
 {
-	/*int yaux;
-
-	//Whats next tile?
-	if( (y % TILE_SIZE) == 0)
-	{
-		yaux = y;
-		y += STEP_LENGTH*speed;
-
-		if(CollidesMapTop(map))
-		{
-			y = yaux;
-			state = STATE_LOOKUP;
-		}
-	}
-	//Advance, no problem
-	else
-	{
-		y += STEP_LENGTH*speed;
-
-		if(state != STATE_WALKUP && state != STATE_DUPLEFT && state != STATE_DUPRIGHT)
-		{
-			state = STATE_WALKUP;
-			seq = 0;
-			delay = 0;
-		}
-	}*/
+	
 		float xaux, zaux;
 		xaux=x;
 		zaux=z;
 		int tx,ty;
 		int suelo;
 		suelo = ((int)floor(y))/4;
-		//suelo--;
 		GetTile(&tx,&ty);
 		x-=0.1*sin(rot*PI/180);
 		z-=0.1*cos(rot*PI/180);
 		cRect rect;
-		/*bool b=false;
-		for(unsigned int i=0;i<caixes.size()-1&& !b;++i) {
-			caixes[i].GetArea(&rect);
-			if(Collides(&rect)) {
-				//x = xaux;
-				z = zaux;
-				//b = true;
-				if(Collides(&rect)) {
-					x = xaux;
-					z-=0.1*cos(rot*PI/180);
-					if(Collides(&rect)) {
-						z = zaux;
-						b = true;
-					}
-				}
-			}
-		}*/
-		
+
 		for(int i=-1;i<=1;++i) {
 			for(int j=-1;j<=1;++j) {
 				//if(!(i==0 && j==0)) {
-				if(map[(ty+i)*SCENE_DEPTH+ (tx+j)]!=0) {
+				if(map[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)]!=0) {
 					caixes[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
 					if(Collides(&rect)) {
 						z = zaux;
@@ -317,14 +274,6 @@ void cBicho::MoveUp(vector<cBicho> *caixes, int *map)
 								}
 							}
 						}
-						/*if(Collides(&rect)) {
-							x = xaux;
-							z-=0.1*cos(rot*PI/180);
-							if(Collides(&rect)) {
-								z = zaux;
-								//b = true;
-							}
-						}*/
 					}
 				}
 			}
@@ -340,7 +289,7 @@ void cBicho::MoveUp(vector<cBicho> *caixes, int *map)
 
 }
 
-void cBicho::MoveDown()
+void cBicho::MoveDown(vector<cBicho> *caixes, vector<vector<int>> map)
 {
 	/*int yaux;
 	
@@ -367,12 +316,53 @@ void cBicho::MoveDown()
 			delay = 0;
 		}
 	}*/
+		//x+=0.1*sin(rot*PI/180);
+		//z+=0.1*cos(rot*PI/180);
+
+		float xaux, zaux;
+		xaux=x;
+		zaux=z;
+		int tx,ty;
+		int suelo;
+		suelo = ((int)floor(y))/4;
+		GetTile(&tx,&ty);
 		x+=0.1*sin(rot*PI/180);
 		z+=0.1*cos(rot*PI/180);
+		cRect rect;
+
+		for(int i=-1;i<=1;++i) {
+			for(int j=-1;j<=1;++j) {
+				//if(!(i==0 && j==0)) {
+				if(map[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)]!=0) {
+					caixes[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
+					if(Collides(&rect)) {
+						z = zaux;
+						for(int i=-1;i<=1;++i) {
+							for(int j=-1;j<=1;++j) {
+								caixes[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
+								if(Collides(&rect)) {
+									x = xaux;
+									z-=0.1*cos(rot*PI/180);
+									for(int i=-1;i<=1;++i) {
+										for(int j=-1;j<=1;++j) {
+											caixes[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
+											if(Collides(&rect)) {
+												z = zaux;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
 }
 
 
-void cBicho::StrafeLeft()
+void cBicho::StrafeLeft(vector<cBicho> *caixes, vector<vector<int>> map)
 {
 	/*int xaux;
 	
@@ -399,11 +389,52 @@ void cBicho::StrafeLeft()
 			delay = 0;
 		}
 	}*/
-	x-=0.1*sin((rot+90)*0.017);
-	z-=0.1*cos((rot+90)*0.017);
+	//x-=0.1*sin((rot+90)*0.017);
+	//z-=0.1*cos((rot+90)*0.017);
+
+			float xaux, zaux;
+		xaux=x;
+		zaux=z;
+		int tx,ty;
+		int suelo;
+		suelo = ((int)floor(y))/4;
+		GetTile(&tx,&ty);
+		x-=0.1*sin((rot+90)*PI/180);
+		z-=0.1*cos((rot+90)*PI/180);
+		cRect rect;
+
+		for(int i=-1;i<=1;++i) {
+			for(int j=-1;j<=1;++j) {
+				//if(!(i==0 && j==0)) {
+				if(map[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)]!=0) {
+					caixes[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
+					if(Collides(&rect)) {
+						z = zaux;
+						for(int i=-1;i<=1;++i) {
+							for(int j=-1;j<=1;++j) {
+								caixes[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
+								if(Collides(&rect)) {
+									x = xaux;
+									z-=0.1*cos(rot*PI/180);
+									for(int i=-1;i<=1;++i) {
+										for(int j=-1;j<=1;++j) {
+											caixes[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
+											if(Collides(&rect)) {
+												z = zaux;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
 }
 
-void cBicho::StrafeRight()
+void cBicho::StrafeRight(vector<cBicho> *caixes, vector<vector<int>> map)
 {
 	/*int xaux;
 
@@ -431,8 +462,48 @@ void cBicho::StrafeRight()
 			delay = 0;
 		}
 	}*/
-	x+=0.1*sin((rot+90)*0.017);
-	z+=0.1*cos((rot+90)*0.017);
+	//x+=0.1*sin((rot+90)*0.017);
+	//z+=0.1*cos((rot+90)*0.017);
+			float xaux, zaux;
+		xaux=x;
+		zaux=z;
+		int tx,ty;
+		int suelo;
+		suelo = ((int)floor(y))/4;
+		GetTile(&tx,&ty);
+		x+=0.1*sin((rot+90)*PI/180);
+		z+=0.1*cos((rot+90)*PI/180);
+		cRect rect;
+
+		for(int i=-1;i<=1;++i) {
+			for(int j=-1;j<=1;++j) {
+				//if(!(i==0 && j==0)) {
+				if(map[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)]!=0) {
+					caixes[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
+					if(Collides(&rect)) {
+						z = zaux;
+						for(int i=-1;i<=1;++i) {
+							for(int j=-1;j<=1;++j) {
+								caixes[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
+								if(Collides(&rect)) {
+									x = xaux;
+									z-=0.1*cos(rot*PI/180);
+									for(int i=-1;i<=1;++i) {
+										for(int j=-1;j<=1;++j) {
+											caixes[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
+											if(Collides(&rect)) {
+												z = zaux;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
 }
 void cBicho::Shoot(int *map)
 {

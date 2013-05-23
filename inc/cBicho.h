@@ -60,10 +60,10 @@ public:
 	void GetArea(cRect *rc);
 	void DrawRect(int tex_id,float xo,float yo,float xf,float yf);
 
-	void MoveUp(vector<cBicho> *caixes, int *map);
-	void MoveDown();
-	void StrafeRight();
-	void StrafeLeft();
+	void MoveUp(vector<cBicho> *caixes, vector< vector<int>> map);
+	void MoveDown(vector<cBicho> *caixes, vector<vector<int>> map);
+	void StrafeRight(vector<cBicho> *caixes, vector<vector<int>> map);
+	void StrafeLeft(vector<cBicho> *caixes, vector<vector<int>> map);
 	void Shoot(int *map);
 	void Jump(int *map);
 	void Stop();
