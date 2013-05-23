@@ -40,6 +40,7 @@ private:
 	cShoot shoot;
 	cHud Hud;
 	vector<cBicho> caixes[3];
+	cBicho terra;
 	int camera;
 	float transX,transZ;
 	float rot,rotV;

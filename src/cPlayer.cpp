@@ -112,11 +112,11 @@ void cPlayer::Dead() {
 	alive = false;
 }
 
-void cPlayer::Logic(vector<cBicho> &caixes) {
+void cPlayer::Logic(cBicho &terra) {
 	cRect rect;
 	//GetArea(cRect *rc)
 	//GetArea(&rect);
-	caixes[caixes.size()-1].GetArea(&rect);
+	terra.GetArea(&rect);
 	//if(!caixes[caixes.size()-1].Collides(&rect)) {
 	if(!Collides(&rect)) {
 		float x,y,z;

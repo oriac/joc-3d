@@ -27,7 +27,7 @@ public:
 	void Respawn();
 	bool IsExplote();
 	string GetPoints();
-	void Logic(vector<cBicho> &caixes);
+	void Logic(cBicho &terra);
 
 private:
 	bool explote;

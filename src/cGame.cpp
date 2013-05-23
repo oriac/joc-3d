@@ -38,7 +38,7 @@ bool cGame::Init()
 	res = Data.LoadImage(IMG_FONT,"resources/im/font.png",GL_RGBA);
 	if(!res) return false;
 	Scene.Init();
-	res = Scene.LoadLevel(1,caixes);
+	res = Scene.LoadLevel(1,caixes,terra);
 	map = Scene.GetMap();
 	if(!res) return false;
 
@@ -92,7 +92,7 @@ bool cGame::Process()
 {
 	bool res=true;
 		if(shoot.IsActive()) {
-		shoot.Logic(caixes);
+		shoot.Logic(terra);
 		shoot.MoveUp(caixes,map);
 	}
 
@@ -157,7 +157,7 @@ bool cGame::Process()
 	else if(keys['k']) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
-	player.Logic(caixes);
+	player.Logic(terra);
 	
 	//Game Logic
 	//...
@@ -224,10 +224,11 @@ void cGame::Render()
 	}
 	
 	Scene.Draw(&Data);
-	for(unsigned int i=0;i<caixes.size();++i) {
-		caixes[i].DrawBB();
+	for(unsigned int k=0;k<3;++k) {
+		for(unsigned int i=0;i<caixes[k].size();++i) {
+			caixes[k][i].DrawBB();
+		}
 	}
-	
 	if (shoot.IsActive()) {
 		//shoot.GetPosition(&x,&y,&z);
 		//y+=0.1*sin(rotV*PI/180.0);
