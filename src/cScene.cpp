@@ -9,7 +9,7 @@ void cScene::Init()
 	MakeCubeDL((float)TILE_SIZE,(float)TILE_SIZE,(float)TILE_SIZE,1.0f,1.0f,1.0f);
 	MakeRampDL((float)TILE_SIZE,(float)TILE_SIZE,(float)TILE_SIZE,1.0f,1.0f,1.0f);
 }
-bool cScene::LoadLevel(int level, vector<cBicho> *caixes, cBicho &terra)
+bool cScene::LoadLevel(int level, vector<cBicho> *caixes, cBicho &terra, int *bullseyes)
 {
 	FILE *fd,*fd2;
 	char file[16],file2[16],tile;
@@ -37,6 +37,14 @@ bool cScene::LoadLevel(int level, vector<cBicho> *caixes, cBicho &terra)
 				//
 				map[(i*SCENE_WIDTH)+j]=0;
 			}
+			else if(tile == 6) {
+				cBicho caja((float)(j*TILE_SIZE),0.0,(float)((i+1)*-TILE_SIZE),4.0,4.0,4.0);
+				caixes[1].push_back(caja);
+				map[(i*SCENE_WIDTH)+j] = tile-48;
+				bullseyes[0] = j;
+				bullseyes[1] = 0;
+				bullseyes[2] = i+1;
+			}
 			else
 			{
 				//Tiles = 1,2,3,...
@@ -62,6 +70,11 @@ bool cScene::LoadLevel(int level, vector<cBicho> *caixes, cBicho &terra)
 				cBicho caja;
 				caixes[1].push_back(caja);
 				map2[(i*SCENE_WIDTH)+j]=0;
+			}
+			else if(tile == 6) {
+				cBicho caja((float)(j*TILE_SIZE),(float)TILE_SIZE,(float)((i+1)*-TILE_SIZE),4.0,4.0,4.0);
+				caixes[1].push_back(caja);
+				map2[(i*SCENE_WIDTH)+j] = tile-48;
 			}
 			else
 			{
@@ -115,6 +128,9 @@ void cScene::Draw(cData *Data)
 							break;
 					case 4: glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_WALL3));
 							glCallList(dl_ramp);
+							break;
+					case 6: glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_BULL));
+							glCallList(dl_cube);
 							break;
 				}
 			glPopMatrix();

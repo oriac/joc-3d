@@ -37,8 +37,10 @@ bool cGame::Init()
 	if(!res) return false;
 	res = Data.LoadImage(IMG_FONT,"resources/im/font.png",GL_RGBA);
 	if(!res) return false;
+	res = Data.LoadImage(IMG_BULL,"resources/im/bullseye.png",GL_RGBA);
+	if(!res) return false;
 	Scene.Init();
-	res = Scene.LoadLevel(1,caixes,terra);
+	res = Scene.LoadLevel(1,caixes,terra,bullseyes);
 	map = Scene.GetMap();
 	if(!res) return false;
 
@@ -121,6 +123,9 @@ bool cGame::Process()
 	else if(keys[51]) {
 		camera = 3;
 	}
+	else if(keys[52]) {
+		camera = 4;
+	}
 	if(camera == 1 || camera == 3) player.SetRot(rot);
 	if(keys['q']) {
 		player.StrafeLeft();
@@ -199,13 +204,22 @@ void cGame::Render()
 		gluLookAt(64,32,-16,0,0,-16,0,1,0);
 		break;
 	case 3:
-		glTranslatef(0,-(2),-10);
+		glTranslatef(0,-(1),-5);
 		glRotatef((-rotV),1,0,0);
 		glRotatef((-rot),0,1,0);
 		
 		//float x,y,z;
 		player.GetPosition(&x,&y,&z);
 		glTranslatef(-x-1,-y-1,-z-1);
+		break;
+	case 4:
+		glTranslatef(0,-(2),-5);
+		glRotatef((-rotV),1,0,0);
+		glRotatef((-rot),0,1,0);
+		
+		//float x,y,z;
+		shoot.GetPosition(&x,&y,&z);
+		glTranslatef(-x,-y,-z);
 		break;
 	default:
 		glTranslatef(0.0f,-2.0f,-40.0f);
@@ -242,7 +256,9 @@ void cGame::Render()
 	glLoadIdentity();
 	glOrtho(0,SCREEN_WIDTH,0,SCREEN_HEIGHT,0.1,100);
 	glMatrixMode(GL_MODELVIEW);
-	Hud.DrawCrossHair(Data.GetID(IMG_CROSSHAIR),SCREEN_WIDTH/2,SCREEN_HEIGHT/2);
+	if (camera == 3 || camera == 1) {
+		Hud.DrawCrossHair(Data.GetID(IMG_CROSSHAIR),SCREEN_WIDTH/2,SCREEN_HEIGHT/2);
+	}
 	glLoadIdentity();
 	Hud.Drawfps(Data.GetID(IMG_FONT), fps_dibuix, SCREEN_WIDTH, SCREEN_HEIGHT);
 	glMatrixMode(GL_PROJECTION);
