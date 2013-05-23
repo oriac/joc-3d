@@ -91,7 +91,7 @@ void cHud::Drawfps(int tex_id,int p, int x,int y) {
 		step_x = step_x%10;
 		//Draw(tex_id,tx,ty,step_x,step_y, x-20*3,y-20*3);
 		//Draw(tex_id,tx,ty,step_x,step_y, x-100*i,x-100);
-		Draw(tex_id,tx,ty,step_x,step_y, (x/1.5)+20*i,x/1.5);
+		Draw(tex_id,tx,ty,step_x,step_y, (x/1.5)+20*i,y/1.5);
 	}
 }
 

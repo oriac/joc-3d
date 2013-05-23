@@ -22,7 +22,7 @@ public:
 	virtual ~cScene(void);
 
 	void Init();
-	bool LoadLevel(int level, vector<cBicho> *caixes, cBicho &terra);
+	bool LoadLevel(int level, vector<cBicho> *caixes, cBicho &terra,  int *bullseyes);
 	void Draw(cData *Data);
 	int *GetMap();
 
