@@ -265,7 +265,7 @@ void cShoot::MoveUp(vector<cBicho> *caixes, int *map)
 		//z-=iner*cos(rot*PI/180);
 		x+=-cos(PI/180*rotV)*sin(PI/180*rot)*iner;
 		z+=-cos(PI/180*rotV)*cos(PI/180*rot)*iner;
-		y+=sin(PI/180*rotV)*iner;
+		//y+=sin(PI/180*rotV)*iner;
 		if(y<1)y=1;
 		int suelo;
 		suelo = ((int)floor(y))/4;
@@ -275,6 +275,31 @@ void cShoot::MoveUp(vector<cBicho> *caixes, int *map)
 		bool b=false;
 		bool desliza_z=true;
 		bool desliza_x=true;
+		bool desliza_y=true;
+		//if(suelo>1)suelo=1;
+		//caixes[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
+		//if(map[(ty)*SCENE_DEPTH+ (tx)]!=0) {
+		caixes[suelo][(ty)*SCENE_DEPTH+ (tx)].GetArea(&rect);
+		if(!Collides(&rect)) {
+			y+=sin(PI/180*rotV)*iner;
+			suelo = ((int)floor(y))/4;
+			caixes[suelo][(ty)*SCENE_DEPTH+ (tx)].GetArea(&rect);
+			if(Collides(&rect)) {
+				if(rotV >=0 && rotV < 90) {
+					//double rotaux = 90.0 - (rot);
+					rotV -= 2*rotV;
+					//rot = 360-(rot);
+					//rot = fmod(rot,360);
+
+				}
+				else if(rotV >=-90 && rotV < 0) {
+					//double rotaux = (rot-90);
+					//double rotaux2 = 90-rotaux;
+					rotV -= 2*rotV;
+				}
+			}
+		}
+		//}
 		for(int i=-1;i<=1 && !b;++i) {
 			for(int j=-1;j<=1 && !b;++j) {
 				//if(!(i==0 && j==0)) {
@@ -364,7 +389,7 @@ void cShoot::MoveUp(vector<cBicho> *caixes, int *map)
 		}
 		SetPosition(x,y,z);
 		rot = fmod(rot,360);
-		SetRot(rot);
+		//SetRot(rot);
 		/*for(unsigned int i=1;i<=4;++i) {
 			caixes[tx*SCENE_WIDTH+ty+i].GetArea(&rect);
 			if(Collides(&rect)) {
