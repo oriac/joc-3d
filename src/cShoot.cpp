@@ -23,7 +23,7 @@ void cShoot::Draw()
 			glTranslatef(x,y,z);
 			GLUquadricObj *q = gluNewQuadric();
 			//glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_FLOOR));
-			gluSphere(q, 0.2,16,16);
+			gluSphere(q, 0.2,64,64);
 			gluDeleteQuadric(q);
 		glPopMatrix();
 }
@@ -284,7 +284,7 @@ void cShoot::MoveUp(vector<cBicho> *caixes, vector< vector<int> > map)
 				suelo = ((int)floor(y))/4;
 				caixes[suelo][(ty)*SCENE_DEPTH+ (tx)].GetArea(&rect);
 				if(Collides(&rect)) {
-					if(rotV >=0 && rotV < 90) {
+					if(rotV >=0 && rotV <= 90) {
 						//double rotaux = 90.0 - (rot);
 						rotV -= 2*rotV;
 						//rot = 360-(rot);

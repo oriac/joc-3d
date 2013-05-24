@@ -1,4 +1,5 @@
 
+#include "../gl/glew.h"
 #include "../inc/Globals.h"
 #include "../inc/cGame.h"
 

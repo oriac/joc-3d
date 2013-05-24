@@ -12,9 +12,45 @@ cShader::~cShader(void)
 {
 }
 
-void cShader::loadfromFile(char* vertexFile, char* fragmentFile) 
+void cShader::loadfromFile() 
 {
+	vshader = glCreateShader(GL_VERTEX_SHADER);
 	load("vertexshader.txt");
+	GLint x=5;
+	GLubyte;
+	GLint	length = (GLint) strlen((const char*)ShaderSource);
+	glShaderSource(vshader, 1, (const GLchar **)&ShaderSource, &length);
+	glCompileShader(vshader);
+
+	glGetShaderiv(vshader,
+ 	GL_COMPILE_STATUS,
+ 	&x); GL_TRUE;
+
+	fshader = glCreateShader(GL_FRAGMENT_SHADER);
+	load("fragmentshader.txt");
+	length = (GLint) strlen((const char*)ShaderSource);
+	glShaderSourceARB(fshader, 1, (const GLchar **)&ShaderSource, &length);
+	glCompileShader(fshader);
+
+	x = 5;
+	glGetShaderiv(vshader,
+ 	GL_COMPILE_STATUS,
+ 	&x); GL_TRUE;
+
+	programa = glCreateProgram();
+	glAttachShader(programa, vshader);
+	glAttachShader(programa, fshader);
+	glLinkProgram(programa);
+
+	
+}
+
+void cShader::render() {
+	glUseProgram(programa);
+}
+
+void cShader::norender() {
+	glUseProgram(0);
 }
 
 unsigned long getFileLength(ifstream& file)

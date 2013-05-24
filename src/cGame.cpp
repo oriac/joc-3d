@@ -15,6 +15,7 @@ bool cGame::Init()
 	//Graphics initialization
 	glClearColor(0.0f,0.0f,0.0f,0.0f);
 	glEnable(GL_CULL_FACE);
+	glEnable(GL_NORMALIZE);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(45.0,(float)SCREEN_WIDTH/(float)SCREEN_HEIGHT,0.1,100);
@@ -52,6 +53,9 @@ bool cGame::Init()
 	enemy.SetPosition(4*2,0,4*-2);
 	enemy.SetVol(4,4,4);
 	enemy.Active();
+	glewInit();
+	shader.loadfromFile();
+
 	return res;
 }
 
@@ -196,9 +200,11 @@ bool cGame::Process()
 void cGame::Render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//shader.render();
 	float x,y,z;
 
 	glLoadIdentity();
+
 	
 	switch(camera) {
 	case 1:
@@ -237,18 +243,31 @@ void cGame::Render()
 		glRotatef(20,1.0f,0.0f,0.0f);
 		break;
 	}
+		float pos2[4] = {0, 4, 0, 0.0};
+			glLightfv(GL_LIGHT0, GL_POSITION, pos2);
 	glBegin(GL_LINES);
 	glColor3f(1,0,0); glVertex3f(0,0,0); glVertex3f(20,0,0); // X
 	glColor3f(0,1,0); glVertex3f(0,0,0); glVertex3f(0,20,0); // Y
 	glColor3f(0,0,1); glVertex3f(0,0,0); glVertex3f(0,0,20); // Z
 	glEnd();
 	glColor3f(1,1,1);
-	//void gluSphere(GLUquadric *qobj,GLdouble radius,GLint slices,GLint stacks);
+	//void gluSphere(GLUquadric *qobj,GLdouble radius,GLint slices,GLint stacks
+				
 	if(camera != 1) {
+		shader.render();
 		player.Draw();
+		shader.norender();
+		
 	}
 	if(enemy.IsAlive()) enemy.Draw(0,&Data);
+	
+
+	shader.render();
+
 	Scene.Draw(&Data);
+		
+	shader.norender();
+	
 	for(unsigned int k=0;k<3;++k) {
 		for(unsigned int i=0;i<caixes[k].size();++i) {
 			caixes[k][i].DrawBB();
@@ -277,5 +296,7 @@ void cGame::Render()
 	glLoadIdentity();
 	gluPerspective(45.0,(float)SCREEN_WIDTH/(float)SCREEN_HEIGHT,0.1,100);
 	glMatrixMode(GL_MODELVIEW);
+
+	//shader.norender();
 	glutSwapBuffers();
 }

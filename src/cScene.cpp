@@ -233,10 +233,18 @@ void cScene::MakeCubeDL(float w,float h,float d,float tw,float th,float td)
 			glTexCoord2f(  tw,   th); glVertex3f(w, h,  0);
 			glTexCoord2f(0.0f,   th); glVertex3f(0, h,  0);
 			// Back Face
-			glTexCoord2f(  tw, 0.0f); glVertex3f(0, 0, -d);
-			glTexCoord2f(  tw,   th); glVertex3f(0, h, -d);
-			glTexCoord2f(0.0f,   th); glVertex3f(w, h, -d);
-			glTexCoord2f(0.0f, 0.0f); glVertex3f(w, 0, -d);
+			//glTexCoord2f(  tw, 0.0f); glVertex3f(0, 0, -d);
+			for(float x=0; x<h; x+=0.5){
+			   for(float z = 0; z < w; z += 0.5){
+				   glVertex3f(0, 0, z);
+				   glVertex3f(0, h, -d);
+				   glVertex3f(w, h, -d);
+				   glVertex3f(w, 0, -d);
+			   }
+		   }
+			//glTexCoord2f(  tw,   th); glVertex3f(0, h, -d);
+			//glTexCoord2f(0.0f,   th); glVertex3f(w, h, -d);
+			//glTexCoord2f(0.0f, 0.0f); glVertex3f(w, 0, -d);
 			// Right face
 			glTexCoord2f(  td, 0.0f); glVertex3f(w, 0, -d);
 			glTexCoord2f(  td,   th); glVertex3f(w, h, -d);

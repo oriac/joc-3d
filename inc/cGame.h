@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../gl/glew.h"
 #include "../inc/cScene.h"
 #include "../inc/cData.h"
 #include "../inc/cPlayer.h"
@@ -7,6 +8,7 @@
 //#include "../inc/cBox.h"
 #include "../inc/cShoot.h"
 #include "../inc/cEnemy.h"
+#include "../inc/cShader.h"
 #include <vector>
 
 #define SCREEN_WIDTH	800
@@ -41,6 +43,7 @@ private:
 	cShoot shoot;
 	cEnemy enemy;
 	cHud Hud;
+	cShader shader;
 	vector<cBicho> caixes[3];
 	int bullseyes[3];
 	cBicho terra;
@@ -52,4 +55,5 @@ private:
 	vector< vector<int> > map;
 	int time_init,time_end,fps;
 	int fps_dibuix;
+
 };

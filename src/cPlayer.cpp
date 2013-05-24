@@ -63,11 +63,16 @@ void cPlayer::Draw()
 	//DrawRect(tex_id,xo,yo,xf,yf);
 	float x,y,z;
 	GetPosition(&x,&y,&z);
+	
 		glPushMatrix();
+		
 			glTranslatef(x+1,y,z+1);
+			double rot = GetRot();
+			glRotatef(0,1,0,-rot);
+			//float pos2[4] = {x, y, z, 1.0};
 			GLUquadricObj *q = gluNewQuadric();
 			//glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_FLOOR));
-			gluSphere(q, 1,16,16);
+			gluSphere(q, 1,128,128);
 			gluDeleteQuadric(q);
 		glPopMatrix();
 }
