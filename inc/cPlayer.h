@@ -34,4 +34,5 @@ private:
 	int hp;
 	bool alive;
 	int points;
+	int rotV;
 };

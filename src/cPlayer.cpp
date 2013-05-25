@@ -65,10 +65,10 @@ void cPlayer::Draw()
 	GetPosition(&x,&y,&z);
 	
 		glPushMatrix();
-		
+		    double rot = GetRot();
 			glTranslatef(x+1,y,z+1);
-			double rot = GetRot();
-			glRotatef(0,1,0,-rot);
+			glRotatef((rot),0,1,0);
+
 			//float pos2[4] = {x, y, z, 1.0};
 			GLUquadricObj *q = gluNewQuadric();
 			//glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_FLOOR));

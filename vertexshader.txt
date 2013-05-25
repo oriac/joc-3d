@@ -1,0 +1,15 @@
+#version 330 compatibility
+
+out vec3 normal;
+out vec3 lightDir;
+
+void main()
+{
+	vec4 p0 = gl_ModelViewMatrix * gl_Vertex;
+	gl_Position = gl_ProjectionMatrix * p0;
+	lightDir = normalize(vec3(gl_LightSource[0].position-p0));
+	normal = gl_NormalMatrix * gl_Normal;
+	gl_FrontColor = gl_Color;
+	//gl_BackColor = vec4(0,0,0,0);
+	gl_TexCoord[0] = gl_MultiTexCoord0;
+}

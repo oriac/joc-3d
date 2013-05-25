@@ -116,6 +116,7 @@ bool cGame::Process()
 	
 	//Process Input
 	rot-=(x2-x1);
+	player.SetRot(rot);
 	x1 = x2;
 	if(rot>360) rot = 0;
 	else if(rot<0)rot = 360;
@@ -205,7 +206,8 @@ void cGame::Render()
 
 	glLoadIdentity();
 
-	
+	float pos2[4] = {0,0, -2, 1.0};
+			glLightfv(GL_LIGHT0, GL_POSITION, pos2);
 	switch(camera) {
 	case 1:
 		
@@ -243,8 +245,7 @@ void cGame::Render()
 		glRotatef(20,1.0f,0.0f,0.0f);
 		break;
 	}
-		float pos2[4] = {0, 4, 0, 0.0};
-			glLightfv(GL_LIGHT0, GL_POSITION, pos2);
+		
 	glBegin(GL_LINES);
 	glColor3f(1,0,0); glVertex3f(0,0,0); glVertex3f(20,0,0); // X
 	glColor3f(0,1,0); glVertex3f(0,0,0); glVertex3f(0,20,0); // Y

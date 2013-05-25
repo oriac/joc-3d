@@ -236,10 +236,10 @@ void cScene::MakeCubeDL(float w,float h,float d,float tw,float th,float td)
 			//glTexCoord2f(  tw, 0.0f); glVertex3f(0, 0, -d);
 			for(float x=0; x<h; x+=0.5){
 			   for(float z = 0; z < w; z += 0.5){
-				   glVertex3f(0, 0, z);
-				   glVertex3f(0, h, -d);
-				   glVertex3f(w, h, -d);
-				   glVertex3f(w, 0, -d);
+				   glVertex3f(x, z, -d);
+				   glVertex3f(x, z+0.5, -d);
+				   glVertex3f(x+0.5, z+0.5, -d);
+				   glVertex3f(x+0.5, z, -d);
 			   }
 		   }
 			//glTexCoord2f(  tw,   th); glVertex3f(0, h, -d);
