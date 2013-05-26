@@ -67,12 +67,15 @@ void cPlayer::Draw()
 		glPushMatrix();
 		    double rot = GetRot();
 			glTranslatef(x+1,y,z+1);
+			float pos2[4] = {0,+2, 0, 0.0};
+	glLightfv(GL_LIGHT0, GL_POSITION, pos2);
 			glRotatef((rot),0,1,0);
 
 			//float pos2[4] = {x, y, z, 1.0};
 			GLUquadricObj *q = gluNewQuadric();
 			//glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_FLOOR));
 			gluSphere(q, 1,128,128);
+	
 			gluDeleteQuadric(q);
 		glPopMatrix();
 }
@@ -117,7 +120,7 @@ void cPlayer::Dead() {
 	alive = false;
 }
 
-void cPlayer::Logic(cBicho &terra) {
+/*void cPlayer::Logic(cBicho &terra, vector<cBicho> *caixes) {
 	cRect rect;
 	//GetArea(cRect *rc)
 	//GetArea(&rect);
@@ -127,7 +130,46 @@ void cPlayer::Logic(cBicho &terra) {
 		float x,y,z;
 		GetPosition(&x,&y,&z);
 		y -= 0.05;
+		//SetPosition(x,y,z);
+		int suelo;
+		suelo = ((int)floor(y))/4;
+		int tx,ty;
+		GetTile(&tx,&ty);
+		caixes[suelo][(ty)*SCENE_DEPTH+ (tx)].GetArea(&rect);
+		if(Collides(&rect)) y += 0.051;
 		SetPosition(x,y,z);
 	}
+}*/
+
+void cPlayer::Logic(cBicho &terra, vector<cBicho> *caixes, vector<vector<int>> &map) {
+	float yaux;
+	float x,y,z;
+		GetPosition(&x,&y,&z);
+		yaux=y;
+		int tx,ty;
+		y-=0.05;
+		int suelo;
+		suelo = ((int)floor(y))/4;
+		GetTile(&tx,&ty);
+		
+		cRect rect;
+		terra.GetArea(&rect);
+		if(!Collides(&rect)) {
+			for(int i=-1;i<=1;++i) {
+				for(int j=-1;j<=1;++j) {
+					//if(!(i==0 && j==0)) {
+					if(map[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)]!=0) {
+						caixes[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
+						if(Collides(&rect)) {
+							y = yaux;
+						}
+					}
+				}
+			}
+		}
+		else {
+			y = yaux;
+		}
+		SetPosition(x,y,z);
 }
 

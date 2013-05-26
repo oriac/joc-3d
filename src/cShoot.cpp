@@ -218,39 +218,13 @@ void cShoot::Logic(cBicho &suelo) {
 	if(!Collides(&rect)) {
 		float x,y,z;
 		GetPosition(&x,&y,&z);
-		y -= 0.01;
+		//y -= 0.01;
 		SetPosition(x,y,z);
 	}
 }
 
-void cShoot::MoveUp(vector<cBicho> *caixes, vector< vector<int> > map)
+void cShoot::MoveUp(vector<cBicho> *caixes, vector< vector<int> > &map, cBicho &terra)
 {
-	/*int yaux;
-
-	//Whats next tile?
-	if( (y % TILE_SIZE) == 0)
-	{
-		yaux = y;
-		y += STEP_LENGTH*speed;
-
-		if(CollidesMapTop(map))
-		{
-			y = yaux;
-			state = STATE_LOOKUP;
-		}
-	}
-	//Advance, no problem
-	else
-	{
-		y += STEP_LENGTH*speed;
-
-		if(state != STATE_WALKUP && state != STATE_DUPLEFT && state != STATE_DUPRIGHT)
-		{
-			state = STATE_WALKUP;
-			seq = 0;
-			delay = 0;
-		}
-	}*/
 		double xaux, zaux, yaux;
 		float x,y,z;
 		//float rot;
@@ -269,6 +243,7 @@ void cShoot::MoveUp(vector<cBicho> *caixes, vector< vector<int> > map)
 		int suelo;
 		suelo = ((int)floor(y))/4;
 		y+=sin(PI/180*rotV)*iner;
+	    y-=0.01;
 		SetPosition(x,y,z);
 		cRect rect;
 		bool b=false;
@@ -277,10 +252,15 @@ void cShoot::MoveUp(vector<cBicho> *caixes, vector< vector<int> > map)
 		bool desliza_y=true;
 		//if(suelo>1)suelo=1;
 		//caixes[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
+		terra.GetArea(&rect);
+		if(Collides(&rect)) {
+			y=yaux;
+			rotV -= 2*rotV;
+		}
 		if(map[suelo][(ty)*SCENE_DEPTH+ (tx)]!=0 || map[suelo+1][(ty)*SCENE_DEPTH+ (tx)]!=0) {
 			caixes[suelo][(ty)*SCENE_DEPTH+ (tx)].GetArea(&rect);
 			if(!Collides(&rect)) {
-				y+=sin(PI/180*rotV)*iner;
+				//y+=sin(PI/180*rotV)*iner;
 				suelo = ((int)floor(y))/4;
 				caixes[suelo][(ty)*SCENE_DEPTH+ (tx)].GetArea(&rect);
 				if(Collides(&rect)) {
@@ -296,6 +276,7 @@ void cShoot::MoveUp(vector<cBicho> *caixes, vector< vector<int> > map)
 						//double rotaux2 = 90-rotaux;
 						rotV -= 2*rotV;
 					}
+					y=yaux;
 				}
 			}
 		}
