@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../inc/cBicho.h"
-//#include "../inc/cBox.h"
+#include "../inc/cScene.h"
 #include <sstream>
 #include <string>
 #include <vector>
@@ -27,7 +27,7 @@ public:
 	void Respawn();
 	bool IsExplote();
 	string GetPoints();
-	void Logic(cBicho &terra);
+	void Logic(cBicho &terra, vector<cBicho> *caixes, vector<vector<int>> &map);
 
 private:
 	bool explote;
