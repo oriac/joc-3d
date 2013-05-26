@@ -7,9 +7,115 @@ cGame::cGame(void) {
 }
 cGame::~cGame(void){}
 
+void cGame::NextLevel() {
+	//Sleep(6000);
+	for (int i = 0; i < 3; i++) {
+		caixes[i].clear();
+	}
+	
+	if (actualLevel==1) {
+		++actualLevel;
+		player.SetPosition(4*1,6,4*-8);
+		enemy.SetPosition(4*1,4*1,4*-2);
+		enemy.Active();
+		/*Sound.PlaySound("resources/music/ff7.wav",true);
+		for (int i = 0; i < 4; ++i) {
+			if (i ==0) Item[i].SetTile(23,27);
+			else if (i ==1) Item[i].SetTile(15,65);
+			else if (i ==2) Item[i].SetTile(26,91);
+			else Item[i].SetTile(13,115);
+			Item[i].SetActive(true);
+		}
+		Player.SetTile(4,1);
+		Player2.SetTile(7,1);*/
+	}
+	else if (actualLevel == 2 && player.isAlive()) {
+		//Sound.PlaySoundA("resources/music/pvp.mp3",true);
+		actualLevel = 3;
+		/*for (int i = 0; i < 4; ++i) {
+			if (i ==0) Item[i].SetTile(17,16);
+			else if (i ==1) Item[i].SetTile(13,16);
+			else if (i ==2) Item[i].SetTile(3,3);
+			else Item[i].SetTile(27,3);
+			Item[i].SetActive(true);
+		}*/
+		player.SetTile(1,1);
+		//Player2.SetTile(22,20);
+	}
+	else if(actualLevel == 2) {
+		actualLevel =1;
+		this->Init();
+	}
+	bool result = false;
+	result = Scene.LoadLevel(actualLevel,caixes,terra,bullseyes);
+	Scene.GetMap(map);
+	//Scene.ResetCam();
+	//if (actualLevel == 3) Scene.Scroll(80);
+
+	/*vector<Point> pat (4);
+	for (int i = 0; i < 10; ++i) {
+		Enemy[i].Init(true, pat);
+		Enemy[i].SetWidthHeight(32,32);
+		if (i < 5) Enemy[i].SetTile((i*4)%32,36);
+		else Enemy[i].SetTile((i*2)%32,72);
+		Enemy[i].SetSpeed(1);
+
+	}
+	
+	Point p1,p2,p3,p4;
+	p1.tilex = 29;
+	p1.tiley = 6;
+	p2.tilex = 29;
+	p2.tiley= 3;
+	p3.tilex = 4;
+	p3.tiley = 3;
+	p4.tilex = 4;
+	p4.tiley = 6;
+	for ( int i = 0; i < 10; i++) {
+		int aux;
+		if ( i < 5 ) aux = 46;
+		else if ( i >= 5) aux = 120;
+		p1.tiley = aux+2;
+		p2.tiley = aux;
+		p3.tiley = aux;
+		p4.tiley = aux+2;
+		pat[0] = p1;
+		pat[1] = p2;
+		pat[2] = p3;
+		pat[3] = p4;
+		Enemy2[i].Init(false,pat);
+		Enemy2[i].SetWidthHeight(32,32);
+		Enemy2[i].SetTile(4+(i*2),aux);
+		Enemy2[i].SetSpeed(1);
+	}
+	firstPatrol = false;
+	firstTrap = false;
+	secondPatrol = false;
+		//Shoots init
+	for (int i = 0; i < 100; ++i) {
+		Shoot[i].SetWidthHeight(16,16);
+		Shoot[i].SetSpeed(2);
+		Shoot[i].SetActive(false);
+	}
+	for (int i = 0; i < 100; ++i) {
+		Shoot2[i].SetWidthHeight(16,16);
+		Shoot2[i].SetSpeed(2);
+		Shoot2[i].SetActive(false);
+	}
+	for (int i = 0; i < 500; ++i) {
+		EnemyShoot[i].SetWidthHeight(16,16);
+		EnemyShoot[i].SetSpeed(2);
+		EnemyShoot[i].SetActive(false);
+	}
+	shootCount = 0;
+	shootCount2 = 0;
+	enemyShootCount = 0;*/
+}
+
 bool cGame::Init()
 {
 	bool res=true;
+	actualLevel = 1;
 	time_init=glutGet(GLUT_ELAPSED_TIME);
 	fps = fps_dibuix = 0;
 	//Graphics initialization
@@ -43,14 +149,14 @@ bool cGame::Init()
 	res = Data.LoadImage(IMG_BULL,"resources/im/bullseye.png",GL_RGBA);
 	if(!res) return false;
 	Scene.Init();
-	res = Scene.LoadLevel(1,caixes,terra,bullseyes);
+	res = Scene.LoadLevel(actualLevel,caixes,terra,bullseyes);
 	Scene.GetMap(map);
 	if(!res) return false;
 
-	player.SetPosition(8,6,-8);
+	player.SetPosition(4*1,6,4*-8);
 	player.SetVol(2,2,2);
 	shoot.SetVol(0.4,0.4,0.4);
-	enemy.SetPosition(4*2,0,4*-2);
+	enemy.SetPosition(4*1,0,4*-2);
 	enemy.SetVol(4,4,4);
 	enemy.Active();
 	glewInit();
@@ -110,6 +216,7 @@ bool cGame::Process()
 		if(enemy.Collides(&rect) && enemy.IsAlive()) {
 			shoot.SetActive(false);
 			enemy.kill();
+			this->NextLevel();
 		}
 	}
 

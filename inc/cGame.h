@@ -21,11 +21,11 @@ class cGame
 public:
 	cGame(void);
 	virtual ~cGame(void);
-
+	
 	bool Init();
 	bool Loop();
 	void Finalize();
-
+	void NextLevel();
 	//Input
 	void ReadKeyboard(unsigned char key, int x, int y, bool press);
 	void ReadMouse(int button, int state, int x, int y);
@@ -48,6 +48,7 @@ private:
 	int bullseyes[3];
 	cBicho terra;
 	int camera;
+	int actualLevel;
 	float transX,transZ;
 	float rot,rotV;
 	bool mouseState;
