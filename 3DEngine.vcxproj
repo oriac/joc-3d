@@ -79,12 +79,15 @@
   <ItemGroup>
     <ClInclude Include="inc\cBicho.h" />
     <ClInclude Include="inc\cBox.h" />
+    <ClInclude Include="inc\cCamara.h" />
     <ClInclude Include="inc\cData.h" />
+    <ClInclude Include="inc\cEnemy.h" />
     <ClInclude Include="inc\cGame.h" />
     <ClInclude Include="inc\cHud.h" />
     <ClInclude Include="inc\corona.h" />
     <ClInclude Include="inc\cPlayer.h" />
     <ClInclude Include="inc\cScene.h" />
+    <ClInclude Include="inc\cShader.h" />
     <ClInclude Include="inc\cShoot.h" />
     <ClInclude Include="inc\cTexture.h" />
     <ClInclude Include="inc\Globals.h" />
@@ -92,11 +95,14 @@
   <ItemGroup>
     <ClCompile Include="src\cBicho.cpp" />
     <ClCompile Include="src\cBox.cpp" />
+    <ClCompile Include="src\cCamara.cpp" />
     <ClCompile Include="src\cData.cpp" />
+    <ClCompile Include="src\cEnemy.cpp" />
     <ClCompile Include="src\cGame.cpp" />
     <ClCompile Include="src\cHud.cpp" />
     <ClCompile Include="src\cPlayer.cpp" />
     <ClCompile Include="src\cScene.cpp" />
+    <ClCompile Include="src\cShader.cpp" />
     <ClCompile Include="src\cShoot.cpp" />
     <ClCompile Include="src\cTexture.cpp" />
     <ClCompile Include="src\GLUTMain.cpp" />

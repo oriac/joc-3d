@@ -80,6 +80,7 @@ public:
 	float GetRot();
 
 	void DrawBB();
+	void DrawLines();
 	
 private:
 	float x,y,z;

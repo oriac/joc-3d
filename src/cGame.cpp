@@ -210,7 +210,7 @@ bool cGame::Process()
 	bool res=true;
 		if(shoot.IsActive()) {
 		shoot.Logic(terra);
-		shoot.MoveUp(caixes,map);
+		shoot.MoveUp(caixes,map,terra);
 		cRect rect;
 		shoot.GetArea(&rect);
 		if(enemy.Collides(&rect) && enemy.IsAlive()) {
@@ -285,7 +285,7 @@ bool cGame::Process()
 	else if(keys['k']) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
-	player.Logic(terra);
+	player.Logic(terra,caixes,map);
 	
 	//Game Logic
 	//...
@@ -313,7 +313,7 @@ void cGame::Render()
 
 	glLoadIdentity();
 
-	float pos2[4] = {0,0, -2, 1.0};
+	float pos2[4] = {0,0, -2, 0.0};
 			glLightfv(GL_LIGHT0, GL_POSITION, pos2);
 	switch(camera) {
 	case 1:
@@ -375,12 +375,30 @@ void cGame::Render()
 	Scene.Draw(&Data);
 		
 	shader.norender();
-	
+			/*glColor3f( 0.0f, 0.0f, 0.0f );
+			glLineWidth(4.0f);
+			glPolygonOffset( -1.0f, -1.0f );
+			//caixes[k][i].DrawBB();
+			Scene.Draw(&Data);*/
+	glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+	glEnable( GL_POLYGON_OFFSET_LINE );      
+			
+	for(unsigned int k=0;k<2;++k) {
+		for(unsigned int i=0;i<caixes[k].size();++i) {
+			glColor3f( 0.0f, 0.0f, 0.0f );
+			glLineWidth(4.0f);
+			glPolygonOffset( -1.0f, -1.0f );
+			caixes[k][i].DrawLines();
+		}
+	}
+	glDisable( GL_POLYGON_OFFSET_FILL );
+	glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 	for(unsigned int k=0;k<3;++k) {
 		for(unsigned int i=0;i<caixes[k].size();++i) {
 			caixes[k][i].DrawBB();
 		}
 	}
+	glColor3f( 1.0f, 1.0f, 1.0f );
 	if (shoot.IsActive()) {
 		//shoot.GetPosition(&x,&y,&z);
 		//y+=0.1*sin(rotV*PI/180.0);

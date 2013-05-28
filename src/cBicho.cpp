@@ -599,14 +599,53 @@ void cBicho::DrawBB() {
 
 	glColor3f(1,1,0); glVertex3f(x+w,y,z+d); glVertex3f(x,y,z+d); // X
 	glColor3f(1,1,0); glVertex3f(x+w,y,z+d); glVertex3f(x+w,y,z); // Y
-	//glColor3f(1,1,0); glVertex3f(x+w,y,z+d); glVertex3f(x+w,y+h,z); // Z
+	//glColor3f(1,1,0);; glVertex3f(x+w,y,z+d); glVertex3f(x+w,y+h,z); // Z
 
 	glColor3f(1,1,0); glVertex3f(x,y+h,z); glVertex3f(x,y+h,z+d); // X
 	glColor3f(1,1,0); glVertex3f(x,y+h,z); glVertex3f(x+w,y+h,z); // Y
-	//glColor3f(1,1,0); glVertex3f(x+w,y+h,z+d); glVertex3f(x+w,y+h,z); // Z
+	//glColor3f(1,1,0);; glVertex3f(x+w,y+h,z+d); glVertex3f(x+w,y+h,z); // Z
 
 	glColor3f(1,1,0); glVertex3f(x,y,z+d); glVertex3f(x,y+h,z+d); // X
 	glColor3f(1,1,0); glVertex3f(x+w,y,z); glVertex3f(x+w,y+h,z); // Y
 	glEnd();
+}
 
+void cBicho::DrawLines() {
+	glBegin(GL_QUADS);
+			// Front Face
+			glNormal3f(0,0,1);
+			glVertex3f(x+0, y+0,  z+0+4);
+			glVertex3f(x+w, y+0,  z+0+4);
+			glVertex3f(x+w, y+h,  z+0+4);
+			glVertex3f(x+0, y+h,  z+0+4);
+			// Back Face
+			glVertex3f(x+0, y+0, -d+z+4);
+			glVertex3f(x+0, h+y, -d+z+4);
+			glVertex3f(w+x, h+y, -d+z+4);
+			glVertex3f(w+x, y+0, -d+z+4);
+			// Right face
+			glNormal3f(1,0,0);
+			glVertex3f(x+w, y+0, -d+z+4);
+			glVertex3f(x+w, y+h, -d+z+4);
+			glVertex3f(x+w, y+h,  0+z+4);
+			glVertex3f(x+w, y+0,  0+z+4);
+			// Left Face
+			glNormal3f(+4,0,0);
+			glVertex3f(x+0, y+0, -d+z+4);
+			glVertex3f(x+0, y+0,  0+z+4);
+			glVertex3f(x+0, y+h,  0+z+4);
+			glVertex3f(x+0, y+h, -d+z+4);
+			// Bottom Face
+			glNormal3f(0,+4,0);
+			glVertex3f(x+0, y+0, -d+z+4);
+			glVertex3f(x+w, y+0, -d+z+4);
+			glVertex3f(x+w, y+0,  0+z+4);
+			glVertex3f(x+0, y+0,  0+z+4);
+			// Top Face
+			glNormal3f(0,+4,0);
+			glVertex3f(x+0, h+y, -d+z+4);
+			glVertex3f(x+0, h+y,  0+z+4);
+			glVertex3f(x+w, h+y,  0+z+4);
+			glVertex3f(x+w, h+y, -d+z+4);
+		glEnd();
 }

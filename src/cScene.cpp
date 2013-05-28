@@ -129,7 +129,7 @@ bool cScene::LoadLevel(int level, vector<cBicho> *caixes, cBicho &terra, int *bu
 
 	float w  = (float)SCENE_WIDTH*TILE_SIZE;
 	float d  = (float)SCENE_DEPTH*TILE_SIZE;
-	cBicho caja(0.0,0,-40.0,w,1,d);
+	cBicho caja(0.0,-1,-40.0,w,1,d);
 	terra = caja;
 	//terra(0.0,0,-40.0,w,1,d);
 	//terra.S
@@ -204,6 +204,7 @@ void cScene::Draw(cData *Data)
 	glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_FLOOR));
 	glBegin(GL_QUADS);
 		// Bottom Face
+		glNormal3f(0,1,0);
 		glTexCoord2f(  tw,   td); glVertex3f(0, 0, 0);
 		glTexCoord2f(0.0f,   td); glVertex3f(w, 0, 0);
 		glTexCoord2f(0.0f, 0.0f); glVertex3f(w, 0,-d);
@@ -228,6 +229,7 @@ void cScene::MakeCubeDL(float w,float h,float d,float tw,float th,float td)
 	glNewList(dl_cube,GL_COMPILE);
 		glBegin(GL_QUADS);
 			// Front Face
+			glNormal3f(0,0,1);
 			glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0,  0);
 			glTexCoord2f(  tw, 0.0f); glVertex3f(w, 0,  0);
 			glTexCoord2f(  tw,   th); glVertex3f(w, h,  0);
@@ -236,6 +238,7 @@ void cScene::MakeCubeDL(float w,float h,float d,float tw,float th,float td)
 			//glTexCoord2f(  tw, 0.0f); glVertex3f(0, 0, -d);
 			for(float x=0; x<h; x+=0.5){
 			   for(float z = 0; z < w; z += 0.5){
+				   glNormal3f(0,0,-1);
 				   glVertex3f(x, z, -d);
 				   glVertex3f(x, z+0.5, -d);
 				   glVertex3f(x+0.5, z+0.5, -d);
@@ -246,21 +249,25 @@ void cScene::MakeCubeDL(float w,float h,float d,float tw,float th,float td)
 			//glTexCoord2f(0.0f,   th); glVertex3f(w, h, -d);
 			//glTexCoord2f(0.0f, 0.0f); glVertex3f(w, 0, -d);
 			// Right face
+			glNormal3f(1,0,0);
 			glTexCoord2f(  td, 0.0f); glVertex3f(w, 0, -d);
 			glTexCoord2f(  td,   th); glVertex3f(w, h, -d);
 			glTexCoord2f(0.0f,   th); glVertex3f(w, h,  0);
 			glTexCoord2f(0.0f, 0.0f); glVertex3f(w, 0,  0);
 			// Left Face
+			glNormal3f(-1,0,0);
 			glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0, -d);
 			glTexCoord2f(  td, 0.0f); glVertex3f(0, 0,  0);
 			glTexCoord2f(  td,   th); glVertex3f(0, h,  0);
 			glTexCoord2f(0.0f,   th); glVertex3f(0, h, -d);
 			// Bottom Face
-			/*glTexCoord2f(  tw,   td); glVertex3f(0, 0, -d);
+			glNormal3f(0,-1,0);
+			glTexCoord2f(  tw,   td); glVertex3f(0, 0, -d);
 			glTexCoord2f(0.0f,   td); glVertex3f(w, 0, -d);
 			glTexCoord2f(0.0f, 0.0f); glVertex3f(w, 0,  0);
-			glTexCoord2f(  tw, 0.0f); glVertex3f(0, 0,  0);*/
+			glTexCoord2f(  tw, 0.0f); glVertex3f(0, 0,  0);
 			// Top Face
+			glNormal3f(0,-1,0);
 			glTexCoord2f(0.0f,   td); glVertex3f(0, h, -d);
 			glTexCoord2f(0.0f, 0.0f); glVertex3f(0, h,  0);
 			glTexCoord2f(  tw, 0.0f); glVertex3f(w, h,  0);
