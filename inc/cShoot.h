@@ -23,7 +23,8 @@ public:
 	void MoveShoot();
 	void setRot(float rotv, float rot);
 	void MoveUp(vector<cBicho> *caixes, vector< vector<int> > &map, cBicho &terra);
-	void Logic(cBicho &caixes);
+	//void Logic(cBicho &caixes);
+	void Logic(cBicho &terra, vector<cBicho> *caixes, vector<vector<int>> &map);
 private:
 	bool active;
 	float rotV;

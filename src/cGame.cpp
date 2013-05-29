@@ -154,8 +154,11 @@ bool cGame::Process()
 
 	}
 		if(shoot.IsActive()) {
-		shoot.Logic(terra);
+		
 		shoot.MoveUp(caixes,map,terra);
+		shoot.Logic(terra,caixes,map);
+		
+		
 		cRect rect;
 		enemy.GetArea(&rect);
 		//shoot.GetArea(&rect);
