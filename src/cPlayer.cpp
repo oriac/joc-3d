@@ -66,9 +66,7 @@ void cPlayer::Draw()
 	
 		glPushMatrix();
 		    double rot = GetRot();
-			glTranslatef(x+1,y,z+1);
-			float pos2[4] = {0,+2, 0, 0.0};
-	glLightfv(GL_LIGHT0, GL_POSITION, pos2);
+			glTranslatef(x+1,y+1,z+1);
 			glRotatef((rot),0,1,0);
 
 			//float pos2[4] = {x, y, z, 1.0};

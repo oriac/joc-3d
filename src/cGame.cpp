@@ -219,7 +219,7 @@ bool cGame::Process()
 	if(keys['r']) {
 		float x,y,z;
 		player.GetPosition(&x,&y,&z);
-		shoot.SetPosition(x,y+0.5,z);
+		shoot.SetPosition(x+0.8,y+0.8,z+0.8);
 		shoot.SetIner(0.2);
 		//shoot.SetPosition();
 		shoot.setRot(rotV,rot);
@@ -258,9 +258,9 @@ void cGame::Render()
 	float x,y,z;
 
 	glLoadIdentity();
-
-	float pos2[4] = {0,0, -2, 0.0};
-			glLightfv(GL_LIGHT0, GL_POSITION, pos2);
+	if (shoot.IsActive()) shoot.GetPosition(&x,&y,&z);
+	else player.GetPosition(&x,&y,&z);
+	float pos2[4] = {x+0.2,y+0.2, z+0.2, 1.0};
 	switch(camera) {
 	case 1:
 		
@@ -269,20 +269,24 @@ void cGame::Render()
 		
 
 		player.GetPosition(&x,&y,&z);
-		glTranslatef(-x,-y,-z);
+		glTranslatef(-x-1,-y-1,-z-1);
+		//glLightfv(GL_LIGHT0, GL_POSITION, pos2);
 		
 		break;
 	case 2:
 		gluLookAt(64,32,-16,0,0,-16,0,1,0);
+		//glLightfv(GL_LIGHT0, GL_POSITION, pos2);
 		break;
 	case 3:
 		glTranslatef(0,-(1),-5);
 		glRotatef((-rotV),1,0,0);
 		glRotatef((-rot),0,1,0);
+		//glLightfv(GL_LIGHT0, GL_POSITION, pos2);
 		
 		//float x,y,z;
 		player.GetPosition(&x,&y,&z);
 		glTranslatef(-x-1,-y-1,-z-1);
+		//glLightfv(GL_LIGHT0, GL_POSITION, pos2);
 		break;
 	case 4:
 		glTranslatef(0,-(2),-5);
@@ -292,13 +296,14 @@ void cGame::Render()
 		//float x,y,z;
 		shoot.GetPosition(&x,&y,&z);
 		glTranslatef(-x,-y,-z);
+		//glLightfv(GL_LIGHT0, GL_POSITION, pos2);
 		break;
 	default:
 		glTranslatef(0.0f,-2.0f,-40.0f);
 		glRotatef(20,1.0f,0.0f,0.0f);
 		break;
 	}
-		
+	glLightfv(GL_LIGHT0, GL_POSITION, pos2);
 	glBegin(GL_LINES);
 	glColor3f(1,0,0); glVertex3f(0,0,0); glVertex3f(20,0,0); // X
 	glColor3f(0,1,0); glVertex3f(0,0,0); glVertex3f(0,20,0); // Y
@@ -310,6 +315,7 @@ void cGame::Render()
 	if(camera != 1) {
 		shader.render();
 		player.Draw();
+		//glLightfv(GL_LIGHT0, GL_POSITION, pos2);
 		shader.norender();
 		
 	}
@@ -319,7 +325,7 @@ void cGame::Render()
 	shader.render();
 
 	Scene.Draw(&Data);
-		
+		//glLightfv(GL_LIGHT0, GL_POSITION, pos2);
 	shader.norender();
 			/*glColor3f( 0.0f, 0.0f, 0.0f );
 			glLineWidth(4.0f);
@@ -349,8 +355,11 @@ void cGame::Render()
 		//shoot.GetPosition(&x,&y,&z);
 		//y+=0.1*sin(rotV*PI/180.0);
 		//shoot.SetPosition(x,y,z);
+		shader.render();
 		shoot.Draw();
+		shader.norender();
 		shoot.DrawBB();
+		
 	}
 	if (enemy.IsAlive()) enemy.DrawBB();
 	player.DrawBB();
