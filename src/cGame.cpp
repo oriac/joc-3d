@@ -8,7 +8,6 @@ cGame::cGame(void) {
 cGame::~cGame(void){}
 
 void cGame::NextLevel() {
-	//Sleep(6000);
 	for (int i = 0; i < 3; i++) {
 		caixes[i].clear();
 	}
@@ -16,106 +15,38 @@ void cGame::NextLevel() {
 	if (actualLevel==1) {
 		++actualLevel;
 		player.SetPosition(4*1,6,4*-8);
-		enemy.SetPosition(4*1,4*1,4*-2);
+		enemy.SetPosition(4*5,4*1,4*-3);
 		enemy.Active();
-		/*Sound.PlaySound("resources/music/ff7.wav",true);
-		for (int i = 0; i < 4; ++i) {
-			if (i ==0) Item[i].SetTile(23,27);
-			else if (i ==1) Item[i].SetTile(15,65);
-			else if (i ==2) Item[i].SetTile(26,91);
-			else Item[i].SetTile(13,115);
-			Item[i].SetActive(true);
-		}
-		Player.SetTile(4,1);
-		Player2.SetTile(7,1);*/
 	}
-	else if (actualLevel == 2 && player.isAlive()) {
-		//Sound.PlaySoundA("resources/music/pvp.mp3",true);
-		actualLevel = 3;
-		/*for (int i = 0; i < 4; ++i) {
-			if (i ==0) Item[i].SetTile(17,16);
-			else if (i ==1) Item[i].SetTile(13,16);
-			else if (i ==2) Item[i].SetTile(3,3);
-			else Item[i].SetTile(27,3);
-			Item[i].SetActive(true);
-		}*/
-		player.SetTile(1,1);
-		//Player2.SetTile(22,20);
+	else if (actualLevel == 2) {
+		++actualLevel;
+		enemy.Active();
+		enemy.SetPosition(4*5,0,4*-3);
+		player.SetPosition(4*1,6,4*-8);
+
 	}
-	else if(actualLevel == 2) {
-		actualLevel =1;
-		this->Init();
+	else if(actualLevel == 3) {
+		++actualLevel;
+		player.SetPosition(4*1,6,4*-8);
+		enemy.SetPosition(4*2,4*1,4*-3);
+		enemy.Active();
+	}
+	else if(actualLevel == 4) {
+		++actualLevel;
+		player.SetPosition(4*1,6,4*-8);
+		enemy.SetPosition(4*4,4*1,4*-2);
+		enemy.Active();
 	}
 	bool result = false;
 	result = Scene.LoadLevel(actualLevel,caixes,terra,bullseyes);
 	Scene.GetMap(map);
-	//Scene.ResetCam();
-	//if (actualLevel == 3) Scene.Scroll(80);
-
-	/*vector<Point> pat (4);
-	for (int i = 0; i < 10; ++i) {
-		Enemy[i].Init(true, pat);
-		Enemy[i].SetWidthHeight(32,32);
-		if (i < 5) Enemy[i].SetTile((i*4)%32,36);
-		else Enemy[i].SetTile((i*2)%32,72);
-		Enemy[i].SetSpeed(1);
-
-	}
-	
-	Point p1,p2,p3,p4;
-	p1.tilex = 29;
-	p1.tiley = 6;
-	p2.tilex = 29;
-	p2.tiley= 3;
-	p3.tilex = 4;
-	p3.tiley = 3;
-	p4.tilex = 4;
-	p4.tiley = 6;
-	for ( int i = 0; i < 10; i++) {
-		int aux;
-		if ( i < 5 ) aux = 46;
-		else if ( i >= 5) aux = 120;
-		p1.tiley = aux+2;
-		p2.tiley = aux;
-		p3.tiley = aux;
-		p4.tiley = aux+2;
-		pat[0] = p1;
-		pat[1] = p2;
-		pat[2] = p3;
-		pat[3] = p4;
-		Enemy2[i].Init(false,pat);
-		Enemy2[i].SetWidthHeight(32,32);
-		Enemy2[i].SetTile(4+(i*2),aux);
-		Enemy2[i].SetSpeed(1);
-	}
-	firstPatrol = false;
-	firstTrap = false;
-	secondPatrol = false;
-		//Shoots init
-	for (int i = 0; i < 100; ++i) {
-		Shoot[i].SetWidthHeight(16,16);
-		Shoot[i].SetSpeed(2);
-		Shoot[i].SetActive(false);
-	}
-	for (int i = 0; i < 100; ++i) {
-		Shoot2[i].SetWidthHeight(16,16);
-		Shoot2[i].SetSpeed(2);
-		Shoot2[i].SetActive(false);
-	}
-	for (int i = 0; i < 500; ++i) {
-		EnemyShoot[i].SetWidthHeight(16,16);
-		EnemyShoot[i].SetSpeed(2);
-		EnemyShoot[i].SetActive(false);
-	}
-	shootCount = 0;
-	shootCount2 = 0;
-	enemyShootCount = 0;*/
 }
 
 bool cGame::Init()
 {
 	bool res=true;
 	actualLevel = 1;
+	dir = 1;
 	time_init=glutGet(GLUT_ELAPSED_TIME);
 	fps = fps_dibuix = 0;
 	//Graphics initialization
@@ -156,7 +87,7 @@ bool cGame::Init()
 	player.SetPosition(4*1,6,4*-8);
 	player.SetVol(2,2,2);
 	shoot.SetVol(0.4,0.4,0.4);
-	enemy.SetPosition(4*1,0,4*-2);
+	enemy.SetPosition(4*4,0,4*-2);
 	enemy.SetVol(4,4,4);
 	enemy.Active();
 	glewInit();
@@ -208,15 +139,30 @@ void cGame::ReadPosMouse(int x, int y)
 bool cGame::Process()
 {
 	bool res=true;
+	if (enemy.IsAlive() && actualLevel == 5) {
+		float x,y,z;
+		enemy.GetPosition(&x,&y,&z);
+		if (x >= 2*4 && x <= 7*4 ) {
+			x = x+dir*0.1;
+			enemy.SetPosition(x,y,z);
+		}
+		else { 
+			dir = dir*-1;
+			x = x+dir*0.1;
+			enemy.SetPosition(x,y,z);
+		}
+
+	}
 		if(shoot.IsActive()) {
 		shoot.Logic(terra);
 		shoot.MoveUp(caixes,map,terra);
 		cRect rect;
-		shoot.GetArea(&rect);
-		if(enemy.Collides(&rect) && enemy.IsAlive()) {
+		enemy.GetArea(&rect);
+		//shoot.GetArea(&rect);
+		if(shoot.Collides(&rect) && enemy.IsAlive()) {
 			shoot.SetActive(false);
 			enemy.kill();
-			this->NextLevel();
+			NextLevel();
 		}
 	}
 
@@ -273,7 +219,7 @@ bool cGame::Process()
 	if(keys['r']) {
 		float x,y,z;
 		player.GetPosition(&x,&y,&z);
-		shoot.SetPosition(x,y+0.5,z);
+		shoot.SetPosition(x+0.8,y+0.8,z+0.8);
 		shoot.SetIner(0.2);
 		//shoot.SetPosition();
 		shoot.setRot(rotV,rot);
@@ -312,9 +258,9 @@ void cGame::Render()
 	float x,y,z;
 
 	glLoadIdentity();
-
-	float pos2[4] = {0,0, -2, 0.0};
-			glLightfv(GL_LIGHT0, GL_POSITION, pos2);
+	if (shoot.IsActive()) shoot.GetPosition(&x,&y,&z);
+	else player.GetPosition(&x,&y,&z);
+	float pos2[4] = {x+0.2,y+0.2, z+0.2, 1.0};
 	switch(camera) {
 	case 1:
 		
@@ -323,20 +269,24 @@ void cGame::Render()
 		
 
 		player.GetPosition(&x,&y,&z);
-		glTranslatef(-x,-y,-z);
+		glTranslatef(-x-1,-y-1,-z-1);
+		//glLightfv(GL_LIGHT0, GL_POSITION, pos2);
 		
 		break;
 	case 2:
 		gluLookAt(64,32,-16,0,0,-16,0,1,0);
+		//glLightfv(GL_LIGHT0, GL_POSITION, pos2);
 		break;
 	case 3:
 		glTranslatef(0,-(1),-5);
 		glRotatef((-rotV),1,0,0);
 		glRotatef((-rot),0,1,0);
+		//glLightfv(GL_LIGHT0, GL_POSITION, pos2);
 		
 		//float x,y,z;
 		player.GetPosition(&x,&y,&z);
 		glTranslatef(-x-1,-y-1,-z-1);
+		//glLightfv(GL_LIGHT0, GL_POSITION, pos2);
 		break;
 	case 4:
 		glTranslatef(0,-(2),-5);
@@ -346,13 +296,14 @@ void cGame::Render()
 		//float x,y,z;
 		shoot.GetPosition(&x,&y,&z);
 		glTranslatef(-x,-y,-z);
+		//glLightfv(GL_LIGHT0, GL_POSITION, pos2);
 		break;
 	default:
 		glTranslatef(0.0f,-2.0f,-40.0f);
 		glRotatef(20,1.0f,0.0f,0.0f);
 		break;
 	}
-		
+	glLightfv(GL_LIGHT0, GL_POSITION, pos2);
 	glBegin(GL_LINES);
 	glColor3f(1,0,0); glVertex3f(0,0,0); glVertex3f(20,0,0); // X
 	glColor3f(0,1,0); glVertex3f(0,0,0); glVertex3f(0,20,0); // Y
@@ -364,6 +315,7 @@ void cGame::Render()
 	if(camera != 1) {
 		shader.render();
 		player.Draw();
+		//glLightfv(GL_LIGHT0, GL_POSITION, pos2);
 		shader.norender();
 		
 	}
@@ -373,7 +325,7 @@ void cGame::Render()
 	shader.render();
 
 	Scene.Draw(&Data);
-		
+		//glLightfv(GL_LIGHT0, GL_POSITION, pos2);
 	shader.norender();
 			/*glColor3f( 0.0f, 0.0f, 0.0f );
 			glLineWidth(4.0f);
@@ -403,8 +355,11 @@ void cGame::Render()
 		//shoot.GetPosition(&x,&y,&z);
 		//y+=0.1*sin(rotV*PI/180.0);
 		//shoot.SetPosition(x,y,z);
+		shader.render();
 		shoot.Draw();
+		shader.norender();
 		shoot.DrawBB();
+		
 	}
 	if (enemy.IsAlive()) enemy.DrawBB();
 	player.DrawBB();
