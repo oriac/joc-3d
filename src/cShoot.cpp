@@ -239,10 +239,11 @@ void cShoot::MoveUp(vector<cBicho> *caixes, vector< vector<int> > &map, cBicho &
 		//z-=iner*cos(rot*PI/180);
 		x+=-cos(PI/180*rotV)*sin(PI/180*rot)*iner;
 		z+=-cos(PI/180*rotV)*cos(PI/180*rot)*iner;
-		if(y<1)y=1;
+		if(y<0)y=0;
 		int suelo;
+		
+		//y+=sin(PI/180*rotV)*iner;
 		suelo = ((int)floor(y))/4;
-		y+=sin(PI/180*rotV)*iner;
 	    y-=0.01;
 		SetPosition(x,y,z);
 		cRect rect;
@@ -257,29 +258,36 @@ void cShoot::MoveUp(vector<cBicho> *caixes, vector< vector<int> > &map, cBicho &
 			y=yaux;
 			rotV -= 2*rotV;
 		}
-		if(map[suelo][(ty)*SCENE_DEPTH+ (tx)]!=0 || map[suelo+1][(ty)*SCENE_DEPTH+ (tx)]!=0) {
-			caixes[suelo][(ty)*SCENE_DEPTH+ (tx)].GetArea(&rect);
-			if(!Collides(&rect)) {
-				//y+=sin(PI/180*rotV)*iner;
-				suelo = ((int)floor(y))/4;
-				caixes[suelo][(ty)*SCENE_DEPTH+ (tx)].GetArea(&rect);
-				if(Collides(&rect)) {
-					if(rotV >=0 && rotV <= 90) {
-						//double rotaux = 90.0 - (rot);
-						rotV -= 2*rotV;
-						//rot = 360-(rot);
-						//rot = fmod(rot,360);
+		/*int i=0;
+		int j=0;
+				if(map[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)]!=0 || map[suelo+1][(ty+i)*SCENE_DEPTH+ (tx+j)]!=0) {
+					caixes[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
+					if(!Collides(&rect)) {
+						//y+=sin(PI/180*rotV)*iner;
+						
+						suelo = ((int)floor(y))/4;
+						caixes[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
+						if(Collides(&rect)) {
+							if(rotV >=0 && rotV <= 90) {
+								//double rotaux = 90.0 - (rot);
+								rotV -= 2*rotV;
+								//rot = 360-(rot);
+								//rot = fmod(rot,360);
 
+							}
+							else if(rotV >=-90 && rotV < 0) {
+								//double rotaux = (rot-90);
+								//double rotaux2 = 90-rotaux;
+								rotV -= 2*rotV;
+							}
+							b = true;
+							y=yaux;
+							SetPosition(x,y,z);
+						}
 					}
-					else if(rotV >=-90 && rotV < 0) {
-						//double rotaux = (rot-90);
-						//double rotaux2 = 90-rotaux;
-						rotV -= 2*rotV;
-					}
-					y=yaux;
-				}
-			}
-		}
+				}*/
+		
+		b=false;
 		suelo = ((int)floor(y))/4;
 		for(int i=-1;i<=1 && !b;++i) {
 			for(int j=-1;j<=1 && !b;++j) {
@@ -378,6 +386,32 @@ void cShoot::MoveUp(vector<cBicho> *caixes, vector< vector<int> > &map, cBicho &
 				z = zaux;
 			}
 		}*/
+		if(map[suelo][(ty)*SCENE_DEPTH+ (tx)] == 0) {
+			y+=sin(PI/180*rotV)*iner;
+			SetPosition(x,y,z);
+			for(int i=-1;i<=1 && !b;++i) {
+				for(int j=-1;j<=1 && !b;++j) {
+					caixes[suelo+1][(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
+					if(Collides(&rect)) {
+						b = true;
+						if(rotV >=0 && rotV <= 90) {
+							//double rotaux = 90.0 - (rot);
+							rotV -= 2*rotV;
+							//rot = 360-(rot);
+							//rot = fmod(rot,360);
+
+						}
+						else if(rotV >=-90 && rotV < 0) {
+							//double rotaux = (rot-90);
+							//double rotaux2 = 90-rotaux;
+							rotV -= 2*rotV;
+						}
+						y = yaux;
+						SetPosition(x,y,z);
+					}
+				}
+			}
+		}
 
 
 }

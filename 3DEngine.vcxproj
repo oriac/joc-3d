@@ -89,6 +89,7 @@
     <ClInclude Include="inc\cScene.h" />
     <ClInclude Include="inc\cShader.h" />
     <ClInclude Include="inc\cShoot.h" />
+    <ClInclude Include="inc\cSound.h" />
     <ClInclude Include="inc\cTexture.h" />
     <ClInclude Include="inc\Globals.h" />
   </ItemGroup>
@@ -104,6 +105,7 @@
     <ClCompile Include="src\cScene.cpp" />
     <ClCompile Include="src\cShader.cpp" />
     <ClCompile Include="src\cShoot.cpp" />
+    <ClCompile Include="src\cSound.cpp" />
     <ClCompile Include="src\cTexture.cpp" />
     <ClCompile Include="src\GLUTMain.cpp" />
   </ItemGroup>
