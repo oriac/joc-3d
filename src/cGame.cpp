@@ -11,7 +11,15 @@ void cGame::NextLevel() {
 	for (int i = 0; i < 3; i++) {
 		caixes[i].clear();
 	}
-	
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(45.0,(float)SCREEN_WIDTH/(float)SCREEN_HEIGHT,0.1,100);
+	glMatrixMode(GL_MODELVIEW);
+
+
+	glutSwapBuffers();
+	Sleep(2000);
+
 	if (actualLevel==1) {
 		++actualLevel;
 		player.SetPosition(4*1,0,4*-8);
@@ -73,8 +81,8 @@ bool cGame::Init()
 	//Scene initialization
 	res = Data.LoadImage(IMG_WALL1,"resources/im/wall1.png",GL_RGBA);
 	if(!res) return false;
-	res = Data.LoadImage(IMG_CHECK,"resources/im/checkerboard.png",GL_RGBA);
-	if(!res) return false;
+	//res = Data.LoadImage(IMG_CHECK,"resources/im/checkerboard.png",GL_RGBA);
+	//if(!res) return false;
 	res = Data.LoadImage(IMG_WALL2,"resources/im/wall2.png",GL_RGBA);
 	if(!res) return false;
 	res = Data.LoadImage(IMG_WALL3,"resources/im/wall3.png",GL_RGBA);
@@ -170,21 +178,23 @@ bool cGame::Process()
 
 	}
 		if(shoot.IsActive()) {
-		if (shoot.GetIner() > 0)
-		shoot.MoveUp(caixes,map,terra);
-		//if (shoot.GetIner() > 0)
-		shoot.Logic(terra,caixes,map);
+			//if (shoot.GetIner() > 0)
+			shoot.Logic(terra,caixes,map);
+			shoot.MoveUp(caixes,map,terra);
+			//if (shoot.GetIner() > 0)
 		
 		
-		cRect rect;
-		enemy.GetArea(&rect);
-		//shoot.GetArea(&rect);
-		if(shoot.Collides(&rect) && enemy.IsAlive()) {
-			shoot.SetActive(false);
-			enemy.kill();
-			NextLevel();
+		
+			cRect rect;
+			enemy.GetArea(&rect);
+			//shoot.GetArea(&rect);
+			if(shoot.Collides(&rect) && enemy.IsAlive()) {
+				shoot.SetActive(false);
+				enemy.kill();
+				goinNextLevel = true;
+				//NextLevel();
+			}
 		}
-	}
 
 	
 	//Process Input
@@ -250,6 +260,10 @@ bool cGame::Process()
 	}
 	else if(keys['k']) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
+	else if(keys['p']) {
+		NextLevel();
+		Sleep(500);
 	}
 	player.Logic(terra,caixes,map);
 	
@@ -403,12 +417,18 @@ void cGame::Render()
 	}
 	glLoadIdentity();
 	Hud.Drawfps(Data.GetID(IMG_FONT), this->fps_dibuix, SCREEN_WIDTH, SCREEN_HEIGHT);
+	//glLoadIdentity();
+	if(goinNextLevel) {
+		Hud.DrawPrepareToFight(Data.GetID(IMG_FONT), SCREEN_WIDTH, SCREEN_HEIGHT);
+		goinNextLevel = false;
+		NextLevel();
+	}
 	//Hud.DrawPoints(Data.GetID(IMG_FONT), shoot.GetNumColisions(), SCREEN_WIDTH, SCREEN_HEIGHT);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(45.0,(float)SCREEN_WIDTH/(float)SCREEN_HEIGHT,0.1,100);
 	glMatrixMode(GL_MODELVIEW);
 
-	//shader.norender();
+
 	glutSwapBuffers();
 }

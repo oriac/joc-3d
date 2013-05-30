@@ -14,15 +14,19 @@ void main()
 
 	if (intensity > 0.95)
 		//color = vec4(1.0,0.5,0.5,1.0);
-		color = vec4(50/255.0,170/255.0,230/255.0,1.0);
+		//color = vec4(50/255.0,170/255.0,230/255.0,1.0);
+		color = vec4(vec3(gl_Color)*1,1.0);
 	else if (intensity > 0.5)
 		//color = vec4(0.6,0.3,0.3,1.0);
-		color = vec4(41/255.0,143/255.0,191/255.0,1.0);
+		//color = vec4(41/255.0,143/255.0,191/255.0,1.0);
+		color = vec4(vec3(gl_Color)*0.82,1.0);
 	else if (intensity > 0.25)
 		//color = vec4(0.4,0.2,0.2,1.0);
-		color = vec4(29/255.0,100/255.0,134/255.0,1.0);
+		//color = vec4(29/255.0,100/255.0,134/255.0,1.0);
+		color = vec4(vec3(gl_Color)*0.58,1.0);
 	else
-		color = vec4(13/255.0,45/255.0,59/255.0,1.0);
+		//color = vec4(13/255.0,45/255.0,59/255.0,1.0);
+		color = vec4(vec3(gl_Color)*0.26,1.0);
 	//gl_FragColor = color*texture(sampler, gl_TexCoord[0].st);
 	gl_FragColor = color;
 

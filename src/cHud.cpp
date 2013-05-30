@@ -44,35 +44,27 @@ void cHud::DrawCrossHair(int tex_id, int x, int y) {
 }
 
 
-void cHud::DrawPrepareToFight(int tex_id, int d) {
+void cHud::DrawPrepareToFight(int tex_id, int x,int y) {
 	int step_x,step_y;
 	float tx,ty;
 	tx = 1./16.;
 	ty = 1./8.;
 	//writing punts:
-	string aux = "prepare";
+	string aux = "level";
 	int n = aux.size();
 	for(int i=0;i<n;i++) {
 		step_x = (aux[i]-'a')+33;
 		step_y = step_x/10;
 		step_x = step_x%10;
-		//Draw50(tex_id,tx,ty,step_x,step_y,160.+50.*i,240+d);
+		Draw50(tex_id,tx,ty,step_x,step_y,x/2-120+48.*i,y/2+48);
 	}
-	aux = "to";
+	aux = "completed";
 	n = aux.size();
 	for(int i=0;i<n;i++) {
 		step_x = (aux[i]-'a')+33;
 		step_y = step_x/10;
 		step_x = step_x%10;
-		//Draw50(tex_id,tx,ty,step_x,step_y,152.+50.*i,190+d);
-	}
-	aux = "fight";
-	n = aux.size();
-	for(int i=0;i<n;i++) {
-		step_x = (aux[i]-'a')+33;
-		step_y = step_x/10;
-		step_x = step_x%10;
-		//Draw50(tex_id,tx,ty,step_x,step_y,268.+50.*i,190+d);
+		Draw50(tex_id,tx,ty,step_x,step_y,x/2-216+48.*i,y/2-48);
 	}
 }
 
@@ -134,6 +126,21 @@ void cHud::Draw(int tex_id, float tx,float ty, int step_x,int step_y,float trans
 			glEnd();
 			glDisable(GL_TEXTURE_2D);
 		    glPopMatrix();
+}
+
+void cHud::Draw50(int tex_id, float tx,float ty, int step_x,int step_y,float trans_x, float trans_y) {
+			glPushMatrix();
+			glTranslatef(trans_x,trans_y,-0.5);
+			glEnable(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D,tex_id);
+			glBegin(GL_QUADS);
+				glTexCoord2f(tx*step_x,ty*(step_y+1));		glVertex2i(0,0);
+				glTexCoord2f(tx*(step_x+1),ty*(step_y+1));	glVertex2i(48,0);
+				glTexCoord2f(tx*(step_x+1),ty*step_y);		glVertex2i(48,48);
+				glTexCoord2f(tx*step_x,ty*step_y);			glVertex2i(0,48);
+			glEnd();
+			glDisable(GL_TEXTURE_2D);
+		glPopMatrix();
 }
 
 

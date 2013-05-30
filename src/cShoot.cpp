@@ -252,28 +252,33 @@ void cShoot::Logic(cBicho &terra, vector<cBicho> *caixes, vector<vector<int>> &m
                 if (iner < 0) iner = 0.0;
                 yaux=y;
                 int tx,ty;
-                y-=0.03;
+				//if(!(rotV >= -5 && rotV <= 5 && y>=3.95 && y<=4.01)) y-=0.03;
+				y-=0.03;
                 int suelo;
                 suelo = ((int)floor(y))/4;
                 GetTile(&tx,&ty);
-                
+                SetPosition(x,y,z);
                 cRect rect;
                 terra.GetArea(&rect);
                 if(!Collides(&rect)) {
-                        for(int i=-1;i<=1;++i) {
-                                for(int j=-1;j<=1;++j) {
-                                        //if(!(i==0 && j==0)) {
-                                        if(map[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)]!=0) {
-                                                caixes[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
-                                                if(Collides(&rect)) {
-                                                        //y = yaux;
-                                                        //caixes[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)].GetPosition();
-                                                        y=rect.ymax;
-                                                        //rotV -= 2*rotV;
-                                                }
-                                        }
+					bool b=false;
+                    for(int i=-1;i<=1 && !b;++i) {
+                        for(int j=-1;j<=1 && !b;++j) {
+                            //if(!(i==0 && j==0)) {
+                            if(map[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)]!=0) {
+                                caixes[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
+                                if(Collides(&rect)) {
+                                    //y = yaux;
+                                    //caixes[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)].GetPosition();
+									b=true;
+                                    y=rect.ymax;
+									if(rotV<0)rotV -= 2*rotV; 
+									//rotV -= 2*rotV;
+                                    //rotV -= 2*rotV;
                                 }
+                            }
                         }
+                    }
                 }
                 else {
                         y = yaux;
@@ -304,7 +309,7 @@ void cShoot::MoveUp(vector<cBicho> *caixes, vector< vector<int> > &map, cBicho &
                 
                 //y+=sin(PI/180*rotV)*iner;
                 suelo = ((int)floor(y))/4;
-            //y-=0.01;
+				//y-=0.01;
                 SetPosition(x,y,z);
                 cRect rect;
                 bool b=false;
@@ -448,62 +453,69 @@ void cShoot::MoveUp(vector<cBicho> *caixes, vector< vector<int> > &map, cBicho &
                 }*/
                 y+=sin(PI/180*rotV)*iner;
                 SetPosition(x,y,z);
-                if(map[suelo][(ty)*SCENE_DEPTH+ (tx)] == 0) {
-                        //y+=sin(PI/180*rotV)*iner;
-                        for(int i=-1;i<=1 && !b;++i) {
-                                for(int j=-1;j<=1 && !b;++j) {
-                                        caixes[suelo+1][(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
-                                        if(Collides(&rect)) {
-                                                b = true;
-                                                if(rotV >=0 && rotV <= 90) {
-                                                        //double rotaux = 90.0 - (rot);
-                                                        rotV -= 2*rotV;
-                                                        //rot = 360-(rot);
-                                                        //rot = fmod(rot,360);
+            if(map[suelo][(ty)*SCENE_DEPTH+ (tx)] == 0) {
+                    //y+=sin(PI/180*rotV)*iner;
+                for(int i=-1;i<=1 && !b;++i) {
+					for(int j=-1;j<=1 && !b;++j) {
+						caixes[suelo+1][(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
+						if(Collides(&rect)) {
+							b = true;
+							if(rotV >=0 && rotV <= 90) {
+									//double rotaux = 90.0 - (rot);
+									rotV -= 2*rotV;
+									//rot = 360-(rot);
+									//rot = fmod(rot,360);
 
-                                                }
-                                                else if(rotV >=-90 && rotV < 0) {
-                                                        //double rotaux = (rot-90);
-                                                        //double rotaux2 = 90-rotaux;
-                                                        rotV -= 2*rotV;
-                                                }
-                                                y = yaux;
-                                                SetPosition(x,y,z);
-                                        }
-                                }
-                        }
-                }
+							}
+							else if(rotV >=-90 && rotV < 0) {
+									//double rotaux = (rot-90);
+									//double rotaux2 = 90-rotaux;
+									rotV -= 2*rotV;
+							}
+							y = yaux;
+							SetPosition(x,y,z);
+						}
+					}
+				}
+            }
                         //if(!b) {
                                 //if(map[suelo][(ty)*SCENE_DEPTH+ (tx)] == 0) {
-                                        b=false;
-                                        suelo--;
-                                        if(suelo<0)suelo=0;
-                                        for(int i=-1;i<=1 && !b;++i) {
-                                                for(int j=-1;j<=1 && !b;++j) {
-                                                        if(map[suelo][(ty)*SCENE_DEPTH+ (tx)] != 0) {
-                                                                caixes[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
-                                                                if(Collides(&rect)) {
-                                                                        b = true;
-                                                                        if(rotV >=0 && rotV <= 90) {
-                                                                                //double rotaux = 90.0 - (rot);
-                                                                                rotV -= 2*rotV;
-                                                                                //rot = 360-(rot);
-                                                                                //rot = fmod(rot,360);
+				//y = yaux;
+				//y+=sin(PI/180*rotV)*iner;
+                //SetPosition(x,y,z);
+                b=false;
+                suelo--;
+                if(suelo<0)suelo=0;
+                for(int i=-1;i<=1 && !b;++i) {
+                    for(int j=-1;j<=1 && !b;++j) {
+                        if(map[suelo][(ty)*SCENE_DEPTH+ (tx)] != 0) {
+                            caixes[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
+                            if(Collides(&rect)) {
+                                b = true;
+                                if(rotV >=0 && rotV <= 90) {
+                                        //double rotaux = 90.0 - (rot);
+                                        rotV -= 2*rotV;
+                                        //rot = 360-(rot);
+                                        //rot = fmod(rot,360);
 
-                                                                        }
-                                                                        else if(rotV >=-90 && rotV < 0) {
-                                                                                //double rotaux = (rot-90);
-                                                                                //double rotaux2 = 90-rotaux;
-                                                                                rotV -= 2*rotV;
-                                                                        }
-                                                                        y = yaux;
-                                                                        SetPosition(x,y,z);
-                                                                }
-                                                        }
-                                                }
-                                        //}
-                                //}
-                                        }
+                                }
+                                else if(rotV >=-90 && rotV < 0) {
+                                        //double rotaux = (rot-90);
+                                        //double rotaux2 = 90-rotaux;
+										
+                                        rotV -= 2*rotV;
+                                }
+								//if(yaux<rect.ymax)
+									y=rect.ymax;
+								//else
+									//y = yaux;
+                                SetPosition(x,y,z);
+                            }
+                        }
+                    }
+                //}
+        //}
+                }
 
 
 }

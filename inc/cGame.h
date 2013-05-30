@@ -62,5 +62,6 @@ private:
     double endTime;
 	double startTime;
 	double loopTime;
+	bool goinNextLevel;
 
 };

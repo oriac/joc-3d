@@ -324,7 +324,7 @@ void cBicho::MoveDown(vector<cBicho> *caixes, vector<vector<int>> map)
 		zaux=z;
 		int tx,ty;
 		int suelo;
-		suelo = ((int)floor(y))/4;
+		suelo = ((int)floor(y+0.05))/4;
 		GetTile(&tx,&ty);
 		x+=0.1*sin(rot*PI/180);
 		z+=0.1*cos(rot*PI/180);
@@ -397,7 +397,7 @@ void cBicho::StrafeLeft(vector<cBicho> *caixes, vector<vector<int>> map)
 		zaux=z;
 		int tx,ty;
 		int suelo;
-		suelo = ((int)floor(y))/4;
+		suelo = ((int)floor(y+0.05))/4;
 		GetTile(&tx,&ty);
 		x-=0.1*sin((rot+90)*PI/180);
 		z-=0.1*cos((rot+90)*PI/180);
@@ -469,7 +469,7 @@ void cBicho::StrafeRight(vector<cBicho> *caixes, vector<vector<int>> map)
 		zaux=z;
 		int tx,ty;
 		int suelo;
-		suelo = ((int)floor(y))/4;
+		suelo = ((int)floor(y+0.05))/4;
 		GetTile(&tx,&ty);
 		x+=0.1*sin((rot+90)*PI/180);
 		z+=0.1*cos((rot+90)*PI/180);
