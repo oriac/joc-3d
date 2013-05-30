@@ -59,6 +59,7 @@ private:
 	int dir;
 	int maxPosx;
 	int maxPosy;
+	unsigned char tipoPintado;
     double endTime;
 	double startTime;
 	double loopTime;

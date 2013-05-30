@@ -8,6 +8,7 @@ cGame::cGame(void) {
 cGame::~cGame(void){}
 
 void cGame::NextLevel() {
+	camera = 2;
 	for (int i = 0; i < 3; i++) {
 		caixes[i].clear();
 	}
@@ -23,7 +24,7 @@ void cGame::NextLevel() {
 	if (actualLevel==1) {
 		++actualLevel;
 		player.SetPosition(4*1,0,4*-8);
-		enemy.SetPosition(4*5,4*1,4*-3);
+		enemy.SetPosition(4*5,4*1,4*-2);
 		enemy.Active();
 	}
 	else if (actualLevel == 2) {
@@ -55,6 +56,8 @@ void cGame::NextLevel() {
 
 bool cGame::Init()
 {
+	tipoPintado = 0;
+	camera = 2;
 	startTime = glutGet(GLUT_ELAPSED_TIME);
 	maxPosx = GetSystemMetrics(SM_CXSCREEN);
 	maxPosy = GetSystemMetrics(SM_CYSCREEN);
@@ -81,8 +84,8 @@ bool cGame::Init()
 	//Scene initialization
 	res = Data.LoadImage(IMG_WALL1,"resources/im/wall1.png",GL_RGBA);
 	if(!res) return false;
-	//res = Data.LoadImage(IMG_CHECK,"resources/im/checkerboard.png",GL_RGBA);
-	//if(!res) return false;
+	res = Data.LoadImage(IMG_CHECK,"resources/im/checkerboard.png",GL_RGBA);
+	if(!res) return false;
 	res = Data.LoadImage(IMG_WALL2,"resources/im/wall2.png",GL_RGBA);
 	if(!res) return false;
 	res = Data.LoadImage(IMG_WALL3,"resources/im/wall3.png",GL_RGBA);
@@ -102,10 +105,10 @@ bool cGame::Init()
 	Scene.GetMap(map);
 	if(!res) return false;
 
-	player.SetPosition(4*1,6,4*-8);
+	player.SetPosition(4*1,0,4*-8);
 	player.SetVol(2,2,2);
 	shoot.SetVol(0.4,0.4,0.4);
-	enemy.SetPosition(4*4,0,4*-2);
+	enemy.SetPosition(4*1,0,4*-2);
 	enemy.SetVol(4,4,4);
 	enemy.Active();
 	glewInit();
@@ -226,17 +229,19 @@ bool cGame::Process()
 		camera = 4;
 	}
 	if(camera == 1 || camera == 3) player.SetRot(rot);
-	if(keys['q']) {
+	/*if(keys['q']) {
 		player.StrafeLeft(caixes, map);
 	}
 	if(keys['e']) {
 		player.StrafeRight(caixes, map);
-	}
+	}*/
 	if(keys['w']) {
-		player.MoveUp(caixes,map);
+		player.MoveUpPlayer(caixes,map);
+		//player.MoveUp(caixes,map);
 	}
 	if(keys['s']) {
-		player.MoveDown(caixes, map);
+		//player.MoveDown(caixes, map);
+		player.MoveDownPlayer(caixes,map);
 	}
 	if(keys['a']){ 
 		if (camera == 3) player.SetRot(rot);
@@ -258,12 +263,16 @@ bool cGame::Process()
 	if(keys['l']) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	}
-	else if(keys['k']) {
+	if(keys['k']) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
-	else if(keys['p']) {
+	if(keys['p']) {
 		NextLevel();
 		Sleep(500);
+	}
+	if(keys['f']) {
+		++tipoPintado;
+		if (tipoPintado > 2) tipoPintado = 0;
 	}
 	player.Logic(terra,caixes,map);
 	
@@ -310,7 +319,7 @@ void cGame::Render()
 	case 2:
 		float x2,y2, z2;
 		player.GetPosition(&x2,&y2,&z2);
-		gluLookAt(64,32,-16,0,0,-16,0,1,0);
+		gluLookAt(64,36,-20,0,-8,-20,0,1,0);
 		glBegin(GL_LINES);
 		glColor3f(1,1,1); 
 		glVertex3f(x2+1,y2+1,z2+1);
@@ -348,27 +357,29 @@ void cGame::Render()
 		break;
 	}
 	glLightfv(GL_LIGHT0, GL_POSITION, pos2);
-	glBegin(GL_LINES);
-	glColor3f(1,0,0); glVertex3f(0,0,0); glVertex3f(20,0,0); // X
-	glColor3f(0,1,0); glVertex3f(0,0,0); glVertex3f(0,20,0); // Y
-	glColor3f(0,0,1); glVertex3f(0,0,0); glVertex3f(0,0,20); // Z
-	glEnd();
-	glColor3f(1,1,1);
+	if(tipoPintado !=0) {
+		glBegin(GL_LINES);
+		glColor3f(1,0,0); glVertex3f(0,0,0); glVertex3f(20,0,0); // X
+		glColor3f(0,1,0); glVertex3f(0,0,0); glVertex3f(0,20,0); // Y
+		glColor3f(0,0,1); glVertex3f(0,0,0); glVertex3f(0,0,20); // Z
+		glEnd();
+		glColor3f(1,1,1);
+	}
 	//void gluSphere(GLUquadric *qobj,GLdouble radius,GLint slices,GLint stacks
 				
-	if(camera != 1) {
+	if(camera != 1 && tipoPintado !=2 ) {
 		//shader.render();
 		player.Draw(&Data);
 		//glLightfv(GL_LIGHT0, GL_POSITION, pos2);
 		//shader.norender();
 		
 	}
-	if(enemy.IsAlive()) enemy.Draw(0,&Data);
+	if(enemy.IsAlive() && tipoPintado !=2) enemy.Draw(0,&Data);
 	
 
 	shader.render();
 
-	Scene.Draw(&Data);
+	if(tipoPintado !=2) Scene.Draw(&Data);
 		//glLightfv(GL_LIGHT0, GL_POSITION, pos2);
 	shader.norender();
 			/*glColor3f( 0.0f, 0.0f, 0.0f );
@@ -378,35 +389,43 @@ void cGame::Render()
 			Scene.Draw(&Data);*/
 	glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 	glEnable( GL_POLYGON_OFFSET_LINE );      
-			
-	for(unsigned int k=0;k<2;++k) {
-		for(unsigned int i=0;i<caixes[k].size();++i) {
-			glColor3f( 0.0f, 0.0f, 0.0f );
-			glLineWidth(4.0f);
-			glPolygonOffset( -1.0f, -1.0f );
-			caixes[k][i].DrawLines();
+	if (tipoPintado !=2) {		
+		for(unsigned int k=0;k<2;++k) {
+			for(unsigned int i=0;i<caixes[k].size();++i) {
+				glColor3f( 0.0f, 0.0f, 0.0f );
+				glLineWidth(4.0f);
+				glPolygonOffset( -1.0f, -1.0f );
+				caixes[k][i].DrawLines();
+			}
 		}
+		glDisable( GL_POLYGON_OFFSET_FILL );
+		glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 	}
-	glDisable( GL_POLYGON_OFFSET_FILL );
-	glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-	for(unsigned int k=0;k<2;++k) {
-		for(unsigned int i=0;i<caixes[k].size();++i) {
-			caixes[k][i].DrawBB();
+	if (tipoPintado !=0) {
+		glLineWidth(1.0f);
+		for(unsigned int k=0;k<3;++k) {
+			for(unsigned int i=0;i<caixes[k].size();++i) {
+				caixes[k][i].DrawBB();
+			}
 		}
 	}
 	glColor3f( 1.0f, 1.0f, 1.0f );
-	if (shoot.IsActive()) {
+	if (shoot.IsActive() && tipoPintado != 2) {
 		//shoot.GetPosition(&x,&y,&z);
 		//y+=0.1*sin(rotV*PI/180.0);
 		//shoot.SetPosition(x,y,z);
-		shader.render();
+		//shader.render();
+		glColor3f(1,1,0);
 		shoot.Draw();
-		shader.norender();
-		shoot.DrawBB();
-		
+		glColor3f(1,1,1);
+		//shader.norender();
 	}
-	//if (enemy.IsAlive()) enemy.DrawBB();
-	player.DrawBB();
+	if (shoot.IsActive() && tipoPintado !=0) shoot.DrawBB();
+	if (enemy.IsAlive() && tipoPintado !=0) enemy.DrawBB();
+	if(tipoPintado !=0) {
+		player.DrawBB();
+		terra.DrawBB();
+	}
 	glColor3f(1,1,1);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -416,7 +435,7 @@ void cGame::Render()
 		Hud.DrawCrossHair(Data.GetID(IMG_CROSSHAIR),SCREEN_WIDTH/2,SCREEN_HEIGHT/2);
 	}
 	glLoadIdentity();
-	Hud.Drawfps(Data.GetID(IMG_FONT), this->fps_dibuix, SCREEN_WIDTH, SCREEN_HEIGHT);
+	Hud.Drawfps(Data.GetID(IMG_FONT), startTime-(2000*(actualLevel-1)), SCREEN_WIDTH, SCREEN_HEIGHT);
 	//glLoadIdentity();
 	if(goinNextLevel) {
 		Hud.DrawPrepareToFight(Data.GetID(IMG_FONT), SCREEN_WIDTH, SCREEN_HEIGHT);

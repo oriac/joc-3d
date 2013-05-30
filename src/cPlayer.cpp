@@ -68,19 +68,55 @@ void cPlayer::Draw(cData *Data)
 		glPushMatrix();
 		    double rot = GetRot();
 			glTranslatef(x+1,y+1,z+1);
+			
+			
+			//glRotatef((-rotZ),0,0,1);
+			
 			glRotatef((rot),0,1,0);
-			glRotatef((rot),1,0,0);
+			glRotatef((-rotV),1,0,0);
+			//glLoadIdentity();
+			//glRotatef((-rotV),1,0,0);
 			//float pos2[4] = {x, y, z, 1.0};
 			GLUquadricObj *q = gluNewQuadric();
 			gluQuadricTexture(q, TRUE);
 			//gluQuadricNormals(q, GLU_SMOOTH);
 			//glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_FLOOR));
-			glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_WALL1));
+			glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_CHECK));
 			gluSphere(q, 1,128,128);
 			gluDeleteQuadric(q);
 		glPopMatrix();
 		glDisable(GL_TEXTURE_2D);
 }
+
+void cPlayer::MoveUpPlayer(vector<cBicho> *caixes, vector<vector<int>> map) {
+	rotV = rotV + 360/((2*PI*1)/0.1);
+	if (rotV > 360) rotV = fmod(rotV,360.0);
+	MoveUp(caixes,map);
+
+}
+
+void cPlayer::MoveDownPlayer(vector<cBicho> *caixes, vector<vector<int>> map) {
+	rotV = rotV - 360/((2*PI*1)/0.1);
+	if (rotV < 0) rotV = 360;
+	this->MoveDown(caixes,map);
+
+}
+
+/*void cPlayer::StrafeLeftPlayer(vector<cBicho> *caixes, vector<vector<int>> map) {
+	rotV = rotV - 360/((2*PI*1)/0.1);
+	if (rotV < 0) rotV = 360;
+	StrafeLeft(caixes,map);
+	this->SetRot(90);
+
+
+}
+
+void cPlayer::StrafeRightPlayer(vector<cBicho> *caixes, vector<vector<int>> map) {
+	rotV = rotV + 360/((2*PI*1)/0.1);
+	if (rotZ > 360) rotZ = fmod(rotZ,360.0);
+	StrafeRight(caixes,map);
+
+}*/
 
 int cPlayer::GetHp() {
 	return hp;
