@@ -84,8 +84,8 @@ bool cGame::Init()
 	//Scene initialization
 	res = Data.LoadImage(IMG_WALL1,"resources/im/wall1.png",GL_RGBA);
 	if(!res) return false;
-	//res = Data.LoadImage(IMG_CHECK,"resources/im/checkerboard.png",GL_RGBA);
-	//if(!res) return false;
+	res = Data.LoadImage(IMG_CHECK,"resources/im/checkerboard.png",GL_RGBA);
+	if(!res) return false;
 	res = Data.LoadImage(IMG_WALL2,"resources/im/wall2.png",GL_RGBA);
 	if(!res) return false;
 	res = Data.LoadImage(IMG_WALL3,"resources/im/wall3.png",GL_RGBA);

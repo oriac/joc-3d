@@ -81,7 +81,7 @@ void cPlayer::Draw(cData *Data)
 			gluQuadricTexture(q, TRUE);
 			//gluQuadricNormals(q, GLU_SMOOTH);
 			//glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_FLOOR));
-			glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_WALL1));
+			glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_CHECK));
 			gluSphere(q, 1,128,128);
 			gluDeleteQuadric(q);
 		glPopMatrix();
