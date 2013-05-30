@@ -240,7 +240,6 @@ void cScene::Draw(cData *Data)
 	glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_FLOOR));
 	glBegin(GL_QUADS);
 		// Bottom Face
-		glNormal3f(0,1,0);
 		switch(map[0][0]) {
 		case 1:
 			glColor3f(50/255.0,170/255.0,230/255.0);
@@ -258,15 +257,26 @@ void cScene::Draw(cData *Data)
 			glColor3f(230/255.0,50/255.0,50/255.0);
 			break;
 		}
+		glNormal3f(0,-1,0);
 		for(float x=0; x<w; x+=0.5){
-			   for(float z = 0; z < d; z += 0.5){
-				  // glNormal3f(0,-1,0);
-				   glVertex3f(x, 0, -(z));
-				   glVertex3f(x+0.5, 0, -(z));
-				   glVertex3f(x+0.5, 0, -(z+0.5));
-				   glVertex3f(x, 0, -(z+0.5));
-			   }
-		   }
+			for(float z = 0; z < d; z += 0.5){
+				// glNormal3f(0,-1,0);
+				glVertex3f(x, (float)TILE_SIZE*2, -(z));
+				glVertex3f(x, (float)TILE_SIZE*2, -(z+0.5));
+				glVertex3f(x+0.5, (float)TILE_SIZE*2, -(z+0.5));
+				glVertex3f(x+0.5, (float)TILE_SIZE*2, -(z));
+			}
+		  }
+		glNormal3f(0,1,0);
+		for(float x=0; x<w; x+=0.5){
+			for(float z = 0; z < d; z += 0.5){
+				// glNormal3f(0,-1,0);
+				glVertex3f(x, 0, -(z));
+				glVertex3f(x+0.5, 0, -(z));
+				glVertex3f(x+0.5, 0, -(z+0.5));
+				glVertex3f(x, 0, -(z+0.5));
+			}
+		}
 		glColor3f(1.0,1.0,1.0);
 		/*glTexCoord2f(  tw,   td); glVertex3f(0, 0, 0);
 		glTexCoord2f(0.0f,   td); glVertex3f(w, 0, 0);
