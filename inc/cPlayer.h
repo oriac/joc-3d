@@ -28,11 +28,16 @@ public:
 	bool IsExplote();
 	string GetPoints();
 	void Logic(cBicho &terra, vector<cBicho> *caixes, vector<vector<int>> &map);
+	void MoveUpPlayer(vector<cBicho> *caixes, vector<vector<int>> map);
+	void MoveDownPlayer(vector<cBicho> *caixes, vector<vector<int>> map);
+	void StrafeLeftPlayer(vector<cBicho> *caixes, vector<vector<int>> map);
+	void StrafeRightPlayer(vector<cBicho> *caixes, vector<vector<int>> map);
 
 private:
 	bool explote;
 	int hp;
 	bool alive;
 	int points;
-	int rotV;
+	double rotV;
+	double rotZ;
 };
