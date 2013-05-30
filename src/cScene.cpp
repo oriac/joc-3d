@@ -157,20 +157,38 @@ void cScene::Draw(cData *Data)
 				{
 					case 0:	break;
 					case 1: glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_WALL1));
+							glColor3f(50/255.0,170/255.0,230/255.0);
 							glCallList(dl_cube);
+							glColor3f(1.0,1.0,1.0);
 							break;
 					case 2: glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_WALL2));
+							glColor3f(230/255.0,170/255.0,50/255.0);
 							glCallList(dl_cube);
+							glColor3f(1.0,1.0,1.0);
 							break;
 					case 3: glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_WALL3));
+							glColor3f(170/255.0,230/255.0,50/255.0);
 							glCallList(dl_cube);
+							glColor3f(1.0,1.0,1.0);
 							break;
 					case 4: glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_WALL3));
+							glColor3f(170/255.0,50/255.0,230/255.0);
 							glCallList(dl_ramp);
+							glColor3f(1.0,1.0,1.0);
 							break;
 					case 6: glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_BULL));
 							glCallList(dl_cube);
 							break;
+					case 7:
+							glColor3f(170/255.0,50/255.0,230/255.0);
+							glCallList(dl_cube);
+							glColor3f(1.0,1.0,1.0);
+							break;
+					case 8:
+						glColor3f(230/255.0,50/255.0,50/255.0);
+						glCallList(dl_cube);
+						glColor3f(1.0,1.0,1.0);
+						break;
 				}
 			glPopMatrix();
 			glPushMatrix();
@@ -178,18 +196,36 @@ void cScene::Draw(cData *Data)
 				switch(map[1][(i*SCENE_WIDTH)+j])
 				{
 					case 0:	break;
-					case 1: glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_WALL1));
+					case 1: //glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_WALL1));
+							glColor3f(50/255.0,170/255.0,230/255.0);
 							glCallList(dl_cube);
+							glColor3f(1.0,1.0,1.0);
 							break;
-					case 2: glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_WALL2));
+					case 2: //glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_WALL2));
+							glColor3f(230/255.0,170/255.0,50/255.0);
 							glCallList(dl_cube);
+							glColor3f(1.0,1.0,1.0);
 							break;
-					case 3: glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_WALL3));
+					case 3: //glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_WALL3));
+							glColor3f(170/255.0,230/255.0,50/255.0);
 							glCallList(dl_cube);
+							glColor3f(1.0,1.0,1.0);
 							break;
-					case 4: glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_WALL3));
+					case 4: //glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_WALL3));
+							glColor3f(170/255.0,50/255.0,230/255.0);
 							glCallList(dl_ramp);
+							glColor3f(1.0,1.0,1.0);
 							break;
+					case 7:
+						glColor3f(170/255.0,50/255.0,230/255.0);
+						glCallList(dl_cube);
+						glColor3f(1.0,1.0,1.0);
+						break;
+					case 8:
+						glColor3f(230/255.0,50/255.0,50/255.0);
+						glCallList(dl_cube);
+						glColor3f(1.0,1.0,1.0);
+						break;
 				}
 			glPopMatrix();
 			x += TILE_SIZE;
@@ -205,6 +241,23 @@ void cScene::Draw(cData *Data)
 	glBegin(GL_QUADS);
 		// Bottom Face
 		glNormal3f(0,1,0);
+		switch(map[0][0]) {
+		case 1:
+			glColor3f(50/255.0,170/255.0,230/255.0);
+			break;
+		case 2:
+			glColor3f(230/255.0,170/255.0,50/255.0);
+			break;
+		case 3:
+			glColor3f(170/255.0,230/255.0,50/255.0);
+			break;
+		case 7:
+			glColor3f(170/255.0,50/255.0,230/255.0);
+			break;
+		case 8:
+			glColor3f(230/255.0,50/255.0,50/255.0);
+			break;
+		}
 		for(float x=0; x<w; x+=0.5){
 			   for(float z = 0; z < d; z += 0.5){
 				  // glNormal3f(0,-1,0);
@@ -214,6 +267,7 @@ void cScene::Draw(cData *Data)
 				   glVertex3f(x, 0, -(z+0.5));
 			   }
 		   }
+		glColor3f(1.0,1.0,1.0);
 		/*glTexCoord2f(  tw,   td); glVertex3f(0, 0, 0);
 		glTexCoord2f(0.0f,   td); glVertex3f(w, 0, 0);
 		glTexCoord2f(0.0f, 0.0f); glVertex3f(w, 0,-d);
