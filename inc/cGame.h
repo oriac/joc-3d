@@ -59,5 +59,8 @@ private:
 	int dir;
 	int maxPosx;
 	int maxPosy;
+    double endTime;
+	double startTime;
+	double loopTime;
 
 };

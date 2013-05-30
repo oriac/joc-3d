@@ -4,7 +4,7 @@
 cPlayer::cPlayer() {hp = 0;alive=false;points=0; explote = false;}
 cPlayer::~cPlayer(){}
 
-void cPlayer::Draw()
+void cPlayer::Draw(cData *Data)
 {	
 	/*float xo,yo,xf,yf;
 
@@ -62,20 +62,24 @@ void cPlayer::Draw()
 	*/
 	//DrawRect(tex_id,xo,yo,xf,yf);
 	float x,y,z;
+	glEnable(GL_TEXTURE_2D);
 	GetPosition(&x,&y,&z);
 	
 		glPushMatrix();
 		    double rot = GetRot();
 			glTranslatef(x+1,y+1,z+1);
 			glRotatef((rot),0,1,0);
-
+			glRotatef((rot),1,0,0);
 			//float pos2[4] = {x, y, z, 1.0};
 			GLUquadricObj *q = gluNewQuadric();
+			gluQuadricTexture(q, TRUE);
+			//gluQuadricNormals(q, GLU_SMOOTH);
 			//glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_FLOOR));
+			glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_WALL1));
 			gluSphere(q, 1,128,128);
-	
 			gluDeleteQuadric(q);
 		glPopMatrix();
+		glDisable(GL_TEXTURE_2D);
 }
 
 int cPlayer::GetHp() {

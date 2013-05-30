@@ -15,6 +15,7 @@
 #define IMG_CROSSHAIR	5
 #define IMG_FONT 6
 #define IMG_BULL 7
+#define IMG_CHECK 9
 
 class cData
 {

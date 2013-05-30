@@ -17,7 +17,7 @@ public:
 	cPlayer();
 	~cPlayer();
 
-	void Draw();
+	void Draw(cData *Data);
 	int GetHp();
 	void WinHp();
 	void LoseHp();

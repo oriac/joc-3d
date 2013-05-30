@@ -20,7 +20,7 @@ void cShoot::Draw()
 		float x,y,z;
 	GetPosition(&x,&y,&z);
 		glPushMatrix();
-			glTranslatef(x,y,z);
+			glTranslatef(x+0.2,y+0.2,z+0.2);
 			GLUquadricObj *q = gluNewQuadric();
 			//glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_FLOOR));
 			gluSphere(q, 0.2,64,64);
@@ -248,11 +248,11 @@ void cShoot::Logic(cBicho &terra, vector<cBicho> *caixes, vector<vector<int>> &m
         float yaux;
         float x,y,z;
                 GetPosition(&x,&y,&z);
-                iner -= 0.0005;
+                iner -= 0.0015;
                 if (iner < 0) iner = 0.0;
                 yaux=y;
                 int tx,ty;
-                y-=0.01;
+                y-=0.03;
                 int suelo;
                 suelo = ((int)floor(y))/4;
                 GetTile(&tx,&ty);

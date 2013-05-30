@@ -47,6 +47,7 @@ void cGame::NextLevel() {
 
 bool cGame::Init()
 {
+	startTime = glutGet(GLUT_ELAPSED_TIME);
 	maxPosx = GetSystemMetrics(SM_CXSCREEN);
 	maxPosy = GetSystemMetrics(SM_CYSCREEN);
 	maxPosx = maxPosx/2;
@@ -71,6 +72,8 @@ bool cGame::Init()
 
 	//Scene initialization
 	res = Data.LoadImage(IMG_WALL1,"resources/im/wall1.png",GL_RGBA);
+	if(!res) return false;
+	res = Data.LoadImage(IMG_CHECK,"resources/im/checkerboard.png",GL_RGBA);
 	if(!res) return false;
 	res = Data.LoadImage(IMG_WALL2,"resources/im/wall2.png",GL_RGBA);
 	if(!res) return false;
@@ -106,8 +109,14 @@ bool cGame::Init()
 bool cGame::Loop()
 {
 	bool res=true;
-
+	int timePerFrame = 20;
 	res = Process();
+	endTime = glutGet(GLUT_ELAPSED_TIME);
+	loopTime = endTime - startTime;
+	startTime = glutGet(GLUT_ELAPSED_TIME);
+	if (timePerFrame-loopTime >= 0) {
+		Sleep(timePerFrame-loopTime);
+	}
 	if(res) Render();
 
 	return res;
@@ -231,7 +240,7 @@ bool cGame::Process()
 		float x,y,z;
 		player.GetPosition(&x,&y,&z);
 		shoot.SetPosition(x+0.8,y+0.8,z+0.8);
-		shoot.SetIner(0.2);
+		shoot.SetIner(0.6);
 		//shoot.SetPosition();
 		shoot.setRot(rotV,rot);
 		shoot.SetActive(true);
@@ -285,7 +294,17 @@ void cGame::Render()
 		
 		break;
 	case 2:
+		float x2,y2, z2;
+		player.GetPosition(&x2,&y2,&z2);
 		gluLookAt(64,32,-16,0,0,-16,0,1,0);
+		glBegin(GL_LINES);
+		glColor3f(1,1,1); 
+		glVertex3f(x2+1,y2+1,z2+1);
+		glVertex3f(x2-cos(PI/180*rotV)*sin(PI/180*rot)*4,y2+sin(PI/180*rotV)*4,z2-cos(PI/180*rotV)*cos(PI/180*rot)*4); // X
+		//glColor3f(0,1,0); glVertex3f(0,0,0); glVertex3f(0,20,0); // Y
+		//glColor3f(0,0,1); glVertex3f(0,0,0); glVertex3f(0,0,20); // Z
+		glEnd();
+		glColor3f(1,1,1);
 		//glLightfv(GL_LIGHT0, GL_POSITION, pos2);
 		break;
 	case 3:
@@ -324,10 +343,10 @@ void cGame::Render()
 	//void gluSphere(GLUquadric *qobj,GLdouble radius,GLint slices,GLint stacks
 				
 	if(camera != 1) {
-		shader.render();
-		player.Draw();
+		//shader.render();
+		player.Draw(&Data);
 		//glLightfv(GL_LIGHT0, GL_POSITION, pos2);
-		shader.norender();
+		//shader.norender();
 		
 	}
 	if(enemy.IsAlive()) enemy.Draw(0,&Data);
