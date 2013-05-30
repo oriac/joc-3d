@@ -57,5 +57,7 @@ private:
 	int time_init,time_end,fps;
 	int fps_dibuix;
 	int dir;
+	int maxPosx;
+	int maxPosy;
 
 };

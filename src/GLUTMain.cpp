@@ -58,6 +58,7 @@ void main(int argc, char** argv)
 	pos_y = (res_y>>1)-(SCREEN_HEIGHT>>1);
 	
 	glutInitWindowPosition(pos_x,pos_y);
+	//GetSystemMetrics(SM_CXSCREEN);
 	glutInitWindowSize(SCREEN_WIDTH,SCREEN_HEIGHT);
 	glutCreateWindow("My Awesome 3D Game!");
 

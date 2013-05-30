@@ -14,7 +14,7 @@ void cGame::NextLevel() {
 	
 	if (actualLevel==1) {
 		++actualLevel;
-		player.SetPosition(4*1,6,4*-8);
+		player.SetPosition(4*1,0,4*-8);
 		enemy.SetPosition(4*5,4*1,4*-3);
 		enemy.Active();
 	}
@@ -22,7 +22,7 @@ void cGame::NextLevel() {
 		++actualLevel;
 		enemy.Active();
 		enemy.SetPosition(4*5,0,4*-3);
-		player.SetPosition(4*1,6,4*-8);
+		player.SetPosition(4*1,0,4*-8);
 
 	}
 	else if(actualLevel == 3) {
@@ -33,9 +33,12 @@ void cGame::NextLevel() {
 	}
 	else if(actualLevel == 4) {
 		++actualLevel;
-		player.SetPosition(4*1,6,4*-8);
+		player.SetPosition(4*1,0,4*-8);
 		enemy.SetPosition(4*4,4*1,4*-2);
 		enemy.Active();
+	}
+	else if(actualLevel == 5) {
+		Init();
 	}
 	bool result = false;
 	result = Scene.LoadLevel(actualLevel,caixes,terra,bullseyes);
@@ -44,6 +47,10 @@ void cGame::NextLevel() {
 
 bool cGame::Init()
 {
+	maxPosx = GetSystemMetrics(SM_CXSCREEN);
+	maxPosy = GetSystemMetrics(SM_CYSCREEN);
+	maxPosx = maxPosx/2;
+	maxPosy = maxPosy/2;
 	bool res=true;
 	actualLevel = 1;
 	dir = 1;
@@ -126,7 +133,7 @@ void cGame::ReadPosMouse(int x, int y)
 		x2=x;
 		y2=y;
 		mouseState = false;
-		SetCursorPos(400,300);
+		SetCursorPos(maxPosx,maxPosy);
 	}
 	else {
 		x1=x;
@@ -154,8 +161,9 @@ bool cGame::Process()
 
 	}
 		if(shoot.IsActive()) {
-		
+		if (shoot.GetIner() > 0)
 		shoot.MoveUp(caixes,map,terra);
+		//if (shoot.GetIner() > 0)
 		shoot.Logic(terra,caixes,map);
 		
 		
@@ -348,7 +356,7 @@ void cGame::Render()
 	}
 	glDisable( GL_POLYGON_OFFSET_FILL );
 	glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-	for(unsigned int k=0;k<3;++k) {
+	for(unsigned int k=0;k<2;++k) {
 		for(unsigned int i=0;i<caixes[k].size();++i) {
 			caixes[k][i].DrawBB();
 		}
@@ -364,7 +372,7 @@ void cGame::Render()
 		shoot.DrawBB();
 		
 	}
-	if (enemy.IsAlive()) enemy.DrawBB();
+	//if (enemy.IsAlive()) enemy.DrawBB();
 	player.DrawBB();
 	glColor3f(1,1,1);
 	glMatrixMode(GL_PROJECTION);
@@ -375,7 +383,8 @@ void cGame::Render()
 		Hud.DrawCrossHair(Data.GetID(IMG_CROSSHAIR),SCREEN_WIDTH/2,SCREEN_HEIGHT/2);
 	}
 	glLoadIdentity();
-	Hud.Drawfps(Data.GetID(IMG_FONT), fps_dibuix, SCREEN_WIDTH, SCREEN_HEIGHT);
+	Hud.Drawfps(Data.GetID(IMG_FONT), this->fps_dibuix, SCREEN_WIDTH, SCREEN_HEIGHT);
+	//Hud.DrawPoints(Data.GetID(IMG_FONT), shoot.GetNumColisions(), SCREEN_WIDTH, SCREEN_HEIGHT);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(45.0,(float)SCREEN_WIDTH/(float)SCREEN_HEIGHT,0.1,100);

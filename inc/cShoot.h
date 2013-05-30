@@ -17,6 +17,11 @@ public:
 	bool IsActive();
 	void SetActive(bool b);
 	void SetIner(double x);
+	void Setpunts(int p);
+	void SetnumColisions(int c);
+	int GetNumColisions();
+	int GetPunts();
+    double GetIner(); 
 	void ShootStep(int shootState,int *map);
 	void ShootCollides(int shootState, int *map);
 	void CanShoot(int *map,cBicho &Player);
@@ -30,5 +35,7 @@ private:
 	float rotV;
 	float rot;
 	double iner;
+	int numColisions;
+	int punts;
 };
 

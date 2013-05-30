@@ -83,7 +83,7 @@ void cEnemy::Draw(int tex_id, cData *Data)
 			//gluSphere(q, 1,16,16);
 			//gluDeleteQuadric(q);
 			glBindTexture(GL_TEXTURE_2D,Data->GetID(IMG_BULL));
-			glCallList(1);
+			glCallList(2);
 		glPopMatrix();
 	glDisable(GL_TEXTURE_2D);
 }

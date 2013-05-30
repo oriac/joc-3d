@@ -95,6 +95,32 @@ void cHud::Drawfps(int tex_id,int p, int x,int y) {
 	}
 }
 
+void cHud::DrawPoints(int tex_id,string points,  int x,int y) {
+	int step_x,step_y;
+	float tx,ty;
+	tx = 1./16.;
+	ty = 1./8.;
+	//writing punts:
+	string aux = "punts";
+	int n = aux.size();
+	for(int i=0;i<n;i++) {
+		step_x = (aux[i]-'a')+33;
+		step_y = step_x/10;
+		step_x = step_x%10;
+		//Draw(tex_id,tx,ty,step_x,step_y,200.+16.*i,(x/1.5)+20*i,y/1.5);
+	}
+	//Draw(tex_id,tx,ty,6,2,200+16.*5,450+d);
+
+	n = points.size();
+	for(int i=0;i<n;i++) {
+		step_x = (points[i]-'0')+16;
+		step_y = step_x/10;
+		step_x = step_x%10;
+//		Draw(tex_id,tx,ty,step_x,step_y,310.+16.*i,(x/1.5)+20*i,y/1.5);
+
+	}
+}
+
 void cHud::Draw(int tex_id, float tx,float ty, int step_x,int step_y,float trans_x, float trans_y) {
 			glPushMatrix();
 			glTranslatef(trans_x,trans_y,-0.5);
