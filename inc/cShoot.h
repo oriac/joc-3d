@@ -2,6 +2,7 @@
 #include "../inc/cBicho.h"
 #include "../inc/cScene.h"
 #include "../inc/cPlayer.h"
+#include "../inc/cSound.h"
 
 
 
@@ -27,7 +28,7 @@ public:
 	void CanShoot(int *map,cBicho &Player);
 	void MoveShoot();
 	void setRot(float rotv, float rot);
-	void MoveUp(vector<cBicho> *caixes, vector< vector<int> > &map, cBicho &terra);
+	void MoveUp(vector<cBicho> *caixes, vector< vector<int> > &map, cBicho &terra, cSound &Sound);
 	//void Logic(cBicho &caixes);
 	void Logic(cBicho &terra, vector<cBicho> *caixes, vector<vector<int>> &map);
 private:

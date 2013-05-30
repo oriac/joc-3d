@@ -35,6 +35,7 @@ void cSound::PlaySound(char *path,bool loop,float vol) {
 		system->createStream(path, 
 					  FMOD_SOFTWARE | FMOD_LOOP_NORMAL, 0, &s);
 		system->playSound(FMOD_CHANNEL_FREE, s, false, &channel1);
+		channel1->setVolume(vol);
 	}
 	else {
 		system->createSound(path, FMOD_SOFTWARE, 0, 

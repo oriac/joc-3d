@@ -288,7 +288,7 @@ void cShoot::Logic(cBicho &terra, vector<cBicho> *caixes, vector<vector<int>> &m
 }
 
 
-void cShoot::MoveUp(vector<cBicho> *caixes, vector< vector<int> > &map, cBicho &terra)
+void cShoot::MoveUp(vector<cBicho> *caixes, vector< vector<int> > &map, cBicho &terra, cSound &Sound)
 {
                 double xaux, zaux, yaux;
                 float x,y,z;
@@ -355,47 +355,48 @@ void cShoot::MoveUp(vector<cBicho> *caixes, vector< vector<int> > &map, cBicho &
                 b=false;
                 suelo = ((int)floor(y))/4;
                 for(int i=-1;i<=1 && !b;++i) {
-                        for(int j=-1;j<=1 && !b;++j) {
-                                //if(!(i==0 && j==0)) {
-                                if(map[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)]!=0) {
+                    for(int j=-1;j<=1 && !b;++j) {
+                            //if(!(i==0 && j==0)) {
+                        if(map[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)]!=0) {
+                            caixes[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
+                            if(Collides(&rect)) {
+                                z = zaux;
+                                //y = yaux;
+                                SetPosition(x,y,z);
+                                b = true;
+                                for(int i=-1;i<=1;++i) {
+                                    for(int j=-1;j<=1;++j) {
                                         caixes[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
                                         if(Collides(&rect)) {
-                                                z = zaux;
-                                                //y = yaux;
-                                                SetPosition(x,y,z);
-                                                b = true;
-                                                for(int i=-1;i<=1;++i) {
-                                                        for(int j=-1;j<=1;++j) {
-                                                                caixes[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
-                                                                if(Collides(&rect)) {
-                                                                        x = xaux;
-                                                                        //y = yaux;
-                                                                        desliza_x = false;
-                                                                        //z-=0.1*cos(rot*PI/180);
-                                                                        z+=-sin(PI/180*rotV)*cos(PI/180*rot)*iner;
-                                                                        SetPosition(x,y,z);
-                                                                        for(int i=-1;i<=1;++i) {
-                                                                                for(int j=-1;j<=1;++j) {
-                                                                                        caixes[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
-                                                                                        if(Collides(&rect)) {
-                                                                                                z = zaux;
-                                                                                                //y = yaux;
-                                                                                                desliza_z = false;
-                                                                                        }
-                                                                                }
-                                                                        }
-                                                                }
-                                                        }
+                                            x = xaux;
+                                            //y = yaux;
+                                            desliza_x = false;
+                                            //z-=0.1*cos(rot*PI/180);
+                                            z+=-sin(PI/180*rotV)*cos(PI/180*rot)*iner;
+                                            SetPosition(x,y,z);
+                                            for(int i=-1;i<=1;++i) {
+                                                for(int j=-1;j<=1;++j) {
+                                                    caixes[suelo][(ty+i)*SCENE_DEPTH+ (tx+j)].GetArea(&rect);
+                                                    if(Collides(&rect)) {
+                                                        z = zaux;
+                                                        //y = yaux;
+                                                        desliza_z = false;
+                                                    }
                                                 }
+                                            }
                                         }
+                                    }
                                 }
+                            }
                         }
+                    }
                 }
                 if(b) {
                         if(desliza_x) {
                                 if(rot >=0 && rot < 90) {
                                         double rotaux = 90.0 - (rot);
                                         rot += 2*rotaux;
+										Sound.PlaySoundW("resources/music/ricochet.ogg",false,0.2);
                                         //rot = 360-(rot);
                                         //rot = fmod(rot,360);
 
@@ -404,28 +405,33 @@ void cShoot::MoveUp(vector<cBicho> *caixes, vector< vector<int> > &map, cBicho &
                                         double rotaux = (rot-90);
                                         //double rotaux2 = 90-rotaux;
                                         rot -= 2*rotaux;
+										Sound.PlaySoundW("resources/music/ricochet.ogg",false,0.2);
                                 }
                                 else if(rot >=180 && rot < 270) {
                                         double rotaux =  90 - (rot - 180);
                                         //double rotaux2 = 90-rotaux;
                                         rot += 2*rotaux;
+										Sound.PlaySoundW("resources/music/ricochet.ogg",false,0.2);
                                 }
                                 else if(rot >=270 && rot < 360) {
                                         double rotaux = (rot-270);
                                         //double rotaux2 = 90-rotaux;
                                         rot -= 2*rotaux;
+										Sound.PlaySoundW("resources/music/ricochet.ogg",false,0.2);
                                 }
                         }
                         else if(desliza_z) {
                                 if(rot >=0 && rot < 90) {
                                         double rotaux = 90.0 - (rot);
                                         rot += 180 + 2*rotaux;
+										Sound.PlaySoundW("resources/music/ricochet.ogg",false,0.2);
                                         //rot = 360-(rot);
                                         //rot = fmod(rot,360);
 
                                 }
                                 else if(rot >=90 && rot < 180) {
                                         double rotaux = 90.0 - (rot-90);
+										Sound.PlaySoundW("resources/music/ricochet.ogg",false,0.2);
                                         //double rotaux2 = 90-rotaux;
                                         rot += 2*rotaux;
                                 }
@@ -433,11 +439,13 @@ void cShoot::MoveUp(vector<cBicho> *caixes, vector< vector<int> > &map, cBicho &
                                         double rotaux =  (rot - 180);
                                         //double rotaux2 = 90-rotaux;
                                         rot -= 2*rotaux;
+										Sound.PlaySoundW("resources/music/ricochet.ogg",false,0.2);
                                 }
                                 else if(rot >=270 && rot < 360) {
                                         double rotaux = 90.0 - (rot-90);
                                         //double rotaux2 = 90-rotaux;
                                         rot += 2*rotaux;
+										Sound.PlaySoundW("resources/music/ricochet.ogg",false,0.2);
                                 }
                         }
                 }
@@ -463,6 +471,7 @@ void cShoot::MoveUp(vector<cBicho> *caixes, vector< vector<int> > &map, cBicho &
 							if(rotV >=0 && rotV <= 90) {
 									//double rotaux = 90.0 - (rot);
 									rotV -= 2*rotV;
+									Sound.PlaySoundW("resources/music/ricochet.ogg",false,0.2);
 									//rot = 360-(rot);
 									//rot = fmod(rot,360);
 
@@ -471,6 +480,7 @@ void cShoot::MoveUp(vector<cBicho> *caixes, vector< vector<int> > &map, cBicho &
 									//double rotaux = (rot-90);
 									//double rotaux2 = 90-rotaux;
 									rotV -= 2*rotV;
+									Sound.PlaySoundW("resources/music/ricochet.ogg",false,0.2);
 							}
 							y = yaux;
 							SetPosition(x,y,z);
@@ -495,6 +505,7 @@ void cShoot::MoveUp(vector<cBicho> *caixes, vector< vector<int> > &map, cBicho &
                                 if(rotV >=0 && rotV <= 90) {
                                         //double rotaux = 90.0 - (rot);
                                         rotV -= 2*rotV;
+										Sound.PlaySoundW("resources/music/ricochet.ogg",false,0.2);
                                         //rot = 360-(rot);
                                         //rot = fmod(rot,360);
 
@@ -504,6 +515,7 @@ void cShoot::MoveUp(vector<cBicho> *caixes, vector< vector<int> > &map, cBicho &
                                         //double rotaux2 = 90-rotaux;
 										
                                         rotV -= 2*rotV;
+										Sound.PlaySoundW("resources/music/ricochet.ogg",false,0.2);
                                 }
 								//if(yaux<rect.ymax)
 									y=rect.ymax;
