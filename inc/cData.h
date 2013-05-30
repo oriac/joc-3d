@@ -4,7 +4,7 @@
 #include "../inc/Globals.h"
 
 //Image array size
-#define NUM_IMG		8
+#define NUM_IMG		10
 
 //Image identifiers
 #define IMG_WALL1	0

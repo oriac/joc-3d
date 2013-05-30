@@ -65,6 +65,7 @@ bool cGame::Init()
 	maxPosy = maxPosy/2;
 	bool res=true;
 	actualLevel = 1;
+	Sound.PlaySound("resources/music/FTL - 14.mp3",true,0.6);
 	dir = 1;
 	time_init=glutGet(GLUT_ELAPSED_TIME);
 	fps = fps_dibuix = 0;
@@ -166,6 +167,7 @@ void cGame::ReadPosMouse(int x, int y)
 bool cGame::Process()
 {
 	bool res=true;
+	Sound.Update();
 	if (enemy.IsAlive() && actualLevel == 5) {
 		float x,y,z;
 		enemy.GetPosition(&x,&y,&z);
@@ -183,7 +185,7 @@ bool cGame::Process()
 		if(shoot.IsActive()) {
 			//if (shoot.GetIner() > 0)
 			shoot.Logic(terra,caixes,map);
-			shoot.MoveUp(caixes,map,terra);
+			shoot.MoveUp(caixes,map,terra,Sound);
 			//if (shoot.GetIner() > 0)
 		
 		

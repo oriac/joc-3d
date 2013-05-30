@@ -44,6 +44,7 @@ private:
 	cEnemy enemy;
 	cHud Hud;
 	cShader shader;
+	cSound Sound;
 	vector<cBicho> caixes[3];
 	int bullseyes[3];
 	cBicho terra;
