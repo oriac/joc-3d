@@ -18,15 +18,15 @@ void AppKeyboard(unsigned char key, int x, int y)
 }
 void AppKeyboardUp(unsigned char key, int x, int y)
 {
-	Game.ReadKeyboard(key,x,y,false);
+	Game.ReadKeyboardRelease(key,x,y,false);
 }
 void AppSpecialKeys(int key, int x, int y)
 {
-	Game.ReadKeyboard(key,x,y,true);
+	Game.ReadKeyboardSpecial(key,x,y,true);
 }
 void AppSpecialKeysUp(int key, int x, int y)
 {
-	Game.ReadKeyboard(key,x,y,false);
+	Game.ReadKeyboardSpecialRelease(key,x,y,false);
 }
 void AppMouse(int button, int state, int x, int y)
 {

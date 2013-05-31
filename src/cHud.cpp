@@ -99,6 +99,45 @@ void cHud::Drawfps(int tex_id,int p, int x,int y) {
 	}
 }
 
+
+void cHud::Drawrebots(int tex_id,int p, int x,int y) {
+	stringstream ss;
+	ss << p;
+	string points = ss.str();
+	int step_x, step_y;
+	float tx,ty;
+	tx = 1./16.;
+	ty = 1./8.;
+	int n = points.size();
+	/*for(int i=n;i>n-4;i--) {
+		step_x = (points[i]-'0')+16;
+		step_y = step_x/10;
+		step_x = step_x%10;
+		//Draw(tex_id,tx,ty,step_x,step_y, x-20*3,y-20*3);
+		//Draw(tex_id,tx,ty,step_x,step_y, x-100*i,x-100);
+		Draw(tex_id,tx,ty,step_x,step_y, (x-20*n-40)+20*i,y-80);
+	}*/
+	string aux = "rebots";
+	int n2 = aux.size();
+	for(int i=0;i<n2;i++) {
+		step_x = (aux[i]-'a')+33;
+		step_y = step_x/10;
+		step_x = step_x%10;
+		Draw(tex_id,tx,ty,step_x,step_y,(x-(20*n2)-80)+20*i,y-80);
+	}
+		step_x = 10+16;
+		step_y = step_x/10;
+		step_x = step_x%10;
+		Draw(tex_id,tx,ty,step_x,step_y, x-80,y-80);
+	for(int i=0;i<n;i++) {
+		step_x = (points[i]-'0')+16;
+		step_y = step_x/10;
+		step_x = step_x%10;
+		//Draw(tex_id,tx,ty,step_x,step_y, x-20*3,y-20*3);
+		//Draw(tex_id,tx,ty,step_x,step_y, x-100*i,x-100);
+		Draw(tex_id,tx,ty,step_x,step_y, (x-60)+20*i,y-80);
+	}
+}
 void cHud::DrawPoints(int tex_id,string points,  int x,int y) {
 	int step_x,step_y;
 	float tx,ty;

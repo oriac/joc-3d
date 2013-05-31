@@ -28,6 +28,9 @@ public:
 	void NextLevel();
 	//Input
 	void ReadKeyboard(unsigned char key, int x, int y, bool press);
+	void ReadKeyboardSpecial(unsigned char key, int x, int y, bool press);
+	void ReadKeyboardRelease(unsigned char key, int x, int y, bool press);
+	void ReadKeyboardSpecialRelease(unsigned char key, int x, int y, bool press);
 	void ReadMouse(int button, int state, int x, int y);
 	void ReadPosMouse(int x, int y);
 	//Process
@@ -37,6 +40,9 @@ public:
 
 private:
 	unsigned char keys[256];
+	unsigned char keysSpecial[256];
+	unsigned char keysReleased[256];
+	unsigned char keysSpecialReleased[256];
 	cScene Scene;
 	cData Data;
 	cPlayer player;
@@ -65,5 +71,6 @@ private:
 	double startTime;
 	double loopTime;
 	bool goinNextLevel;
-
+	int rebots;
+	bool teclaAct;
 };

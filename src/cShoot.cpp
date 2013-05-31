@@ -288,7 +288,7 @@ void cShoot::Logic(cBicho &terra, vector<cBicho> *caixes, vector<vector<int>> &m
 }
 
 
-void cShoot::MoveUp(vector<cBicho> *caixes, vector< vector<int> > &map, cBicho &terra, cSound &Sound)
+void cShoot::MoveUp(vector<cBicho> *caixes, vector< vector<int> > &map, cBicho &terra, cSound &Sound,int &rebots)
 {
                 double xaux, zaux, yaux;
                 float x,y,z;
@@ -397,6 +397,7 @@ void cShoot::MoveUp(vector<cBicho> *caixes, vector< vector<int> > &map, cBicho &
                                         double rotaux = 90.0 - (rot);
                                         rot += 2*rotaux;
 										Sound.PlaySoundW("resources/music/ricochet.ogg",false,0.2);
+										rebots++;
                                         //rot = 360-(rot);
                                         //rot = fmod(rot,360);
 
@@ -406,18 +407,21 @@ void cShoot::MoveUp(vector<cBicho> *caixes, vector< vector<int> > &map, cBicho &
                                         //double rotaux2 = 90-rotaux;
                                         rot -= 2*rotaux;
 										Sound.PlaySoundW("resources/music/ricochet.ogg",false,0.2);
+										rebots++;
                                 }
                                 else if(rot >=180 && rot < 270) {
                                         double rotaux =  90 - (rot - 180);
                                         //double rotaux2 = 90-rotaux;
                                         rot += 2*rotaux;
 										Sound.PlaySoundW("resources/music/ricochet.ogg",false,0.2);
+										rebots++;
                                 }
                                 else if(rot >=270 && rot < 360) {
                                         double rotaux = (rot-270);
                                         //double rotaux2 = 90-rotaux;
                                         rot -= 2*rotaux;
 										Sound.PlaySoundW("resources/music/ricochet.ogg",false,0.2);
+										rebots++;
                                 }
                         }
                         else if(desliza_z) {
@@ -427,11 +431,13 @@ void cShoot::MoveUp(vector<cBicho> *caixes, vector< vector<int> > &map, cBicho &
 										Sound.PlaySoundW("resources/music/ricochet.ogg",false,0.2);
                                         //rot = 360-(rot);
                                         //rot = fmod(rot,360);
+										rebots++;
 
                                 }
                                 else if(rot >=90 && rot < 180) {
                                         double rotaux = 90.0 - (rot-90);
 										Sound.PlaySoundW("resources/music/ricochet.ogg",false,0.2);
+										rebots++;
                                         //double rotaux2 = 90-rotaux;
                                         rot += 2*rotaux;
                                 }
@@ -440,12 +446,14 @@ void cShoot::MoveUp(vector<cBicho> *caixes, vector< vector<int> > &map, cBicho &
                                         //double rotaux2 = 90-rotaux;
                                         rot -= 2*rotaux;
 										Sound.PlaySoundW("resources/music/ricochet.ogg",false,0.2);
+										rebots++;
                                 }
                                 else if(rot >=270 && rot < 360) {
                                         double rotaux = 90.0 - (rot-90);
                                         //double rotaux2 = 90-rotaux;
                                         rot += 2*rotaux;
 										Sound.PlaySoundW("resources/music/ricochet.ogg",false,0.2);
+										rebots++;
                                 }
                         }
                 }
@@ -472,6 +480,7 @@ void cShoot::MoveUp(vector<cBicho> *caixes, vector< vector<int> > &map, cBicho &
 									//double rotaux = 90.0 - (rot);
 									rotV -= 2*rotV;
 									Sound.PlaySoundW("resources/music/ricochet.ogg",false,0.2);
+									rebots++;
 									//rot = 360-(rot);
 									//rot = fmod(rot,360);
 
@@ -481,6 +490,7 @@ void cShoot::MoveUp(vector<cBicho> *caixes, vector< vector<int> > &map, cBicho &
 									//double rotaux2 = 90-rotaux;
 									rotV -= 2*rotV;
 									Sound.PlaySoundW("resources/music/ricochet.ogg",false,0.2);
+									rebots++;
 							}
 							y = yaux;
 							SetPosition(x,y,z);
@@ -506,6 +516,7 @@ void cShoot::MoveUp(vector<cBicho> *caixes, vector< vector<int> > &map, cBicho &
                                         //double rotaux = 90.0 - (rot);
                                         rotV -= 2*rotV;
 										Sound.PlaySoundW("resources/music/ricochet.ogg",false,0.2);
+										rebots++;
                                         //rot = 360-(rot);
                                         //rot = fmod(rot,360);
 
@@ -516,6 +527,7 @@ void cShoot::MoveUp(vector<cBicho> *caixes, vector< vector<int> > &map, cBicho &
 										
                                         rotV -= 2*rotV;
 										Sound.PlaySoundW("resources/music/ricochet.ogg",false,0.2);
+										rebots++;
                                 }
 								//if(yaux<rect.ymax)
 									y=rect.ymax;

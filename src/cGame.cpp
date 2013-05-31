@@ -3,12 +3,13 @@
 
 
 cGame::cGame(void) {
-	//vector< vector<int> > map(3,vector<int> (SCENE_WIDTH * SCENE_DEPTH));
+	teclaAct=false;
 }
 cGame::~cGame(void){}
 
 void cGame::NextLevel() {
 	camera = 2;
+	rebots = 0;
 	for (int i = 0; i < 3; i++) {
 		caixes[i].clear();
 	}
@@ -142,7 +143,26 @@ void cGame::Finalize()
 //Input
 void cGame::ReadKeyboard(unsigned char key, int x, int y, bool press)
 {
-	keys[key] = press;
+	keys[key] = true;
+	keysReleased[key] = false;
+}
+
+void cGame::ReadKeyboardSpecial(unsigned char key, int x, int y, bool press)
+{
+	keysSpecial[key] = true;
+	keysSpecialReleased[key] = false;
+}
+
+void cGame::ReadKeyboardRelease(unsigned char key, int x, int y, bool press)
+{
+	keys[key] = false;
+	keysReleased[key] = true;
+}
+
+void cGame::ReadKeyboardSpecialRelease(unsigned char key, int x, int y, bool press)
+{
+	keysSpecial[key] = false;
+	keysSpecialReleased[key] = true;
 }
 
 void cGame::ReadMouse(int button, int state, int x, int y)
@@ -186,7 +206,7 @@ bool cGame::Process()
 		if(shoot.IsActive()) {
 			//if (shoot.GetIner() > 0)
 			shoot.Logic(terra,caixes,map);
-			shoot.MoveUp(caixes,map,terra,Sound);
+			shoot.MoveUp(caixes,map,terra,Sound,rebots);
 			//if (shoot.GetIner() > 0)
 		
 		
@@ -256,6 +276,7 @@ bool cGame::Process()
 	}
 	if(keys['r']) {
 		float x,y,z;
+		rebots = 0;
 		player.GetPosition(&x,&y,&z);
 		shoot.SetPosition(x+0.8,y+0.8,z+0.8);
 		shoot.SetIner(0.6);
@@ -273,9 +294,13 @@ bool cGame::Process()
 		NextLevel();
 		Sleep(500);
 	}
-	if(keys['f']) {
+	if(keys['f'] && !teclaAct) {
+		teclaAct = true;
 		++tipoPintado;
 		if (tipoPintado > 2) tipoPintado = 0;
+	}
+	if(keysReleased['f']) {
+		teclaAct = false;
 	}
 	player.Logic(terra,caixes,map);
 	
@@ -451,11 +476,13 @@ void cGame::Render()
 	Hud.Drawfps(Data.GetID(IMG_FONT), startTime-(2000*(actualLevel-1)), SCREEN_WIDTH, SCREEN_HEIGHT);
 	//glLoadIdentity();
 	if(goinNextLevel) {
+		glLoadIdentity();
 		Hud.DrawPrepareToFight(Data.GetID(IMG_FONT), SCREEN_WIDTH, SCREEN_HEIGHT);
 		goinNextLevel = false;
 		NextLevel();
 	}
-	//Hud.DrawPoints(Data.GetID(IMG_FONT), shoot.GetNumColisions(), SCREEN_WIDTH, SCREEN_HEIGHT);
+	glLoadIdentity();
+	Hud.Drawrebots(Data.GetID(IMG_FONT), rebots, SCREEN_WIDTH, SCREEN_HEIGHT);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(45.0,(float)SCREEN_WIDTH/(float)SCREEN_HEIGHT,0.1,100);

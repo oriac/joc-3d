@@ -17,6 +17,7 @@ public:
 	void DrawCrossHair(int tex_id,int x,int y);
 	void Drawfps(int tex_id,int p, int x, int y);
 	void DrawPoints(int tex_id,string points,  int x,int y);
+	void Drawrebots(int tex_id,int p, int x,int y);
 
 private:
 	void Draw(int tex_id, float tx,float ty, int step_x,int step_y,float trans_x, float trans_y);

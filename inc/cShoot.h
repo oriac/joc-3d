@@ -28,7 +28,7 @@ public:
 	void CanShoot(int *map,cBicho &Player);
 	void MoveShoot();
 	void setRot(float rotv, float rot);
-	void MoveUp(vector<cBicho> *caixes, vector< vector<int> > &map, cBicho &terra, cSound &Sound);
+	void MoveUp(vector<cBicho> *caixes, vector< vector<int> > &map, cBicho &terra, cSound &Sound,int &rebots);
 	//void Logic(cBicho &caixes);
 	void Logic(cBicho &terra, vector<cBicho> *caixes, vector<vector<int>> &map);
 private:
