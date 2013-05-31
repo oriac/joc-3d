@@ -56,6 +56,7 @@ void cGame::NextLevel() {
 
 bool cGame::Init()
 {
+	glutSetCursor(GLUT_CURSOR_NONE);
 	tipoPintado = 0;
 	camera = 2;
 	startTime = glutGet(GLUT_ELAPSED_TIME);
@@ -303,9 +304,19 @@ void cGame::Render()
 	float x,y,z;
 
 	glLoadIdentity();
-	if (shoot.IsActive()) shoot.GetPosition(&x,&y,&z);
-	else player.GetPosition(&x,&y,&z);
-	float pos2[4] = {x+0.2,y+0.2, z+0.2, 1.0};
+	if (shoot.IsActive()) {
+		shoot.GetPosition(&x,&y,&z);
+		x+=0.2;
+		y+=0.2;
+		z+=0.2;
+	}
+	else {
+		player.GetPosition(&x,&y,&z);
+		x+=1;
+		y+=1;
+		z+=1;
+	}
+	float pos2[4] = {x,y, z, 1.0};
 	switch(camera) {
 	case 1:
 		

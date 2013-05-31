@@ -77,13 +77,25 @@ void cHud::Drawfps(int tex_id,int p, int x,int y) {
 	tx = 1./16.;
 	ty = 1./8.;
 	int n = points.size();
-	for(int i=0;i<n;i++) {
+	for(int i=n;i>n-4;i--) {
 		step_x = (points[i]-'0')+16;
 		step_y = step_x/10;
 		step_x = step_x%10;
 		//Draw(tex_id,tx,ty,step_x,step_y, x-20*3,y-20*3);
 		//Draw(tex_id,tx,ty,step_x,step_y, x-100*i,x-100);
-		Draw(tex_id,tx,ty,step_x,step_y, (x/1.5)+20*i,y/1.5);
+		Draw(tex_id,tx,ty,step_x,step_y, (x-20*n-40)+20*i,y-40);
+	}
+		step_x = 10+16;
+		step_y = step_x/10;
+		step_x = step_x%10;
+		Draw(tex_id,tx,ty,step_x,step_y, (x-20*n-40)+20*(n-4),y-40);
+	for(int i=n-4;i>=0;i--) {
+		step_x = (points[i]-'0')+16;
+		step_y = step_x/10;
+		step_x = step_x%10;
+		//Draw(tex_id,tx,ty,step_x,step_y, x-20*3,y-20*3);
+		//Draw(tex_id,tx,ty,step_x,step_y, x-100*i,x-100);
+		Draw(tex_id,tx,ty,step_x,step_y, (x-20*n-60)+20*i,y-40);
 	}
 }
 
